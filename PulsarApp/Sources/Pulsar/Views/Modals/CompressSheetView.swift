@@ -44,6 +44,7 @@ public struct CompressSheetView: View {
                 Button("Vazgeç") {
                     dismiss()
                 }
+                .keyboardShortcut(.cancelAction)
                 .buttonStyle(.plain)
                 .foregroundColor(.secondary)
             }
@@ -101,6 +102,7 @@ public struct CompressSheetView: View {
                         HStack(spacing: 6) {
                             ForEach(vm.sourcePaths, id: \.self) { path in
                                 HStack(spacing: 4) {
+                                    FileIconView(fileName: (path as NSString).lastPathComponent, isDirectory: (try? FileManager.default.attributesOfItem(atPath: path)[.type] as? FileAttributeType) == .typeDirectory, size: 12)
                                     Text((path as NSString).lastPathComponent)
                                         .font(.system(size: 11))
                                     Button(action: {
@@ -163,10 +165,10 @@ public struct CompressSheetView: View {
                         }
                         .buttonStyle(.plain)
                         .font(.system(size: 10, weight: .bold))
-                        .foregroundColor(.cyan)
+                        .foregroundColor(.accentColor)
                     }
 
-                    Text("\(vm.outputDirectory)/\(vm.outputName).\(finalExtension)")
+                    Text("\(vm.outputDirectory)/\(vm.outputName).\(finalExtension)".abbreviatingWithTilde)
                         .font(.system(size: 11, design: .monospaced))
                         .foregroundColor(.secondary)
                         .lineLimit(1)
@@ -184,7 +186,7 @@ public struct CompressSheetView: View {
             .padding()
             .background(Color(NSColor.controlBackgroundColor))
         }
-        .frame(width: 540)
+        .frame(width: 600)
     }
 
     private var finalExtension: String {

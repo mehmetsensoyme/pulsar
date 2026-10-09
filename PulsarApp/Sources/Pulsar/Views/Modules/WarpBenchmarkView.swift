@@ -32,6 +32,7 @@ public struct WarpBenchmarkView: View {
                 Button("Kapat") {
                     dismiss()
                 }
+                .keyboardShortcut(.cancelAction)
                 .buttonStyle(.plain)
                 .foregroundColor(.secondary)
             }
@@ -177,7 +178,7 @@ public struct WarpBenchmarkView: View {
             .padding()
             .background(Color(NSColor.controlBackgroundColor))
         }
-        .frame(width: 520, height: 600)
+        .frame(width: 600, height: 580)
     }
 }
 

@@ -16,10 +16,8 @@ public struct InspectorView: View {
                     VStack(spacing: 16) {
                         // Dosya İkonu ve Adı
                         VStack(spacing: 8) {
-                            Image(systemName: item.iconName)
-                                .font(.system(size: 48))
-                                .foregroundColor(item.iconColor)
-                                .shadow(color: item.iconColor.opacity(0.3), radius: 8, x: 0, y: 4)
+                            FileIconView(item: item, size: 56)
+                                .shadow(color: Color.black.opacity(0.12), radius: 6, x: 0, y: 3)
 
                             Text(item.name)
                                 .font(.system(size: 14, weight: .bold))

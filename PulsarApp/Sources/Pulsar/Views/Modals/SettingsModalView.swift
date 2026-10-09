@@ -47,13 +47,14 @@ public struct SettingsModalView: View {
         VStack(spacing: 0) {
             // Başlık Çubuğu
             HStack(spacing: 10) {
-                Image(systemName: "gearshape.2.fill")
-                    .foregroundColor(.cyan)
+                Image(systemName: "gearshape.fill")
+                    .foregroundColor(.accentColor)
                     .font(.system(size: 20))
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Pulsar Tercihleri & Ayarlar")
+                    Text("Pulsar Ayarları")
                         .font(.headline)
+                        .foregroundColor(.primary)
                     Text("Sistem motorları, güvenlik, arayüz ve otomasyon ayarları")
                         .font(.caption)
                         .foregroundColor(.secondary)
@@ -61,9 +62,11 @@ public struct SettingsModalView: View {
 
                 Spacer()
 
-                Button("Tamam") {
+                Button("Bitti") {
                     dismiss()
                 }
+                .keyboardShortcut(.defaultAction)
+                .keyboardShortcut(.cancelAction)
                 .buttonStyle(.borderedProminent)
                 .controlSize(.small)
             }
@@ -73,7 +76,7 @@ public struct SettingsModalView: View {
             Divider()
 
             // Sekme Seçici
-            HStack {
+            HStack(spacing: 4) {
                 tabButton("Genel", icon: "slider.horizontal.3", tag: 0)
                 tabButton("Motorlar", icon: "cpu", tag: 1)
                 tabButton("Güvenlik", icon: "lock.shield", tag: 2)
@@ -81,9 +84,9 @@ public struct SettingsModalView: View {
                 tabButton("Yüzen HUD", icon: "macwindow.on.rectangle", tag: 4)
                 tabButton("Hakkında", icon: "info.circle", tag: 5)
             }
-            .padding(.horizontal)
-            .padding(.top, 10)
-            .padding(.bottom, 6)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
+            .background(Color(NSColor.windowBackgroundColor))
 
             Divider()
 
@@ -107,11 +110,11 @@ public struct SettingsModalView: View {
                         EmptyView()
                     }
                 }
-                .padding()
+                .padding(16)
             }
-            .frame(height: 380)
+            .frame(height: 400)
         }
-        .frame(width: 580)
+        .frame(width: 600, height: 500)
         .background(Color(NSColor.windowBackgroundColor))
     }
 
@@ -119,18 +122,25 @@ public struct SettingsModalView: View {
         Button(action: {
             vm.selectedTab = tag
         }) {
-            VStack(spacing: 4) {
+            HStack(spacing: 5) {
                 Image(systemName: icon)
-                    .font(.system(size: 15))
-                    .foregroundColor(vm.selectedTab == tag ? .cyan : .secondary)
+                    .font(.system(size: 11))
                 Text(title)
-                    .font(.system(size: 10, weight: vm.selectedTab == tag ? .bold : .regular))
-                    .foregroundColor(vm.selectedTab == tag ? .primary : .secondary)
+                    .font(.system(size: 11, weight: vm.selectedTab == tag ? .semibold : .regular))
             }
+            .foregroundColor(vm.selectedTab == tag ? .white : .primary)
             .padding(.horizontal, 10)
-            .padding(.vertical, 6)
-            .background(vm.selectedTab == tag ? Color.primary.opacity(0.08) : Color.clear)
-            .cornerRadius(8)
+            .padding(.vertical, 5)
+            .background(
+                Group {
+                    if vm.selectedTab == tag {
+                        RoundedRectangle(cornerRadius: 6)
+                            .fill(Color.accentColor)
+                    } else {
+                        Color.clear
+                    }
+                }
+            )
         }
         .buttonStyle(.plain)
     }
@@ -297,9 +307,9 @@ public struct SettingsModalView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("İzlenen Dizin:")
                             .font(.system(size: 11)).foregroundColor(.secondary)
-                        Text(settings.folderWatcherPath)
+                        Text(settings.folderWatcherPath.abbreviatingWithTilde)
                             .font(.system(size: 11, design: .monospaced))
-                            .lineLimit(1)
+                            .foregroundColor(.primary)
                     }
                     Spacer()
                     Button("Değiştir...") {
@@ -418,9 +428,9 @@ public struct SettingsModalView: View {
     }
 
     private func settingsSection<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 6) {
             Text(title)
-                .font(.system(size: 10, weight: .bold, design: .monospaced))
+                .font(.system(size: 11, weight: .semibold))
                 .foregroundColor(.secondary)
 
             VStack(alignment: .leading, spacing: 10) {
@@ -429,7 +439,11 @@ public struct SettingsModalView: View {
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color(NSColor.controlBackgroundColor))
-            .cornerRadius(8)
+            .cornerRadius(10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.primary.opacity(0.08), lineWidth: 1)
+            )
         }
     }
 }

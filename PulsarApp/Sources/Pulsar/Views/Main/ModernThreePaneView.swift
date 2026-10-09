@@ -4,109 +4,116 @@ public struct ModernThreePaneView: View {
     @ObservedObject var manager = ArchiveManager.shared
 
     public var body: some View {
-        NavigationSplitView {
-            // Sol Kenar Çubuğu: Gezinme, Son Arşivler ve Sistem
-            List {
-                Section("Gezinme Filtresi") {
-                    ForEach(ContentFilterMode.allCases) { mode in
-                        Button(action: {
-                            manager.filterMode = mode
-                        }) {
-                            HStack {
-                                Image(systemName: mode.iconName)
-                                    .foregroundColor(manager.filterMode == mode ? .cyan : .secondary)
-                                Text(mode.rawValue)
-                                    .font(.system(size: 12, weight: manager.filterMode == mode ? .semibold : .regular))
-                                Spacer()
-                                if manager.filterMode == mode {
-                                    Circle()
-                                        .fill(Color.cyan)
-                                        .frame(width: 6, height: 6)
-                                }
-                            }
-                            .padding(.vertical, 2)
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-
-                Section("Son Açılan Arşivler") {
-                    if manager.recentArchives.isEmpty {
-                        Text("Son arşiv bulunmuyor")
-                            .font(.system(size: 11))
-                            .foregroundColor(.secondary)
-                            .padding(.vertical, 4)
-                    } else {
-                        ForEach(manager.recentArchives, id: \.self) { path in
-                            Button(action: {
-                                manager.openArchive(at: path)
-                            }) {
-                                HStack {
-                                    Image(systemName: "archivebox.fill")
-                                        .foregroundColor(manager.currentArchivePath == path ? .cyan : .secondary)
-                                    Text((path as NSString).lastPathComponent)
-                                        .lineLimit(1)
-                                        .font(.system(size: 12, weight: manager.currentArchivePath == path ? .semibold : .regular))
-                                }
-                                .padding(.vertical, 1)
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-                }
-
-                Section("Sistem & Modüller") {
-                    Button(action: {
-                        manager.showBenchmarkSheet = true
-                    }) {
-                        Label("Warp Benchmark", systemImage: "bolt.fill")
-                    }
-                    .buttonStyle(.plain)
-
-                    Button(action: {
-                        manager.showFolderWatcherSheet = true
-                    }) {
-                        Label("Kara Delik İzleyici", systemImage: "circle.circle")
-                    }
-                    .buttonStyle(.plain)
-
-                    Button(action: {
-                        manager.showRepairSheet = true
-                    }) {
-                        Label("Kurtarma İstasyonu", systemImage: "wrench.and.screwdriver")
-                    }
-                    .buttonStyle(.plain)
-
-                    Divider()
-
-                    Button(action: {
-                        manager.showSettingsSheet = true
-                    }) {
-                        Label("Ayarlar & Tercihler...", systemImage: "gearshape.fill")
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-            .listStyle(.sidebar)
-            .frame(minWidth: 190, idealWidth: 220)
-        } content: {
-            // Orta Bölüm: Arşiv açık değilse Hero Karşılama, açıksa Breadcrumbs + Tablo
-            if manager.currentArchivePath == nil {
+        if manager.currentArchivePath == nil {
+            NavigationSplitView {
+                sidebarView
+            } detail: {
                 EmptyArchiveHeroView()
-            } else {
+            }
+        } else {
+            NavigationSplitView {
+                sidebarView
+            } content: {
                 VStack(spacing: 0) {
                     BreadcrumbBar()
                     FileTableView()
                 }
+            } detail: {
+                InspectorView()
             }
-        } detail: {
-            // Sağ Bölüm: Canlı Denetçi & Önizleme
-            InspectorView()
         }
+    }
+
+    @ViewBuilder
+    private var sidebarView: some View {
+        // Sol Kenar Çubuğu: Gezinme, Son Arşivler ve Sistem
+        List {
+            Section("Gezinme Filtresi") {
+                ForEach(ContentFilterMode.allCases) { mode in
+                    Button(action: {
+                        manager.filterMode = mode
+                    }) {
+                        HStack {
+                            Image(systemName: mode.iconName)
+                                .foregroundColor(manager.filterMode == mode ? .accentColor : .secondary)
+                            Text(mode.rawValue)
+                                .font(.system(size: 12, weight: manager.filterMode == mode ? .semibold : .regular))
+                            Spacer()
+                            if manager.filterMode == mode {
+                                Circle()
+                                    .fill(Color.accentColor)
+                                    .frame(width: 6, height: 6)
+                            }
+                        }
+                        .padding(.vertical, 2)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+
+            Section("Son Açılan Arşivler") {
+                if manager.recentArchives.isEmpty {
+                    Text("Son arşiv bulunmuyor")
+                        .font(.system(size: 11))
+                        .foregroundColor(.secondary)
+                        .padding(.vertical, 4)
+                } else {
+                    ForEach(manager.recentArchives, id: \.self) { path in
+                        Button(action: {
+                            manager.openArchive(at: path)
+                        }) {
+                            HStack {
+                                FileIconView(fileName: (path as NSString).lastPathComponent, size: 14)
+                                Text((path as NSString).lastPathComponent)
+                                    .lineLimit(1)
+                                    .font(.system(size: 12, weight: manager.currentArchivePath == path ? .semibold : .regular))
+                            }
+                            .padding(.vertical, 1)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+            }
+
+            Section("Sistem & Modüller") {
+                Button(action: {
+                    manager.showBenchmarkSheet = true
+                }) {
+                    Label("Warp Benchmark", systemImage: "bolt.fill")
+                }
+                .buttonStyle(.plain)
+
+                Button(action: {
+                    manager.showFolderWatcherSheet = true
+                }) {
+                    Label("Kara Delik İzleyici", systemImage: "circle.circle")
+                }
+                .buttonStyle(.plain)
+
+                Button(action: {
+                    manager.showRepairSheet = true
+                }) {
+                    Label("Kurtarma İstasyonu", systemImage: "wrench.and.screwdriver")
+                }
+                .buttonStyle(.plain)
+
+                Divider()
+
+                Button(action: {
+                    manager.showSettingsSheet = true
+                }) {
+                    Label("Ayarlar & Tercihler...", systemImage: "gearshape.fill")
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .listStyle(.sidebar)
+        .frame(minWidth: 190, idealWidth: 220)
     }
 }
 
 /// Arşiv açık olmadığında görüntülenen Sci-Fi Karşılama ve Drop-Zone Ekranı
+/// Arşiv açık olmadığında görüntülenen Apple HIG Karşılama ve Drop-Zone Ekranı
 public struct EmptyArchiveHeroView: View {
     @ObservedObject var manager = ArchiveManager.shared
 
@@ -114,83 +121,104 @@ public struct EmptyArchiveHeroView: View {
         VStack(spacing: 24) {
             Spacer()
 
-            // Pulsar Yıldızı & Parıltı Efekti
-            ZStack {
-                Circle()
-                    .fill(
-                        RadialGradient(
-                            colors: [Color.cyan.opacity(0.35), Color.purple.opacity(0.1), Color.clear],
-                            center: .center,
-                            startRadius: 20,
-                            endRadius: 90
-                        )
-                    )
-                    .frame(width: 180, height: 180)
+            VStack(spacing: 16) {
+                ZStack {
+                    Circle()
+                        .fill(Color.accentColor.opacity(0.12))
+                        .frame(width: 110, height: 110)
 
-                Image(systemName: "sparkles")
-                    .font(.system(size: 64))
-                    .foregroundColor(.cyan)
-                    .shadow(color: .cyan.opacity(0.8), radius: 16)
-            }
-
-            VStack(spacing: 6) {
-                Text("PULSAR")
-                    .font(.system(size: 26, weight: .black, design: .monospaced))
-                    .foregroundColor(.primary)
-
-                Text("macOS İçin Işık Hızında Arşiv ve Sıkıştırma Ekosistemi")
-                    .font(.system(size: 13))
-                    .foregroundColor(.secondary)
-            }
-
-            // Hızlı Aksiyon Butonları
-            HStack(spacing: 16) {
-                Button(action: {
-                    let panel = NSOpenPanel()
-                    panel.allowsMultipleSelection = false
-                    panel.canChooseDirectories = false
-                    panel.prompt = "Arşiv Aç"
-                    if panel.runModal() == .OK, let url = panel.url {
-                        manager.openArchive(at: url.path)
-                    }
-                }) {
-                    HStack(spacing: 6) {
-                        Image(systemName: "folder.badge.gearshape")
-                        Text("Arşiv Aç (⌘O)")
-                    }
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
+                    Image(systemName: "archivebox.circle.fill")
+                        .font(.system(size: 64))
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundColor(.accentColor)
                 }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.regular)
 
-                Button(action: {
-                    manager.showCompressSheet = true
-                }) {
-                    HStack(spacing: 6) {
-                        Image(systemName: "plus.rectangle.on.rectangle")
-                        Text("Yeni Arşiv Oluştur (⌘N)")
-                    }
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
+                VStack(spacing: 6) {
+                    Text("Pulsar")
+                        .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.primary)
+
+                    Text("Açmak için bir arşiv dosyasını buraya sürükleyin")
+                        .font(.system(size: 13))
+                        .foregroundColor(.secondary)
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.regular)
-            }
 
-            // Bırakma İpucu
-            HStack(spacing: 6) {
-                Image(systemName: "arrow.down.doc")
-                    .font(.system(size: 11))
-                Text("Veya herhangi bir arşivi doğrudan bu pencereye sürükleyip bırakın")
-                    .font(.system(size: 11))
+                HStack(spacing: 12) {
+                    Button(action: {
+                        let panel = NSOpenPanel()
+                        panel.allowsMultipleSelection = false
+                        panel.canChooseDirectories = false
+                        panel.prompt = "Arşiv Aç"
+                        if panel.runModal() == .OK, let url = panel.url {
+                            manager.openArchive(at: url.path)
+                        }
+                    }) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "folder")
+                            Text("Arşiv Aç (⌘O)")
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.regular)
+
+                    Button(action: {
+                        manager.showCompressSheet = true
+                    }) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "plus")
+                            Text("Yeni Arşiv (⌘N)")
+                        }
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.regular)
+                }
+                .padding(.top, 4)
             }
-            .foregroundColor(.secondary.opacity(0.8))
+            .padding(36)
+            .background(Color(NSColor.controlBackgroundColor))
+            .cornerRadius(16)
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color.primary.opacity(0.08), lineWidth: 1)
+            )
+
+            // Son Arşivler Varsa Hızlı Kısayol
+            if !manager.recentArchives.isEmpty {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("SON KULLANILANLAR")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(.secondary)
+
+                    HStack(spacing: 8) {
+                        ForEach(manager.recentArchives.prefix(3), id: \.self) { path in
+                            Button(action: {
+                                manager.openArchive(at: path)
+                            }) {
+                                HStack(spacing: 6) {
+                                    FileIconView(fileName: (path as NSString).lastPathComponent, size: 14)
+                                    Text((path as NSString).lastPathComponent)
+                                        .font(.system(size: 11))
+                                        .lineLimit(1)
+                                }
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 5)
+                                .background(Color(NSColor.controlBackgroundColor))
+                                .cornerRadius(8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.primary.opacity(0.06), lineWidth: 1)
+                                )
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                }
+            }
 
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(NSColor.controlBackgroundColor).opacity(0.2))
+        .background(Color(NSColor.windowBackgroundColor))
     }
 }
 
@@ -223,12 +251,11 @@ public struct FileTableView: View {
                 Table(manager.currentFolderItems, selection: $manager.selectedItemIds) {
                     TableColumn("Ad") { item in
                         HStack(spacing: 8) {
-                            Image(systemName: item.iconName)
-                                .foregroundColor(item.iconColor)
-                                .font(.system(size: 14))
+                            FileIconView(item: item, size: 16)
 
                             Text(item.name)
                                 .font(.system(size: 13, weight: item.isDirectory ? .semibold : .regular))
+                                .foregroundColor(.primary)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .contentShape(Rectangle())
@@ -265,7 +292,7 @@ public struct FileTableView: View {
                     TableColumn("Oran") { item in
                         Text(item.compressionRatioPercentage)
                             .font(.system(size: 12, weight: .medium, design: .monospaced))
-                            .foregroundColor(item.isDirectory ? .clear : .cyan)
+                            .foregroundColor(item.isDirectory ? .clear : .accentColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .contentShape(Rectangle())
                             .onTapGesture(count: 2) {

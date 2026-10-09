@@ -23,12 +23,9 @@ public struct TabbedStudioView: View {
                         ForEach(Array(manager.openTabs.enumerated()), id: \.offset) { index, path in
                             let isSelected = manager.activeTabIndex == index
                             let name = (path as NSString).lastPathComponent
-                            let format = ArchiveFormat.detect(from: path)
 
                             HStack(spacing: 6) {
-                                Image(systemName: format?.iconName ?? "doc.zipper")
-                                    .font(.system(size: 11))
-                                    .foregroundColor(format?.badgeColor ?? .accentColor)
+                                FileIconView(fileName: name, size: 14)
 
                                 Text(name)
                                     .font(.system(size: 12, weight: isSelected ? .bold : .regular))

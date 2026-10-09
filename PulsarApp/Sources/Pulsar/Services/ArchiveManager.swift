@@ -187,6 +187,17 @@ public final class ArchiveManager: ObservableObject {
         }
     }
 
+    public func closeArchive() {
+        currentArchivePath = nil
+        currentFormat = nil
+        currentFolderPath = ""
+        allItems.removeAll()
+        selectedItemIds.removeAll()
+        isEditingUnlocked = false
+        openTabs.removeAll()
+        activeTabIndex = 0
+    }
+
     public func promptPassword(for path: String) {
         self.showPasswordModal = true
         self.passwordPromptCallback = { [weak self] pwd in

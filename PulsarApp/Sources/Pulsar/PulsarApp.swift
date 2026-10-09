@@ -94,10 +94,16 @@ struct PulsarApp: App {
 
                 Divider()
 
+                Button("Arşivi Kapat") {
+                    manager.closeArchive()
+                }
+                .keyboardShortcut("w", modifiers: .command)
+                .disabled(manager.currentArchivePath == nil)
+
                 Button("Tümünü Çıkar...") {
                     manager.extractAll()
                 }
-                .keyboardShortcut("E", modifiers: .command)
+                .keyboardShortcut("e", modifiers: .command)
                 .disabled(manager.currentArchivePath == nil)
             }
 

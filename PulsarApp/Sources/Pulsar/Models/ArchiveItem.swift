@@ -116,3 +116,13 @@ public struct ArchiveItem: Identifiable, Hashable {
         }
     }
 }
+
+extension String {
+    public var abbreviatingWithTilde: String {
+        let home = NSHomeDirectory()
+        if self.hasPrefix(home) {
+            return "~" + self.dropFirst(home.count)
+        }
+        return self
+    }
+}

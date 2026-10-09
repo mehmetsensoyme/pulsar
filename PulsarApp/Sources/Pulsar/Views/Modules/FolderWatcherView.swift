@@ -21,6 +21,7 @@ public struct FolderWatcherView: View {
                 }
                 Spacer()
                 Button("Kapat") { dismiss() }
+                    .keyboardShortcut(.cancelAction)
                     .buttonStyle(.plain)
                     .foregroundColor(.secondary)
             }
@@ -40,7 +41,7 @@ public struct FolderWatcherView: View {
                             Text(watcher.isWatching ? "İzleme Aktif (Gözlemde)" : "İzleme Durduruldu")
                                 .font(.system(size: 13, weight: .semibold))
                         }
-                        Text("İzlenen Klasör: \(settings.folderWatcherPath)")
+                        Text("İzlenen Klasör: \(settings.folderWatcherPath.abbreviatingWithTilde)")
                             .font(.system(size: 11, design: .monospaced))
                             .foregroundColor(.secondary)
                             .lineLimit(1)
@@ -118,8 +119,7 @@ public struct FolderWatcherView: View {
                     } else {
                         List(watcher.processedEvents) { event in
                             HStack {
-                                Image(systemName: "doc.zipper")
-                                    .foregroundColor(.purple)
+                                FileIconView(fileName: event.filename, size: 16)
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(event.filename)
                                         .font(.system(size: 12, weight: .semibold))
@@ -142,6 +142,6 @@ public struct FolderWatcherView: View {
             }
             .padding()
         }
-        .frame(width: 500, height: 500)
+        .frame(width: 600, height: 500)
     }
 }

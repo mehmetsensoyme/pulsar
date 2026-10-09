@@ -8,7 +8,7 @@
   "download": {
     "dmgUrl": "https://github.com/mehmetsensoyme/pulsar/releases/download/v1.1.0/Pulsar-1.1.0-arm64.dmg",
     "dmgSize": "2.9 MB",
-    "sha256": "eccb21d02f27f079463f7650f691415ae8eb91156a7085c7e8ba969bf67ee0d2",
+    "sha256": "21c14eda192a0d247911521e96b736562d4e1d773ac661518713c19b551f320c",
     "architecture": "Apple Silicon (Universal / ARM64)"
   },
   "releases": [

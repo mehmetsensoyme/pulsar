@@ -29,6 +29,7 @@ public struct RepairStationView: View {
                 }
                 Spacer()
                 Button("Kapat") { dismiss() }
+                    .keyboardShortcut(.cancelAction)
                     .buttonStyle(.plain)
                     .foregroundColor(.secondary)
             }
@@ -79,7 +80,7 @@ public struct RepairStationView: View {
                             .foregroundColor(vm.repairLog.isEmpty ? .secondary : .primary)
                     }
                     .padding(8)
-                    .frame(height: 140)
+                    .frame(height: 130)
                     .background(Color(NSColor.textBackgroundColor))
                     .cornerRadius(6)
                     .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.secondary.opacity(0.2), lineWidth: 1))
@@ -111,12 +112,13 @@ public struct RepairStationView: View {
                         }
                     }
                     .buttonStyle(.borderedProminent)
+                    .controlSize(.regular)
                     .disabled(vm.targetArchive.isEmpty || vm.isRepairing)
                 }
             }
-            .padding()
+            .padding(20)
         }
-        .frame(width: 500, height: 460)
+        .frame(width: 600, height: 500)
         .onAppear {
             if let current = manager.currentArchivePath, current.hasSuffix(".rar") {
                 vm.targetArchive = current
