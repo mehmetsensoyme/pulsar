@@ -94,6 +94,9 @@ public struct MainWindowView: View {
         .sheet(isPresented: $manager.showUpdateSheet) {
             UpdateModalView()
         }
+        .sheet(isPresented: $manager.showSettingsSheet) {
+            SettingsModalView()
+        }
         .sheet(isPresented: $manager.showPasswordModal) {
             PasswordModalView()
         }

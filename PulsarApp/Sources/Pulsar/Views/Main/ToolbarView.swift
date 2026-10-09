@@ -96,7 +96,15 @@ public struct PulsarToolbarContent: ToolbarContent {
             }) {
                 Label("Yüzen HUD", systemImage: "macwindow.on.rectangle")
             }
-            .help("Yüzen Mini Paneli (HUD) Göster/Gizle")
+            .help("Yüzen Mini Paneli (HUD) Göster/Gizle (⌘⇧H)")
+
+            // Gelişmiş Ayarlar
+            Button(action: {
+                manager.showSettingsSheet = true
+            }) {
+                Label("Ayarlar", systemImage: "gearshape.fill")
+            }
+            .help("Pulsar Ayarları ve Tercihler (⌘,)")
         }
     }
 }

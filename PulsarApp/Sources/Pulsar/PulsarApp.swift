@@ -37,6 +37,14 @@ struct PulsarApp: App {
         .windowStyle(.titleBar)
         .windowToolbarStyle(.unified)
         .commands {
+            // Ayarlar Menüsü (⌘,)
+            CommandGroup(replacing: .appSettings) {
+                Button("Ayarlar...") {
+                    manager.showSettingsSheet = true
+                }
+                .keyboardShortcut(",", modifiers: .command)
+            }
+
             // Görünüm Menüsü Kısayolları
             CommandGroup(replacing: .sidebar) {
                 Button("Modern 3-Bölmeli Düzen") {
@@ -141,6 +149,11 @@ struct PulsarApp: App {
                 Button("Sürüm Bilgisi...") {
                     manager.showUpdateSheet = true
                 }
+
+                Button("Ayarlar...") {
+                    manager.showSettingsSheet = true
+                }
+                .keyboardShortcut(",", modifiers: .command)
 
                 Divider()
 

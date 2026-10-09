@@ -63,32 +63,63 @@ public struct CompressSheetView: View {
             .padding(.vertical, 10)
 
             // Kaynak Dosyalar Seçimi
-            HStack {
-                Text("Kaynak:")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                if vm.sourcePaths.isEmpty {
-                    Text("Seçili dosya yok")
-                        .foregroundColor(.secondary)
-                } else {
-                    Text("\(vm.sourcePaths.count) dosya/klasör seçildi")
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Text("Kaynak:")
                         .font(.subheadline)
-                        .bold()
+                        .foregroundColor(.secondary)
+                    if vm.sourcePaths.isEmpty {
+                        Text("Seçili dosya yok")
+                            .foregroundColor(.secondary)
+                    } else {
+                        Text("\(vm.sourcePaths.count) dosya/klasör seçildi")
+                            .font(.subheadline)
+                            .bold()
+                    }
+                    Spacer()
+                    Button("Dosya Ekle...") {
+                        let panel = NSOpenPanel()
+                        panel.allowsMultipleSelection = true
+                        panel.canChooseDirectories = true
+                        if panel.runModal() == .OK {
+                            for url in panel.urls {
+                                if !vm.sourcePaths.contains(url.path) {
+                                    vm.sourcePaths.append(url.path)
+                                }
+                            }
+                            if let first = vm.sourcePaths.first, vm.outputName == "Arşiv" {
+                                vm.outputName = (first as NSString).lastPathComponent
+                            }
+                        }
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
                 }
-                Spacer()
-                Button("Dosya Ekle...") {
-                    let panel = NSOpenPanel()
-                    panel.allowsMultipleSelection = true
-                    panel.canChooseDirectories = true
-                    if panel.runModal() == .OK {
-                        vm.sourcePaths = panel.urls.map { $0.path }
-                        if let first = vm.sourcePaths.first {
-                            vm.outputName = (first as NSString).lastPathComponent
+
+                if !vm.sourcePaths.isEmpty {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 6) {
+                            ForEach(vm.sourcePaths, id: \.self) { path in
+                                HStack(spacing: 4) {
+                                    Text((path as NSString).lastPathComponent)
+                                        .font(.system(size: 11))
+                                    Button(action: {
+                                        vm.sourcePaths.removeAll(where: { $0 == path })
+                                    }) {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .font(.system(size: 10))
+                                            .foregroundColor(.secondary)
+                                    }
+                                    .buttonStyle(.plain)
+                                }
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Color.primary.opacity(0.06))
+                                .cornerRadius(4)
+                            }
                         }
                     }
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
             }
             .padding(.horizontal)
             .padding(.bottom, 6)
@@ -114,11 +145,27 @@ public struct CompressSheetView: View {
             Divider()
 
             // Alt Çubuk: Çıktı ve Başlat Butonu
-            HStack {
+            HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Çıktı:")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
+                    HStack(spacing: 6) {
+                        Text("Çıktı Konumu:")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        Button("Değiştir...") {
+                            let panel = NSOpenPanel()
+                            panel.canChooseFiles = false
+                            panel.canChooseDirectories = true
+                            panel.canCreateDirectories = true
+                            panel.prompt = "Hedef Klasörü Seç"
+                            if panel.runModal() == .OK, let url = panel.url {
+                                vm.outputDirectory = url.path
+                            }
+                        }
+                        .buttonStyle(.plain)
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(.cyan)
+                    }
+
                     Text("\(vm.outputDirectory)/\(vm.outputName).\(finalExtension)")
                         .font(.system(size: 11, design: .monospaced))
                         .foregroundColor(.secondary)
@@ -137,7 +184,7 @@ public struct CompressSheetView: View {
             .padding()
             .background(Color(NSColor.controlBackgroundColor))
         }
-        .frame(width: 520)
+        .frame(width: 540)
     }
 
     private var finalExtension: String {

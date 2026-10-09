@@ -1,22 +1,37 @@
 {
   "project": "Pulsar",
   "tagline": "macOS İçin Işık Hızında Arşiv ve Sıkıştırma Gücü",
-  "currentVersion": "1.0.0",
-  "currentCodeName": "Event Horizon",
-  "build": "2604",
+  "currentVersion": "1.1.0",
+  "currentCodeName": "Supernova",
+  "build": "2611",
   "releaseDate": "Ekim 2026",
   "download": {
-    "dmgUrl": "https://github.com/mehmetsensoyme/pulsar/releases/download/v1.0.0/Pulsar-1.0.0-arm64.dmg",
-    "dmgSize": "2.8 MB",
-    "sha256": "0f63416c09ac113dd71c0ef680605417a1529f8c913f5bfdcd06a02c4ee7cc65",
+    "dmgUrl": "https://github.com/mehmetsensoyme/pulsar/releases/download/v1.1.0/Pulsar-1.1.0-arm64.dmg",
+    "dmgSize": "2.9 MB",
+    "sha256": "eccb21d02f27f079463f7650f691415ae8eb91156a7085c7e8ba969bf67ee0d2",
     "architecture": "Apple Silicon (Universal / ARM64)"
   },
   "releases": [
     {
+      "version": "1.1.0",
+      "codeName": "Supernova",
+      "date": "2026-10-09",
+      "isLatest": true,
+      "highlights": [
+        "Gelişmiş Çok Sekmeli Ayarlar Stüdyosu (Genel, Motorlar & Teşhis, Güvenlik, Kara Delik, Yüzen HUD, Hakkında & Güncellemeler)",
+        "Gerçek Zamanlı GitHub Releases API & SemVer Sürüm Kontrolü ve Güncelleme Bildirimi",
+        "Gezinme Filtresi: Tüm İçerik, Sadece Dosyalar ve Sadece Klasörler anlık filtreleme butonları",
+        "Yeni Arşiv Oluşturucu: Hedef Klasör Seçici (Destination Picker) ve Çıkarılabilir Kaynak Dosya Rozetleri",
+        "Boş Durum Paneli (Empty Hero Zone): Sürükle-bırak, Hızlı Arşiv Açma, Yeni Arşiv ve Son Kullanılanlar",
+        "Zengin Sağ Tık (Context Menu) ve Tam Satır Çift Tıklama ile Hızlı Önizleme Entegrasyonu",
+        "macOS Sistem Standart Ayarlar Kısayolu (⌘,) ve Menü Çubuğu Hızlı Erişim Desteği"
+      ]
+    },
+    {
       "version": "1.0.0",
       "codeName": "Event Horizon",
       "date": "2026-10-09",
-      "isLatest": true,
+      "isLatest": false,
       "highlights": [
         "Apple Silicon M4/M3/M2 yerel 7-Zip (7zz 26.04) ve WinRAR hibrit motor entegrasyonu",
         "3 Değiştirilebilir Görünüm: Modern 3-Bölmeli (Inspector), Kompakt Liste, Sekmeli Stüdyo",

@@ -13,6 +13,10 @@ public final class EngineLocator {
         return findBinary(named: "rar")
     }
 
+    public func pathForRAR() -> String {
+        return pathForRar()
+    }
+
     public func pathForUnrar() -> String {
         return findBinary(named: "unrar")
     }

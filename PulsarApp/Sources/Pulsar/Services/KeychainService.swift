@@ -51,4 +51,12 @@ public final class KeychainService {
         ]
         SecItemDelete(query as CFDictionary)
     }
+
+    public func clearAllSavedPasswords() {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: serviceName
+        ]
+        SecItemDelete(query as CFDictionary)
+    }
 }

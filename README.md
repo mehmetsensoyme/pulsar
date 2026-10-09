@@ -4,7 +4,7 @@
 
 [![macOS](https://img.shields.io/badge/macOS-14.0%2B%20%7C%2015.0%2B-blue?logo=apple&style=for-the-badge)](https://apple.com)
 [![Architecture](https://img.shields.io/badge/Architecture-Apple%20Silicon%20(Universal%2FARM64)-cyan?style=for-the-badge)](https://apple.com)
-[![Version](https://img.shields.io/badge/Version-v1.0.0%20(Event%20Horizon)-8B5CF6?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-v1.1.0%20(Supernova)-8B5CF6?style=for-the-badge)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 > **GitHub Repository Description (0 / 350 characters):**  
@@ -127,6 +127,7 @@ Scans damaged, CRC-mismatched, or incomplete RAR archives using WinRAR's built-i
 | `⌘1` | Modern 3-Pane Layout (Inspector) |
 | `⌘2` | Compact List Layout |
 | `⌘3` | Tabbed Studio Layout |
+| `⌘,` | Settings Studio (Genel, Motorlar, Güvenlik, HUD, vb.) |
 | `⌘⇧H` | Toggle Floating HUD Widget |
 | `⌘L` | Toggle Safe Lock (Read-Only vs Live Edit) |
 | `⌘N` | New Archive (Compression Studio) |
@@ -158,13 +159,13 @@ cd pulsar
 ./Scripts/package_dmg.sh
 ```
 
-The compiled release will be available at `dist/Pulsar-1.0.0-arm64.dmg`.
+The compiled release will be available at `dist/Pulsar-1.1.0-arm64.dmg`.
 
 ### Running Automated Stability Tests:
 ```bash
 ./Scripts/run_tests.sh
 ```
-Executes all 26 built-in unit tests verifying format detection, encryption, disk safety guards, and cache purging.
+Executes all built-in unit tests verifying format detection, encryption, disk safety guards, and cache purging.
 
 ---
 
@@ -173,7 +174,7 @@ Executes all 26 built-in unit tests verifying format detection, encryption, disk
 1. **Pushing Changes:**
    ```bash
    git push -u origin main
-   git push origin v1.0.0
+   git push origin v1.1.0
    ```
 
 2. **Automated CI/CD:**

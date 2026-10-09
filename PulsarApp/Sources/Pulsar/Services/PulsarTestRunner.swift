@@ -86,6 +86,29 @@ public final class PulsarTestRunner {
         let winClean = presets.first(where: { $0.name.contains("Windows") })
         assertTest(winClean != nil && (winClean?.cleanMacMetadata == true), "Preset: Windows Dostu Temizleme Açık")
 
+        // 7. Sürüm Kontrolü ve SemVer Karşılaştırma
+        let updater = UpdateService.shared
+        assertTest(updater.currentVersion == "1.1.0", "UpdateService: v1.1.0 Güncel Versiyon")
+        assertTest(updater.isVersion("1.1.1", greaterThan: "1.1.0"), "SemVer: 1.1.1 > 1.1.0 Doğrulaması")
+        assertTest(!updater.isVersion("1.0.0", greaterThan: "1.1.0"), "SemVer: 1.0.0 < 1.1.0 Doğrulaması")
+        assertTest(!updater.isVersion("1.1.0", greaterThan: "1.1.0"), "SemVer: 1.1.0 == 1.1.0 Eşitlik Doğrulaması")
+
+        // 8. İçerik Filtreleme Modu (ContentFilterMode)
+        let sampleItems = [
+            ArchiveItem(path: "FolderA", name: "FolderA", isDirectory: true, size: 0, compressedSize: 0),
+            ArchiveItem(path: "file1.txt", name: "file1.txt", isDirectory: false, size: 100, compressedSize: 40),
+            ArchiveItem(path: "file2.pdf", name: "file2.pdf", isDirectory: false, size: 200, compressedSize: 80)
+        ]
+        let filesOnly = sampleItems.filter { !$0.isDirectory }
+        let foldersOnly = sampleItems.filter { $0.isDirectory }
+        assertTest(filesOnly.count == 2, "ContentFilterMode: Sadece Dosyalar (2 dosya)")
+        assertTest(foldersOnly.count == 1, "ContentFilterMode: Sadece Klasörler (1 klasör)")
+
+        // 9. Ayarlar Varsayılan Değerleri
+        let settings = PulsarSettings.shared
+        assertTest(settings.defaultCompressionFormat == "zip", "PulsarSettings: Varsayılan Format zip")
+        assertTest(settings.maxCpuThreads >= 1, "PulsarSettings: CPU Çekirdek Sayısı >= 1")
+
         print("--------------------------------------------------")
         print("📊 [TEST SONUCU] Toplam: \(passed + failed) | Başarılı: \(passed) | Hatalı: \(failed)")
         if failed == 0 {

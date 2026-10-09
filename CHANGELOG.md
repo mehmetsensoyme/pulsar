@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-10-09 (Supernova)
+
+### Added
+- **Settings Studio (⌘,)**: Full-featured 6-tab preferences window covering General preferences, Engines & live health diagnostics, Security & cache auto-clean, Black Hole folder watcher automation, Floating HUD positioning and opacity, and About & live updates.
+- **Live GitHub Releases Update Service**: Real-time GitHub API SemVer release check with user notifications, direct download links, and release notes display.
+- **Sidebar Navigation Filter**: Instant toggle buttons in the sidebar ("All Items", "Files Only", "Folders Only") to filter archive contents with visual indicators.
+- **Empty State Hero Drop Zone**: Sci-fi hero screen when no archive is loaded, offering quick-open (`⌘O`), new archive creation (`⌘N`), drop guidance, and quick access to recent archives.
+- **Compress Studio Enhancements**: Added custom output destination picker (`NSOpenPanel`) and removable source item tags with `[x]` buttons.
+- **Enhanced Table Interaction**: Full-row double click support and rich context menu (`Preview`, `Extract Selected...`, `Extract All...`, `Delete from Archive`).
+- **Standard Preferences Shortcut**: Bound macOS HIG standard `⌘,` keyboard shortcut to open the Settings Studio across all views and menu bar.
+
 ## [1.0.0] - 2026-10-09 (Event Horizon)
 
 ### Added

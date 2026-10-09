@@ -2,6 +2,21 @@ import Foundation
 import SwiftUI
 import Combine
 
+public enum ContentFilterMode: String, CaseIterable, Identifiable {
+    case all = "Tüm İçerik"
+    case filesOnly = "Sadece Dosyalar"
+    case foldersOnly = "Sadece Klasörler"
+
+    public var id: String { rawValue }
+    public var iconName: String {
+        switch self {
+        case .all: return "tray.full.fill"
+        case .filesOnly: return "doc.fill"
+        case .foldersOnly: return "folder.fill"
+        }
+    }
+}
+
 public final class ArchiveManager: ObservableObject {
     public static let shared = ArchiveManager()
 
@@ -11,6 +26,7 @@ public final class ArchiveManager: ObservableObject {
     @Published public var allItems: [ArchiveItem] = []
     @Published public var currentFolderPath: String = "" // Breadcrumbs için: "" = kök
     @Published public var searchQuery: String = ""
+    @Published public var filterMode: ContentFilterMode = .all
     @Published public var selectedItemIds: Set<UUID> = []
 
     // MARK: - Güvenlik ve Modlar
@@ -31,6 +47,7 @@ public final class ArchiveManager: ObservableObject {
     @Published public var showRepairSheet: Bool = false
     @Published public var showFolderWatcherSheet: Bool = false
     @Published public var showUpdateSheet: Bool = false
+    @Published public var showSettingsSheet: Bool = false
     @Published public var showPasswordModal: Bool = false
     @Published public var passwordPromptCallback: ((String?) -> Void)? = nil
 
@@ -69,6 +86,16 @@ public final class ArchiveManager: ObservableObject {
                     return !clean.contains("/")
                 }
             }
+        }
+
+        // Filtre Modu (Tüm İçerik, Sadece Dosyalar, Sadece Klasörler)
+        switch filterMode {
+        case .all:
+            break
+        case .filesOnly:
+            items = items.filter { !$0.isDirectory }
+        case .foldersOnly:
+            items = items.filter { $0.isDirectory }
         }
 
         // Önce klasörler, sonra alfabetik dosyalar
