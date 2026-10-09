@@ -1,19 +1,19 @@
 {
   "project": "Pulsar",
   "tagline": "macOS İçin Işık Hızında Arşiv ve Sıkıştırma Gücü",
-  "currentVersion": "1.1.1",
+  "currentVersion": "1.2.0",
   "currentCodeName": "Supernova",
-  "build": "2612",
+  "build": "2613",
   "releaseDate": "Ekim 2026",
   "download": {
-    "dmgUrl": "https://github.com/mehmetsensoyme/pulsar/releases/download/v1.1.1/Pulsar-1.1.1-arm64.dmg",
+    "dmgUrl": "https://github.com/mehmetsensoyme/pulsar/releases/download/v1.2.0/Pulsar-1.2.0-arm64.dmg",
     "dmgSize": "2.9 MB",
-    "sha256": "da64c5b9e546a56ffa07c0aee64bd530f9662c45028e4b03b4d5ffea1905a713",
+    "sha256": "9a9d0243c9a4749465ca1024d223aaeec842239d892b4b9a545724d401b79930",
     "architecture": "Apple Silicon (Universal / ARM64)"
   },
   "releases": [
     {
-      "version": "1.1.1",
+      "version": "1.2.0",
       "codeName": "Supernova",
       "date": "2026-10-09",
       "isLatest": true,
@@ -21,12 +21,25 @@
         "Finder'a Doğrudan Sürükle-Bırak (.onDrag): Arşiv içindeki dosyaları masaüstüne veya Finder klasörlerine sürükleyerek anında çıkarma",
         "Finder Tarzı Izgara / Galeri Görünümü (FileGridView): Liste ve büyük simgeli Izgara görünümü arasında tek tıkla geçiş",
         "Pencere Altı Canlı Durum ve İlerleme Çubuğu: Öğe sayısı, seçili boyut, canlı görev çubuğu ve kalan boş disk alanı göstergesi",
-        "Kriptografik Sağlama Toplamı (Checksum) Doğrulayıcı: SHA-256, MD5 ve SHA-1 hesaplama ve anlık pano eşleştirme",
-        "Arşiv Format Dönüştürücü: .rar, .zip veya .tar arşivlerini tek tıkla .7z veya .zst formatına dönüştürme",
+        "Kriptografik Sağlama Toplamı (Checksum) Doğrulayıcı (⌘⇧K): SHA-256, MD5 ve SHA-1 hesaplama ve anlık pano eşleştirme",
+        "Arşiv Format Dönüştürücü (⌘⇧C): .rar, .zip veya .tar arşivlerini tek tıkla .7z veya .zst formatına dönüştürme",
         "Akıllı Dosya Filtreleri: Görseller, Belgeler, Kod ve Medya kategorilerine göre anlık filtreleme",
-        "Gelişmiş macOS Klavye Kısayolları (⌘A Tümünü Seç, ⌘↑ Üst Klasör, ⌘↓ Aç/Önizle, ⌘C Yolu Kopyala, ⌘⌫ Sil)",
+        "Gelişmiş macOS Klavye Kısayolları (⌘A Tümünü Seç, ⌘↑ Üst Klasör, ⌘↓ Aç/Önizle, ⌘C Yolu Kopyala, ⌘⌫ Sil)"
+      ]
+    },
+    {
+      "version": "1.1.1",
+      "codeName": "Supernova",
+      "date": "2026-10-09",
+      "isLatest": false,
+      "highlights": [
         "Apple Human Interface Guidelines (HIG) tam uyumlu sade ve dinamik tasarım dili",
-        "Dinamik Sistem Teması: macOS Açık ve Koyu moduna anlık otomatik renk ve kontrast uyumu"
+        "Dinamik Sistem Teması: macOS Açık ve Koyu moduna anlık otomatik renk ve kontrast uyumu",
+        "Gerçek macOS Finder Dosya & Klasör Simgeleri (NSWorkspace & UTType FileIconView entegrasyonu)",
+        "Ferah ve Ortalanmış Boş Durum (Empty State Hero Zone): Arşiv açık değilken tüm alana yayılan Apple drop-zone",
+        "Arşivi Kapat Kısayolu (⌘W / Dosya -> Arşivi Kapat) ile anında ana karşılama ekranına dönme",
+        "Standartlaştırılmış 600px Modal Pencereler (Yeni Arşiv, Warp Benchmark, Kara Delik, Kurtarma İstasyonu)",
+        "Gizlilik Koruması: Kullanıcı dosya yollarının ~ (tilde) ile maskelenmesi"
       ]
     },
     {

@@ -30,29 +30,30 @@ public struct PulsarReleaseInfo: Codable, Identifiable {
 public final class UpdateService: ObservableObject {
     public static let shared = UpdateService()
 
-    public let currentVersion = "1.1.1"
+    public let currentVersion = "1.2.0"
     public let currentCodeName = "Supernova"
-    public let currentBuild = "2612"
+    public let currentBuild = "2613"
 
     @Published public var isChecking: Bool = false
     @Published public var hasUpdateAvailable: Bool = false
     @Published public var latestRelease: PulsarReleaseInfo?
     @Published public var lastCheckDate: Date? = nil
-    @Published public var checkStatusMessage: String = "Pulsar güncel (v1.1.1 Supernova)"
+    @Published public var checkStatusMessage: String = "Pulsar güncel (v1.2.0 Supernova)"
 
     private init() {
         latestRelease = PulsarReleaseInfo(
-            version: "1.1.1",
+            version: "1.2.0",
             codeName: "Supernova",
             releaseDate: "Ekim 2026",
             downloadUrl: "https://github.com/mehmetsensoyme/pulsar/releases/latest",
             releaseNotes: [
-                "Apple Human Interface Guidelines (HIG) tam uyumlu sade ve dinamik tasarım",
-                "Dinamik Sistem Teması desteği: macOS Açık ve Koyu moduna anlık otomatik uyum",
-                "NSWorkspace ve Finder yerel dosya simgeleri entegrasyonu (FileIconView)",
-                "Yenilenen ferah Boş Durum (Empty State Hero Zone) ve ⌘W Arşivi Kapat kısayolu",
-                "600px birörnek standart modal pencereler ve Esc/⌘W kapatma desteği",
-                "Gelişmiş Çok Sekmeli Ayarlar Stüdyosu (Pulsar Settings Studio - ⌘,)"
+                "Finder'a Doğrudan Sürükle-Bırak (.onDrag): Arşivdeki dosyaları masaüstüne sürükleyerek anında çıkarma",
+                "Finder Tarzı Izgara / Galeri Görünümü (FileGridView): Büyük simgeler ve çift tıklama ile gezinme",
+                "Pencere Altı Canlı Durum ve Görev Çubuğu: Öğe sayısı, seçili boyut, canlı görev ve boş disk alanı",
+                "Kriptografik Sağlama Toplamı (Checksum) Doğrulayıcı: SHA-256, MD5 ve SHA-1 hesaplama ve pano eşleştirme",
+                "Arşiv Format Dönüştürücü: .rar, .zip veya .tar dosyalarını tek tıkla .7z veya .zst formatına dönüştürme",
+                "Akıllı Dosya Filtreleri: Görseller, Belgeler, Kod ve Medya kategorilerine göre anlık filtreleme",
+                "macOS Klavye Kısayolları Paketi (⌘A Tümünü Seç, ⌘↑ Üst Klasör, ⌘↓ Aç, ⌘C Yolu Kopyala, ⌘⌫ Sil)"
             ],
             isCritical: false
         )
