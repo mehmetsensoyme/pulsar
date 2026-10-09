@@ -20,16 +20,34 @@ if [ ! -f "$BIN_DIR/7zz" ]; then
     fi
 fi
 
-# 2. RAR İkililerini Hazırla
-if [ -f "$BIN_DIR/rar" ] && [ -f "$BIN_DIR/unrar" ]; then
-    xattr -c "$BIN_DIR/rar" "$BIN_DIR/unrar" 2>/dev/null || true
-    chmod +x "$BIN_DIR/rar" "$BIN_DIR/unrar"
-fi
+# 2. İkilileri Hazırla
+mkdir -p "$BIN_DIR"
+for bin in "$BIN_DIR"/*; do
+    if [ -f "$bin" ]; then
+        xattr -c "$bin" 2>/dev/null || true
+        chmod +x "$bin" 2>/dev/null || true
+    fi
+done
 
 # 3. Swift Release Derlemesi
 echo "🚀 [Swift] Pulsar Native App derleniyor (Release modu)..."
 cd "$APP_DIR"
 swift build -c release
+
+RELEASE_BIN_DIR="$(swift build -c release --show-bin-path 2>/dev/null || true)"
+if [ -n "$RELEASE_BIN_DIR" ] && [ -f "$RELEASE_BIN_DIR/Pulsar" ]; then
+    PULSAR_BIN="$RELEASE_BIN_DIR/Pulsar"
+elif [ -f "$APP_DIR/.build/release/Pulsar" ]; then
+    PULSAR_BIN="$APP_DIR/.build/release/Pulsar"
+else
+    PULSAR_BIN="$(find "$APP_DIR/.build" -name "Pulsar" -type f ! -path "*/dSYM/*" | head -n 1)"
+fi
+
+if [ -z "$PULSAR_BIN" ] || [ ! -f "$PULSAR_BIN" ]; then
+    echo "❌ Hata: Derlenmiş Pulsar ikili dosyası bulunamadı!"
+    exit 1
+fi
+echo "📍 Kullanılan ikili dosya: $PULSAR_BIN"
 
 # 4. macOS .app Paketi Oluştur
 echo "📦 [macOS] Pulsar.app uygulama paketi oluşturuluyor..."
@@ -37,12 +55,15 @@ rm -rf "$BUNDLE_DIR"
 mkdir -p "$BUNDLE_DIR/Contents/MacOS"
 mkdir -p "$BUNDLE_DIR/Contents/Resources/bin"
 
-cp "$APP_DIR/.build/release/Pulsar" "$BUNDLE_DIR/Contents/MacOS/Pulsar"
-cp "$BIN_DIR/7zz" "$BUNDLE_DIR/Contents/Resources/bin/"
-cp "$BIN_DIR/rar" "$BUNDLE_DIR/Contents/Resources/bin/"
-cp "$BIN_DIR/unrar" "$BUNDLE_DIR/Contents/Resources/bin/"
+cp "$PULSAR_BIN" "$BUNDLE_DIR/Contents/MacOS/Pulsar"
+[ -f "$BIN_DIR/7zz" ] && cp "$BIN_DIR/7zz" "$BUNDLE_DIR/Contents/Resources/bin/"
+[ -f "$BIN_DIR/rar" ] && cp "$BIN_DIR/rar" "$BUNDLE_DIR/Contents/Resources/bin/"
+[ -f "$BIN_DIR/unrar" ] && cp "$BIN_DIR/unrar" "$BUNDLE_DIR/Contents/Resources/bin/"
+
 chmod +x "$BUNDLE_DIR/Contents/MacOS/Pulsar"
-chmod +x "$BUNDLE_DIR/Contents/Resources/bin/"*
+for rbin in "$BUNDLE_DIR/Contents/Resources/bin"/*; do
+    [ -f "$rbin" ] && chmod +x "$rbin" 2>/dev/null || true
+done
 
 # Info.plist Oluştur
 cat << 'EOF' > "$BUNDLE_DIR/Contents/Info.plist"
@@ -76,6 +97,7 @@ EOF
 
 # Kod İmzalama (Ad-Hoc)
 echo "🔏 [Codesign] Ad-hoc kod imzalama uygulanıyor..."
-codesign --force --deep --sign - "$BUNDLE_DIR"
+xattr -cr "$BUNDLE_DIR" 2>/dev/null || true
+codesign --force --deep --timestamp=none --sign - "$BUNDLE_DIR" || echo "⚠️ Ad-hoc kod imzalama atlandı veya uyarı verdi (CI ortamı)"
 
 echo "✨ [PULSAR] Başarıyla derlendi ve paketlendi: $BUNDLE_DIR"

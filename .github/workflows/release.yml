@@ -8,16 +8,18 @@ on:
 jobs:
   release:
     runs-on: macos-14
+    permissions:
+      contents: write
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Build Application Bundle
+    - name: Build Application Bundle & DMG
       run: |
-        chmod +x Scripts/build.sh Scripts/package_dmg.sh
-        Scripts/build.sh
-        Scripts/package_dmg.sh
+        chmod +x Scripts/*.sh
+        ./Scripts/build.sh
+        ./Scripts/package_dmg.sh
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2

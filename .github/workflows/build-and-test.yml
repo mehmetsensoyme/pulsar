@@ -14,11 +14,11 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Build 7-Zip Native Engine
+    - name: Build Application Bundle
       run: |
-        chmod +x Scripts/build.sh Scripts/run_tests.sh
-        Scripts/build.sh
+        chmod +x Scripts/*.sh
+        ./Scripts/build.sh
 
     - name: Run Automated Stability & Functionality Tests
       run: |
-        Scripts/run_tests.sh
+        ./Scripts/run_tests.sh
