@@ -2,19 +2,19 @@
   "project": "Pulsar",
   "tagline": "macOS İçin Işık Hızında Arşiv ve Sıkıştırma Gücü",
   "currentVersion": "1.3.0",
-  "currentCodeName": "Supernova",
+  "currentCodeName": "Quasar",
   "build": "2617",
   "releaseDate": "Ekim 2026",
   "download": {
     "dmgUrl": "https://github.com/mehmetsensoyme/pulsar/releases/download/v1.3.0/Pulsar-1.3.0-arm64.dmg",
     "dmgSize": "3.1 MB",
-    "sha256": "6b6044a9af8fcb06a5e6439f30f514c045403421820ec81ba84075203b3b50aa",
+    "sha256": "7a25f339c92759676db9dcaba2c536f0cb6917054781bba0da6876015d8c7b8e",
     "architecture": "Apple Silicon (Universal / ARM64)"
   },
   "releases": [
     {
       "version": "1.3.0",
-      "codeName": "Supernova",
+      "codeName": "Quasar",
       "date": "2026-10-10",
       "isLatest": true,
       "highlights": [

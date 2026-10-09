@@ -89,7 +89,7 @@ public final class PulsarTestRunner {
         // 7. Sürüm Kontrolü ve SemVer Karşılaştırma
         let updater = UpdateService.shared
         assertTest(updater.currentVersion == "1.3.0", "UpdateService: v1.3.0 Güncel Versiyon")
-        assertTest(updater.currentCodeName == "Supernova", "UpdateService: v1 Ailesi 'Supernova' Kod Adı")
+        assertTest(updater.currentCodeName == "Quasar", "UpdateService: v1.3.0 'Quasar' Kod Adı")
         assertTest(updater.isVersion("1.3.1", greaterThan: "1.3.0"), "SemVer: 1.3.1 > 1.3.0 Doğrulaması")
         assertTest(!updater.isVersion("1.2.3", greaterThan: "1.3.0"), "SemVer: 1.2.3 < 1.3.0 Doğrulaması")
         assertTest(!updater.isVersion("1.3.0", greaterThan: "1.3.0"), "SemVer: 1.3.0 == 1.3.0 Eşitlik Doğrulaması")

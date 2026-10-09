@@ -31,19 +31,19 @@ public final class UpdateService: ObservableObject {
     public static let shared = UpdateService()
 
     public let currentVersion = "1.3.0"
-    public let currentCodeName = "Supernova"
+    public let currentCodeName = "Quasar"
     public let currentBuild = "2617"
 
     @Published public var isChecking: Bool = false
     @Published public var hasUpdateAvailable: Bool = false
     @Published public var latestRelease: PulsarReleaseInfo?
     @Published public var lastCheckDate: Date? = nil
-    @Published public var checkStatusMessage: String = "Pulsar güncel (v1.3.0 Supernova)"
+    @Published public var checkStatusMessage: String = "Pulsar güncel (v1.3.0 Quasar)"
 
     private init() {
         latestRelease = PulsarReleaseInfo(
             version: "1.3.0",
-            codeName: "Supernova",
+            codeName: "Quasar",
             releaseDate: "Ekim 2026",
             downloadUrl: "https://github.com/mehmetsensoyme/pulsar/releases/latest",
             releaseNotes: [
