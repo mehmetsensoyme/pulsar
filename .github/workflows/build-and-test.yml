@@ -1,0 +1,25 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: macos-14
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Build 7-Zip Native Engine
+      run: |
+        chmod +x Scripts/build.sh
+        Scripts/build.sh
+
+    - name: Run Pulsar Verification
+      run: |
+        file build/Pulsar.app/Contents/MacOS/Pulsar
+        build/Pulsar.app/Contents/Resources/bin/7zz --help | head -n 5

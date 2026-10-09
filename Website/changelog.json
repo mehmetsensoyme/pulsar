@@ -1,0 +1,34 @@
+{
+  "project": "Pulsar",
+  "tagline": "macOS İçin Işık Hızında Arşiv ve Sıkıştırma Gücü",
+  "currentVersion": "1.0.0",
+  "currentCodeName": "Event Horizon",
+  "build": "2604",
+  "releaseDate": "Ekim 2026",
+  "download": {
+    "dmgUrl": "https://github.com/pulsar-archive/pulsar/releases/download/v1.0.0/Pulsar-1.0.0-arm64.dmg",
+    "dmgSize": "2.8 MB",
+    "sha256": "8e51f34a37d86f21da361a1f9bb49af311aaa6a2aefe5fa1ca33f171a012ae29",
+    "architecture": "Apple Silicon (Universal / ARM64)"
+  },
+  "releases": [
+    {
+      "version": "1.0.0",
+      "codeName": "Event Horizon",
+      "date": "2026-10-09",
+      "isLatest": true,
+      "highlights": [
+        "Apple Silicon M4/M3/M2 yerel 7-Zip (7zz 26.04) ve WinRAR hibrit motor entegrasyonu",
+        "3 Değiştirilebilir Görünüm: Modern 3-Bölmeli (Inspector), Kompakt Liste, Sekmeli Stüdyo",
+        "Yüzen Yarı Saydam Mini Panel (Floating HUD / Widget) desteği (⌘⇧H)",
+        "Çift Modlu Güvenlik Kilidi (Salt Okunur varsayılan, Düzenleme Modu ile canlı ekleme/silme)",
+        "Pulsar Warp Core Donanım Hız Testi (Apple Silicon Benchmark)",
+        "Kara Delik Otomatik Klasör İzleyici (İndirilen arşivleri arka planda açma)",
+        "Arşiv Kurtarma İstasyonu (RAR Recovery Record ile bozuk dosyaları onarma)",
+        "Windows Dostu .DS_Store ve AppleDouble ._ metadata temizleme filtresi",
+        "macOS Anahtar Zinciri (Keychain) ve Touch ID destekli hibrit şifre yöneticisi",
+        "Genişletilmiş Format Galaksisi: 7z, RAR, ZIP, TAR, GZ, BZ2, XZ, Zstandard (.zst), LZMA, CAB, WIM, CPIO, RPM, DEB, ARJ, LZH, CHM, XAR/PKG, ISO, DMG, Split (.001) tam destek"
+      ]
+    }
+  ]
+}

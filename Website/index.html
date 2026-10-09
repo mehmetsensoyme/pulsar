@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pulsar - macOS İçin Işık Hızında Arşiv ve Sıkıştırma Gücü</title>
+  <meta name="description" content="Apple Silicon M4/M3/M2 için optimize edilmiş, 7-Zip ve WinRAR motorlu, yarı saydam cam estetiğine sahip yeni nesil macOS arşiv yöneticisi.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="cosmic-bg"></div>
+  <div class="stars"></div>
+
+  <!-- Üst Menü -->
+  <header class="navbar">
+    <div class="logo">
+      <span>🌌 PULSAR</span>
+      <span class="logo-badge version-tag">v1.0.0 (Event Horizon)</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#features">Özellikler</a></li>
+      <li><a href="#modes">Arayüz Modları</a></li>
+      <li><a href="#benchmark">Warp Benchmark</a></li>
+      <li><a href="#formats">Formatlar</a></li>
+      <li><a href="#changelog">Sürüm Notları</a></li>
+    </ul>
+    <a href="https://github.com/pulsar-archive/pulsar" target="_blank" class="nav-btn">GitHub</a>
+  </header>
+
+  <!-- Hero Bölümü -->
+  <section class="hero">
+    <div class="hero-pill">
+      <span>⚡</span> Apple Silicon M4/M3/M2 Optimize Edildi &bull; 100% Native Swift
+    </div>
+    <h1>macOS İçin Işık Hızında<br><span>Arşiv ve Sıkıştırma Gücü</span></h1>
+    <p>
+      Evrenin en hızlı dönen nötron yıldızından ilham alan Pulsar; 7-Zip ve WinRAR motorlarını, modern Liquid Glass estetiğini ve benzersiz bilim kurgu modüllerini tek bir çatı altında birleştirir.
+    </p>
+
+    <div class="hero-actions">
+      <a href="https://github.com/pulsar-archive/pulsar/releases/download/v1.0.0/Pulsar-1.0.0-arm64.dmg" class="btn-primary">
+        <span></span> macOS İçin İndir (.DMG)
+      </a>
+      <a href="https://github.com/pulsar-archive/pulsar" target="_blank" class="btn-secondary">
+        <span>★</span> GitHub'da İncele
+      </a>
+    </div>
+
+    <div class="meta-info">
+      <span class="version-tag">Sürüm: v1.0.0 Event Horizon</span>
+      <span class="dmg-size">Boyut: 2.8 MB</span>
+      <span class="sha-tag">SHA-256 Doğrulandı</span>
+    </div>
+  </section>
+
+  <!-- İnteraktif Arayüz Vitrini -->
+  <section class="preview-container" id="modes">
+    <div class="section-title">
+      <h2>3 Değiştirilebilir Arayüz Düzeni</h2>
+      <p>İhtiyacınıza göre tek tıkla veya klavye kısayoluyla modlar arasında geçiş yapın (⌘1, ⌘2, ⌘3)</p>
+    </div>
+
+    <div class="glass-window">
+      <div class="window-header">
+        <div class="window-dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <div class="window-tabs">
+          <button class="window-tab active" data-mode="threePane">Modern 3-Bölmeli (⌘1)</button>
+          <button class="window-tab" data-mode="compactList">Kompakt Liste (⌘2)</button>
+          <button class="window-tab" data-mode="tabbedStudio">Sekmeli Stüdyo (⌘3)</button>
+        </div>
+        <div style="font-size: 0.8rem; color: #8a99ad; font-family: monospace;">Pulsar Window</div>
+      </div>
+      <div class="window-body" id="preview-content">
+        <!-- JS ile dinamik render edilir -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Öne Çıkan Özellikler -->
+  <section class="features-section" id="features">
+    <div class="section-title">
+      <h2>Benzersiz Yetenekler & Güçlü UX</h2>
+      <p>macOS Sonoma ve Sequoia HIG tasarım diliyle tam uyumlu yerel bileşenler</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Çift Modlu Güvenlik Kilidi</h3>
+        <p>Varsayılan olarak salt okunur açılarak arşivlerin bozulması önlenir. Araç çubuğundaki kilit açıldığında arşiv içine doğrudan sürükleyip dosya ekleyebilir veya silebilirsiniz.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🛸</div>
+        <h3>Yüzen Mini Panel (Floating HUD)</h3>
+        <p>Ekranın istenen köşesine sabitlenebilen yarı saydam kompakt widget (⌘⇧H). Üzerine dosya bırakarak tek tıkla arka planda sıkıştırın veya çıkarın.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🧹</div>
+        <h3>Windows Dostu Temizleme</h3>
+        <p>Mac'ten Windows kullanıcılarına arşiv gönderirken oluşan sinir bozucu <code>.DS_Store</code> ve <code>__MACOSX</code> gizli artıklarını tek tıkla otomatik filtreler.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🌌</div>
+        <h3>Kara Delik Klasör İzleyici</h3>
+        <p>İndirilenler klasörünüzü arka planda FSEvents ile izler; yeni gelen RAR, 7Z ve ZIP dosyalarını otomatik klasörüne açar ve tercihinize göre orijinali çöpe taşır.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔧</div>
+        <h3>Arşiv Kurtarma İstasyonu</h3>
+        <p>Bozuk, eksik inmiş veya CRC hatalı RAR dosyalarını WinRAR dahili Recovery Record (Kurtarma Kaydı) algoritması ile tarayıp onarır.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔑</div>
+        <h3>Keychain & Touch ID Hibrit Kasa</h3>
+        <p>Şifreli arşivleriniz için parolaları isterseniz tek oturumda hatırlatın, isterseniz macOS Anahtar Zinciri'ne kaydedip Touch ID ile anında açın.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Warp Core Benchmark Bölümü -->
+  <section class="benchmark-section" id="benchmark" style="max-width: 900px; margin: 0 auto 6rem; padding: 0 1.5rem;">
+    <div class="section-title">
+      <h2>Pulsar Warp Core Donanım Hız Testi</h2>
+      <p>Apple Silicon mimarisinin multithreaded sıkıştırma ve açma sınırlarını zorlayın</p>
+    </div>
+
+    <div class="feature-card" style="text-align: center; padding: 3rem;">
+      <div style="font-size: 0.9rem; font-family: monospace; color: #00f2fe; margin-bottom: 0.5rem;">GERÇEK ZAMANLI BENCHMARK MOTORU</div>
+      <div style="font-size: 3.5rem; font-weight: 900; font-family: monospace; color: #fff; margin-bottom: 0.5rem;" id="bench-score">127,984</div>
+      <div style="font-size: 1.1rem; color: #8a99ad; margin-bottom: 1.5rem;">MIPS (Apple M4 Pro 12C / 12T)</div>
+
+      <p id="bench-status" style="color: #00f2fe; font-size: 0.95rem; margin-bottom: 2rem;">Hazır - Test başlatılmayı bekliyor</p>
+
+      <button id="run-bench-btn" class="btn-primary" style="margin: 0 auto; cursor: pointer; border: none;">
+        ⚡ Warp Testini Simüle Et
+      </button>
+    </div>
+  </section>
+
+  <!-- Format Desteği -->
+  <section class="formats-section" id="formats">
+    <div class="section-title">
+      <h2>Evrensel Format Galaksisi</h2>
+      <p>En popüler arşiv formatları ve disk imajları için tam okuma/yazma desteği</p>
+    </div>
+
+    <div class="formats-wrap">
+      <div class="format-tag">.7Z (7-Zip Ultra)</div>
+      <div class="format-tag">.RAR (WinRAR Native)</div>
+      <div class="format-tag">.ZIP / .ZIPX</div>
+      <div class="format-tag">.TAR (Unix Tape)</div>
+      <div class="format-tag">.GZ / .TGZ</div>
+      <div class="format-tag">.BZ2 / .TBZ2</div>
+      <div class="format-tag">.XZ / .TXZ</div>
+      <div class="format-tag">.ZST (Zstandard)</div>
+      <div class="format-tag">.LZMA / .TLZ</div>
+      <div class="format-tag">.CAB (Cabinet)</div>
+      <div class="format-tag">.WIM (Windows Image)</div>
+      <div class="format-tag">.CPIO (Unix CPIO)</div>
+      <div class="format-tag">.RPM / .DEB (Linux)</div>
+      <div class="format-tag">.ARJ / .LZH</div>
+      <div class="format-tag">.CHM (Help)</div>
+      <div class="format-tag">.XAR / .PKG (macOS)</div>
+      <div class="format-tag">.ISO / .IMG</div>
+      <div class="format-tag">.DMG (Apple Image)</div>
+      <div class="format-tag">.001 (Parçalı Arşiv)</div>
+    </div>
+  </section>
+
+  <!-- Sürüm Notları (Changelog) -->
+  <section class="changelog-container" id="changelog">
+    <div class="section-title">
+      <h2>Sürüm Takibi & Değişiklik Günlüğü</h2>
+      <p>Pulsar'ın güncel versiyon bilgileri ve sürüm geçmişi</p>
+    </div>
+
+    <div class="changelog-box">
+      <div class="changelog-header">
+        <div>
+          <strong style="font-size: 1.25rem;">v1.0.0</strong>
+          <span style="color: #c499f3; font-weight: 600; margin-left: 8px;">(Kod Adı: Event Horizon)</span>
+        </div>
+        <span style="color: #8a99ad; font-size: 0.9rem;">9 Ekim 2026</span>
+      </div>
+
+      <ul class="changelog-list">
+        <li>Apple Silicon M4/M3/M2 için yerel 7-Zip (7zz 26.04) ve resmi WinRAR motor entegrasyonu tamamlandı.</li>
+        <li>3'ü 1 Arada Değiştirilebilir Pencere Düzeni: Modern 3-Bölmeli (Inspector), Kompakt Klasik Liste ve Sekmeli Stüdyo.</li>
+        <li>Yüzen Yarı Saydam Mini Panel (Floating HUD / Widget) geliştirildi (⌘⇧H).</li>
+        <li>Çift Modlu Güvenlik Kilidi ile arşiv içi güvenli gezinti ve kontrollü canlı düzenleme eklendi.</li>
+        <li>Pulsar Warp Core Donanım Hız Testi (Benchmark) modülü entegre edildi.</li>
+        <li>Kara Delik Otomatik Klasör İzleyici (FSEvents tabanlı Downloads auto-unpack) devreye alındı.</li>
+        <li>Arşiv Kurtarma İstasyonu ile hasarlı RAR dosyalarını onarma kabiliyeti eklendi.</li>
+        <li>Windows Uyumlu .DS_Store ve AppleDouble ._ metadata temizleme filtresi eklendi.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Alt Bilgi -->
+  <footer>
+    <p>
+      Pulsar &copy; 2026. Açık kaynaklı ve bağımsız macOS arşiv projesi.<br>
+      Apple, macOS, Sonoma, Sequoia ve Finder Apple Inc. şirketinin tescilli markalarıdır.
+    </p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

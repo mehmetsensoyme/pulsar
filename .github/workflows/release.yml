@@ -1,0 +1,32 @@
+name: Release Packaging
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: macos-14
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Build Application Bundle
+      run: |
+        chmod +x Scripts/build.sh Scripts/package_dmg.sh
+        Scripts/build.sh
+        Scripts/package_dmg.sh
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          dist/*.dmg
+          dist/*.sha256
+        draft: false
+        prerelease: false
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
