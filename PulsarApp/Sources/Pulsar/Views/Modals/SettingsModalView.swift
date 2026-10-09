@@ -6,6 +6,7 @@ public final class SettingsModalViewModel: ObservableObject {
     @Published public var engineCheckResult: String? = nil
     @Published public var isCheckingEngines: Bool = false
     @Published public var cacheClearedMessage: String? = nil
+    @Published public var recentsClearedMessage: String? = nil
 
     public init() {}
 
@@ -148,6 +149,69 @@ public struct SettingsModalView: View {
     // MARK: - 1. Genel Ayarlar
     private var generalSettingsTab: some View {
         VStack(alignment: .leading, spacing: 14) {
+            settingsSection(title: "GÖRÜNÜM VE TEMA") {
+                Picker("Tema Tercihi:", selection: $settings.selectedTheme) {
+                    Text("Sistemle Uyumlu (Otomatik)").tag("system")
+                    Text("Karanlık Mod (Kozmik Gece)").tag("dark")
+                    Text("Aydınlık Mod (Süpernova)").tag("light")
+                }
+
+                Picker("Vurgu Rengi:", selection: $settings.accentColorChoice) {
+                    Text("Pulsar Cyan").tag("cyan")
+                    Text("Kozmik Mor").tag("purple")
+                    Text("Nebula Turuncu").tag("orange")
+                    Text("Zümrüt Yeşil").tag("green")
+                    Text("Okyanus Mavi").tag("blue")
+                }
+
+                Picker("Bilgi Yoğunluğu (Density):", selection: $settings.uiScale) {
+                    Text("Kompakt (Yoğun)").tag("compact")
+                    Text("Standart (Dengeli)").tag("standard")
+                    Text("Geniş (Rahat Dokunuş)").tag("spacious")
+                }
+
+                Divider()
+
+                HStack {
+                    Button(action: {
+                        dismiss()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                            manager.showOnboardingSheet = true
+                        }
+                    }) {
+                        HStack(spacing: 5) {
+                            Image(systemName: "sparkles")
+                            Text("İlk Kurulum Sihirbazını Yeniden Başlat...")
+                        }
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+
+                    Spacer()
+
+                    Button(role: .destructive, action: {
+                        manager.clearRecentArchives()
+                        vm.recentsClearedMessage = "Geçmiş temizlendi"
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            vm.recentsClearedMessage = nil
+                        }
+                    }) {
+                        HStack(spacing: 5) {
+                            Image(systemName: "trash")
+                            Text("Son Arşiv Geçmişini Temizle")
+                        }
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+
+                    if let msg = vm.recentsClearedMessage {
+                        Text(msg)
+                            .font(.system(size: 11, weight: .medium))
+                            .foregroundColor(.green)
+                    }
+                }
+            }
+
             settingsSection(title: "ARAYÜZ VE DÜZEN") {
                 Picker("Varsayılan Görünüm Düzeni:", selection: $settings.defaultLayoutMode) {
                     Text("Modern 3-Bölmeli (Inspector)").tag(LayoutMode.modernThreePane.rawValue)

@@ -88,10 +88,10 @@ public final class PulsarTestRunner {
 
         // 7. Sürüm Kontrolü ve SemVer Karşılaştırma
         let updater = UpdateService.shared
-        assertTest(updater.currentVersion == "1.2.0", "UpdateService: v1.2.0 Güncel Versiyon")
-        assertTest(updater.isVersion("1.2.1", greaterThan: "1.2.0"), "SemVer: 1.2.1 > 1.2.0 Doğrulaması")
-        assertTest(!updater.isVersion("1.1.9", greaterThan: "1.2.0"), "SemVer: 1.1.9 < 1.2.0 Doğrulaması")
-        assertTest(!updater.isVersion("1.2.0", greaterThan: "1.2.0"), "SemVer: 1.2.0 == 1.2.0 Eşitlik Doğrulaması")
+        assertTest(updater.currentVersion == "1.2.1", "UpdateService: v1.2.1 Güncel Versiyon")
+        assertTest(updater.isVersion("1.2.2", greaterThan: "1.2.1"), "SemVer: 1.2.2 > 1.2.1 Doğrulaması")
+        assertTest(!updater.isVersion("1.2.0", greaterThan: "1.2.1"), "SemVer: 1.2.0 < 1.2.1 Doğrulaması")
+        assertTest(!updater.isVersion("1.2.1", greaterThan: "1.2.1"), "SemVer: 1.2.1 == 1.2.1 Eşitlik Doğrulaması")
 
         // 8. İçerik Filtreleme Modu (ContentFilterMode)
         let sampleItems = [
@@ -104,10 +104,12 @@ public final class PulsarTestRunner {
         assertTest(filesOnly.count == 2, "ContentFilterMode: Sadece Dosyalar (2 dosya)")
         assertTest(foldersOnly.count == 1, "ContentFilterMode: Sadece Klasörler (1 klasör)")
 
-        // 9. Ayarlar Varsayılan Değerleri
+        // 9. Ayarlar Varsayılan Değerleri ve Görünüm
         let settings = PulsarSettings.shared
         assertTest(settings.defaultCompressionFormat == "zip", "PulsarSettings: Varsayılan Format zip")
         assertTest(settings.maxCpuThreads >= 1, "PulsarSettings: CPU Çekirdek Sayısı >= 1")
+        assertTest(!settings.accentColorChoice.isEmpty, "PulsarSettings: Dinamik Vurgu Rengi Tanımlı")
+        assertTest(settings.contentRowPadding >= 3.0, "PulsarSettings: Bilgi Yoğunluğu Satır Boşluğu >= 3.0")
 
         // 10. Checksum (Sağlama Toplamı) Doğrulama Testi
         let dummyChecksum = ChecksumResult(
@@ -138,6 +140,15 @@ public final class PulsarTestRunner {
         let codeFiles = smartItems.filter { codeExts.contains($0.fileExtension.lowercased()) }
         assertTest(images.count == 1 && images.first?.name == "photo.png", "Akıllı Filtre: Görseller (photo.png)")
         assertTest(codeFiles.count == 1 && codeFiles.first?.name == "script.swift", "Akıllı Filtre: Kod (script.swift)")
+
+        // 12. Son Kullanılan Arşivler Temizleme
+        let mgr = ArchiveManager.shared
+        mgr.recentArchives = ["/tmp/test1.zip", "/tmp/test2.7z"]
+        assertTest(mgr.recentArchives.count == 2, "RecentArchives: Başlangıç Listesi")
+        mgr.removeFromRecents(path: "/tmp/test1.zip")
+        assertTest(mgr.recentArchives.count == 1 && !mgr.recentArchives.contains("/tmp/test1.zip"), "RecentArchives: Tek Öğe Kaldırma")
+        mgr.clearRecentArchives()
+        assertTest(mgr.recentArchives.isEmpty, "RecentArchives: Geçmişi Tamamen Temizleme")
 
         print("--------------------------------------------------")
         print("📊 [TEST SONUCU] Toplam: \(passed + failed) | Başarılı: \(passed) | Hatalı: \(failed)")

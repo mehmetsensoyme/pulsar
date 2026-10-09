@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2026-10-10 (Sidebar Refinement & Onboarding)
+
+### Added & Refined
+- **Apple HIG Sidebar Layout**: Re-architected sidebar navigation into clean "İçerik" and "Akıllı Filtreler" sections.
+- **Fixed 20px Icon Slot**: Implemented fixed `.frame(width: 20, alignment: .center)` on all sidebar filter glyphs, eliminating ragged and misaligned Turkish text labels.
+- **Live Badge Counters**: Added dynamic item counts to sidebar filters (Tüm İçerik, Dosyalar, Klasörler, Görseller, Belgeler, Kod, Medya).
+- **Recent Archives History Management**: Added one-click "Temizle" header button, context menu ("Finder'da Göster", "Listeden Kaldır", "Geçmişi Temizle") on recent items, and clear buttons in Empty State Hero and Settings Studio.
+- **Onboarding Setup Assistant (`OnboardingSheetView`)**: First-run setup modal allowing users to configure Theme (System, Dark, Light), Accent Color (Cyan, Purple, Orange, Green, Blue), UI Information Density, and Default Layout Mode with one-click restart from Settings.
+- **Dynamic Appearance Customization**: Full integration of theme picker, 5 cosmic accent color choices, and 3 UI scale density modes in Settings Studio (`⌘,`).
+
+## [1.2.0] - 2026-10-09 (Finder Drag-and-Drop & Gallery View)
+
+### Added
+- **Native Finder Drag-and-Drop (`.onDrag`)**: Drag files directly from inside the archive browser into macOS Finder folders or Desktop for instant extraction.
+- **Finder-Style Gallery / Grid View (`FileGridView`)**: Switch between tabular list view and large icon gallery view with double-click navigation.
+- **Live Status & Activity Bar**: Real-time counter of total items, selected file size, background task progress indicator, and free disk space monitor.
+- **Cryptographic Checksum Validator (`⌘⇧K`)**: Calculate SHA-256, MD5, and SHA-1 checksums with automatic clipboard hash comparison.
+- **Archive Format Converter (`⌘⇧C`)**: One-click recompression from RAR, ZIP, or TAR into high-efficiency 7Z or Zstandard formats.
+- **Smart Category Filters**: Instant filtering by Images, Documents, Source Code, and Media.
+- **macOS Keyboard Navigation Suite**: ⌘A (Select All), ⌘↑ (Go to Parent), ⌘↓ (Open/Preview), ⌘C (Copy Path), ⌘⌫ (Delete).
+
 ## [1.1.1] - 2026-10-09 (Apple HIG & Dynamic Themes)
 
 ### Added & Refined

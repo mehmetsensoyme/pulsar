@@ -4,7 +4,7 @@
 
 [![macOS](https://img.shields.io/badge/macOS-14.0%2B%20%7C%2015.0%2B-blue?logo=apple&style=for-the-badge)](https://apple.com)
 [![Architecture](https://img.shields.io/badge/Architecture-Apple%20Silicon%20(Universal%2FARM64)-cyan?style=for-the-badge)](https://apple.com)
-[![Version](https://img.shields.io/badge/Version-v1.2.0%20(Supernova)-8B5CF6?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-v1.2.1%20(Supernova)-8B5CF6?style=for-the-badge)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 > **GitHub Repository Description (0 / 350 characters):**  
@@ -173,7 +173,7 @@ cd pulsar
 ./Scripts/package_dmg.sh
 ```
 
-The compiled release will be available at `dist/Pulsar-1.2.0-arm64.dmg`.
+The compiled release will be available at `dist/Pulsar-1.2.1-arm64.dmg`.
 
 ### Running Automated Stability Tests:
 ```bash
@@ -188,7 +188,7 @@ Executes all built-in unit tests verifying format detection, encryption, disk sa
 1. **Pushing Changes:**
    ```bash
    git push -u origin main
-   git push origin v1.2.0
+   git push origin v1.2.1
    ```
 
 2. **Automated CI/CD:**

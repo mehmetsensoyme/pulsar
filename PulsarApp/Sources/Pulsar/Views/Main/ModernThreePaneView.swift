@@ -32,30 +32,19 @@ public struct ModernThreePaneView: View {
     private var sidebarView: some View {
         // Sol Kenar Çubuğu: Gezinme, Son Arşivler ve Sistem
         List {
-            Section("Gezinme Filtresi") {
-                ForEach(ContentFilterMode.allCases) { mode in
-                    Button(action: {
-                        manager.filterMode = mode
-                    }) {
-                        HStack {
-                            Image(systemName: mode.iconName)
-                                .foregroundColor(manager.filterMode == mode ? .accentColor : .secondary)
-                            Text(mode.rawValue)
-                                .font(.system(size: 12, weight: manager.filterMode == mode ? .semibold : .regular))
-                            Spacer()
-                            if manager.filterMode == mode {
-                                Circle()
-                                    .fill(Color.accentColor)
-                                    .frame(width: 6, height: 6)
-                            }
-                        }
-                        .padding(.vertical, 2)
-                    }
-                    .buttonStyle(.plain)
+            Section("İçerik") {
+                ForEach([ContentFilterMode.all, .filesOnly, .foldersOnly]) { mode in
+                    filterRow(for: mode)
                 }
             }
 
-            Section("Son Açılan Arşivler") {
+            Section("Akıllı Filtreler") {
+                ForEach([ContentFilterMode.images, .documents, .code, .media]) { mode in
+                    filterRow(for: mode)
+                }
+            }
+
+            Section {
                 if manager.recentArchives.isEmpty {
                     Text("Son arşiv bulunmuyor")
                         .font(.system(size: 11))
@@ -66,15 +55,43 @@ public struct ModernThreePaneView: View {
                         Button(action: {
                             manager.openArchive(at: path)
                         }) {
-                            HStack {
+                            HStack(spacing: 8) {
                                 FileIconView(fileName: (path as NSString).lastPathComponent, size: 14)
+                                    .frame(width: 16, alignment: .center)
+
                                 Text((path as NSString).lastPathComponent)
                                     .lineLimit(1)
                                     .font(.system(size: 12, weight: manager.currentArchivePath == path ? .semibold : .regular))
                             }
-                            .padding(.vertical, 1)
+                            .padding(.vertical, 2)
                         }
                         .buttonStyle(.plain)
+                        .contextMenu {
+                            Button("Finder'da Göster") {
+                                NSWorkspace.shared.selectFile(path, inFileViewerRootedAtPath: "")
+                            }
+                            Button("Listeden Kaldır") {
+                                manager.removeFromRecents(path: path)
+                            }
+                            Divider()
+                            Button("Geçmişi Temizle", role: .destructive) {
+                                manager.clearRecentArchives()
+                            }
+                        }
+                    }
+                }
+            } header: {
+                HStack {
+                    Text("Son Açılan Arşivler")
+                    Spacer()
+                    if !manager.recentArchives.isEmpty {
+                        Button("Temizle") {
+                            manager.clearRecentArchives()
+                        }
+                        .buttonStyle(.plain)
+                        .font(.system(size: 10, weight: .medium))
+                        .foregroundColor(.secondary)
+                        .help("Son açılan arşivler geçmişini temizle")
                     }
                 }
             }
@@ -127,6 +144,45 @@ public struct ModernThreePaneView: View {
         }
         .listStyle(.sidebar)
         .frame(minWidth: 190, idealWidth: 220)
+    }
+
+    private func filterRow(for mode: ContentFilterMode) -> some View {
+        Button(action: {
+            manager.filterMode = mode
+        }) {
+            HStack(spacing: 8) {
+                Image(systemName: mode.iconName)
+                    .font(.system(size: 13))
+                    .frame(width: 20, alignment: .center)
+                    .foregroundColor(manager.filterMode == mode ? .accentColor : .secondary)
+
+                Text(mode.rawValue)
+                    .font(.system(size: 12, weight: manager.filterMode == mode ? .semibold : .regular))
+                    .foregroundColor(.primary)
+
+                Spacer()
+
+                if manager.currentArchivePath != nil {
+                    let count = manager.itemCount(for: mode)
+                    Text("\(count)")
+                        .font(.system(size: 10, weight: .medium, design: .monospaced))
+                        .foregroundColor(manager.filterMode == mode ? .accentColor : .secondary)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 1)
+                        .background(Color.primary.opacity(manager.filterMode == mode ? 0.08 : 0.04))
+                        .cornerRadius(8)
+                } else if manager.filterMode == mode {
+                    Circle()
+                        .fill(Color.accentColor)
+                        .frame(width: 5, height: 5)
+                }
+            }
+            .padding(.vertical, 3)
+            .padding(.horizontal, 4)
+            .background(manager.filterMode == mode ? Color.accentColor.opacity(0.12) : Color.clear)
+            .cornerRadius(6)
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -203,9 +259,21 @@ public struct EmptyArchiveHeroView: View {
             // Son Arşivler Varsa Hızlı Kısayol
             if !manager.recentArchives.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("SON KULLANILANLAR")
-                        .font(.system(size: 10, weight: .bold))
+                    HStack {
+                        Text("SON KULLANILANLAR")
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundColor(.secondary)
+
+                        Spacer()
+
+                        Button("Geçmişi Temizle") {
+                            manager.clearRecentArchives()
+                        }
+                        .buttonStyle(.plain)
+                        .font(.system(size: 10, weight: .medium))
                         .foregroundColor(.secondary)
+                    }
+                    .frame(maxWidth: 420)
 
                     HStack(spacing: 8) {
                         ForEach(manager.recentArchives.prefix(3), id: \.self) { path in

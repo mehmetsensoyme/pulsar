@@ -121,6 +121,11 @@ public struct MainWindowView: View {
         .sheet(isPresented: $manager.showConverterSheet) {
             ConverterSheetView()
         }
+        .sheet(isPresented: $manager.showOnboardingSheet) {
+            OnboardingSheetView()
+        }
+        .tint(settings.resolvedAccentColor)
+        .preferredColorScheme(settings.resolvedColorScheme)
         .alert(isPresented: Binding<Bool>(
             get: { manager.errorMessage != nil },
             set: { if !$0 { manager.errorMessage = nil } }

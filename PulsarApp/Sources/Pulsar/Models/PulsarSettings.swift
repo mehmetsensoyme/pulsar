@@ -10,6 +10,38 @@ public final class PulsarSettings: ObservableObject {
     @AppStorage("playSounds") public var playSounds: Bool = true
     @AppStorage("sendNotifications") public var sendNotifications: Bool = true
 
+    // İlk Kurulum, Tema ve Kişiselleştirme
+    @AppStorage("hasCompletedOnboarding") public var hasCompletedOnboarding: Bool = false
+    @AppStorage("selectedTheme") public var selectedTheme: String = "system" // system, dark, light
+    @AppStorage("accentColorChoice") public var accentColorChoice: String = "cyan" // cyan, purple, orange, green, blue
+    @AppStorage("uiScale") public var uiScale: String = "standard" // compact, standard, spacious
+
+    public var resolvedAccentColor: Color {
+        switch accentColorChoice {
+        case "purple": return Color(red: 0.65, green: 0.35, blue: 0.95)
+        case "orange": return Color(red: 1.0, green: 0.58, blue: 0.0)
+        case "green": return Color(red: 0.2, green: 0.78, blue: 0.35)
+        case "blue": return Color(red: 0.0, green: 0.48, blue: 1.0)
+        default: return Color(red: 0.0, green: 0.75, blue: 0.95) // Pulsar Cyan
+        }
+    }
+
+    public var resolvedColorScheme: ColorScheme? {
+        switch selectedTheme {
+        case "dark": return .dark
+        case "light": return .light
+        default: return nil
+        }
+    }
+
+    public var contentRowPadding: CGFloat {
+        switch uiScale {
+        case "compact": return 2
+        case "spacious": return 8
+        default: return 5
+        }
+    }
+
     // Sıkıştırma ve Motorlar
     @AppStorage("defaultCompressionFormat") public var defaultCompressionFormat: String = "zip"
     @AppStorage("defaultCompressionLevel") public var defaultCompressionLevel: String = "normal"

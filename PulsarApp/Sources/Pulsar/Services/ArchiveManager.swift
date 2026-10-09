@@ -66,6 +66,7 @@ public final class ArchiveManager: ObservableObject {
     @Published public var showChecksumSheet: Bool = false
     @Published public var checksumTargetItem: ArchiveItem? = nil
     @Published public var showConverterSheet: Bool = false
+    @Published public var showOnboardingSheet: Bool = false
 
     // MARK: - Hata ve Bilgi
     @Published public var errorMessage: String? = nil
@@ -80,6 +81,11 @@ public final class ArchiveManager: ObservableObject {
             self.currentLayoutMode = mode
         }
         loadRecents()
+
+        // İlk kurulum yapılmamışsa sihirbazı otomatik aç
+        if !PulsarSettings.shared.hasCompletedOnboarding {
+            self.showOnboardingSheet = true
+        }
     }
 
     // MARK: - Filtrelenmiş ve Konumlandırılmış Öğeler
@@ -545,6 +551,39 @@ public final class ArchiveManager: ObservableObject {
     private func loadRecents() {
         if let recents = UserDefaults.standard.stringArray(forKey: "PulsarRecents") {
             recentArchives = recents
+        }
+    }
+
+    public func clearRecentArchives() {
+        recentArchives.removeAll()
+        UserDefaults.standard.removeObject(forKey: "PulsarRecents")
+    }
+
+    public func removeFromRecents(path: String) {
+        recentArchives.removeAll(where: { $0 == path })
+        UserDefaults.standard.set(recentArchives, forKey: "PulsarRecents")
+    }
+
+    public func itemCount(for mode: ContentFilterMode) -> Int {
+        switch mode {
+        case .all:
+            return allItems.count
+        case .filesOnly:
+            return allItems.filter { !$0.isDirectory }.count
+        case .foldersOnly:
+            return allItems.filter { $0.isDirectory }.count
+        case .images:
+            let exts = ["png", "jpg", "jpeg", "gif", "webp", "svg", "heic", "tiff", "bmp", "ico"]
+            return allItems.filter { !$0.isDirectory && exts.contains($0.fileExtension.lowercased()) }.count
+        case .documents:
+            let exts = ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "rtf", "pages", "numbers"]
+            return allItems.filter { !$0.isDirectory && exts.contains($0.fileExtension.lowercased()) }.count
+        case .code:
+            let exts = ["swift", "py", "js", "ts", "c", "cpp", "h", "html", "css", "json", "xml", "sh", "zsh", "yml", "yaml", "rb", "go", "rs"]
+            return allItems.filter { !$0.isDirectory && exts.contains($0.fileExtension.lowercased()) }.count
+        case .media:
+            let exts = ["mp3", "wav", "aac", "flac", "m4a", "mp4", "mov", "mkv", "avi"]
+            return allItems.filter { !$0.isDirectory && exts.contains($0.fileExtension.lowercased()) }.count
         }
     }
 

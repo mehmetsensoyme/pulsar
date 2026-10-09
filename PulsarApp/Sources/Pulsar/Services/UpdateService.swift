@@ -30,30 +30,28 @@ public struct PulsarReleaseInfo: Codable, Identifiable {
 public final class UpdateService: ObservableObject {
     public static let shared = UpdateService()
 
-    public let currentVersion = "1.2.0"
+    public let currentVersion = "1.2.1"
     public let currentCodeName = "Supernova"
-    public let currentBuild = "2613"
+    public let currentBuild = "2614"
 
     @Published public var isChecking: Bool = false
     @Published public var hasUpdateAvailable: Bool = false
     @Published public var latestRelease: PulsarReleaseInfo?
     @Published public var lastCheckDate: Date? = nil
-    @Published public var checkStatusMessage: String = "Pulsar güncel (v1.2.0 Supernova)"
+    @Published public var checkStatusMessage: String = "Pulsar güncel (v1.2.1 Supernova)"
 
     private init() {
         latestRelease = PulsarReleaseInfo(
-            version: "1.2.0",
+            version: "1.2.1",
             codeName: "Supernova",
             releaseDate: "Ekim 2026",
             downloadUrl: "https://github.com/mehmetsensoyme/pulsar/releases/latest",
             releaseNotes: [
-                "Finder'a Doğrudan Sürükle-Bırak (.onDrag): Arşivdeki dosyaları masaüstüne sürükleyerek anında çıkarma",
-                "Finder Tarzı Izgara / Galeri Görünümü (FileGridView): Büyük simgeler ve çift tıklama ile gezinme",
-                "Pencere Altı Canlı Durum ve Görev Çubuğu: Öğe sayısı, seçili boyut, canlı görev ve boş disk alanı",
-                "Kriptografik Sağlama Toplamı (Checksum) Doğrulayıcı: SHA-256, MD5 ve SHA-1 hesaplama ve pano eşleştirme",
-                "Arşiv Format Dönüştürücü: .rar, .zip veya .tar dosyalarını tek tıkla .7z veya .zst formatına dönüştürme",
-                "Akıllı Dosya Filtreleri: Görseller, Belgeler, Kod ve Medya kategorilerine göre anlık filtreleme",
-                "macOS Klavye Kısayolları Paketi (⌘A Tümünü Seç, ⌘↑ Üst Klasör, ⌘↓ Aç, ⌘C Yolu Kopyala, ⌘⌫ Sil)"
+                "Apple HIG Gezinme Kenar Çubuğu: 20px sabit simge yuvası ile hizalı 'İçerik' ve 'Akıllı Filtreler' sekmeleri ve canlı sayaç rozetleri",
+                "Son Açılan Arşivler Yönetimi: Kenar çubuğu ve ana ekranda geçmişi tek tıkla temizleme ve sağ tık bağlam menüsü",
+                "İlk Kurulum Sihirbazı (Onboarding): Tema, vurgu rengi, arayüz yoğunluğu ve varsayılan düzen seçimi",
+                "Kişiselleştirilebilir Görünüm: Ayarlar'dan dinamik tema, 5 farklı vurgu rengi ve 3 yoğunluk seviyesi seçimi",
+                "Finder Doğrudan Dışa Aktarma (.onDrag) ve Izgara/Galeri Görünümü İyileştirmeleri"
             ],
             isCritical: false
         )
