@@ -201,6 +201,11 @@ struct PulsarApp: App {
                 }
                 .keyboardShortcut("K", modifiers: [.command, .shift])
 
+                Button("Arşiv Karşılaştırma & Diff...") {
+                    manager.showDiffSheet = true
+                }
+                .keyboardShortcut("D", modifiers: [.command, .shift])
+
                 Divider()
 
                 Button("Güncellemeleri Denetle...") {

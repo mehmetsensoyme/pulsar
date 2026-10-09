@@ -237,6 +237,41 @@ public struct SettingsModalView: View {
                     .font(.system(size: 12))
             }
 
+            settingsSection(title: "FINDER VE SİSTEM ENTEGRASYONU") {
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Finder Sağ Tık Hızlı Eylemleri")
+                            .font(.system(size: 12, weight: .semibold))
+                        Text("'Pulsar ile Sıkıştır' ve 'Pulsar ile Çıkar' servisleri")
+                            .font(.system(size: 10))
+                            .foregroundColor(.secondary)
+                    }
+                    Spacer()
+                    if FinderIntegrationService.shared.isInstalled {
+                        CosmicBadge(text: "YÜKLÜ", color: .green)
+                    } else {
+                        CosmicBadge(text: "YÜKLENMEDİ", color: .secondary)
+                    }
+                }
+
+                HStack {
+                    Button(action: {
+                        if FinderIntegrationService.shared.isInstalled {
+                            FinderIntegrationService.shared.uninstallQuickActions()
+                        } else {
+                            try? FinderIntegrationService.shared.installQuickActions()
+                        }
+                    }) {
+                        Label(
+                            FinderIntegrationService.shared.isInstalled ? "Hızlı Eylemleri Kaldır" : "Finder Hızlı Eylemlerini Kur",
+                            systemImage: FinderIntegrationService.shared.isInstalled ? "trash" : "arrow.down.doc.fill"
+                        )
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                }
+            }
+
             settingsSection(title: "BİLDİRİMLER VE SES") {
                 Toggle("İşlem tamamlandığında ses efekti çal", isOn: $settings.playSounds)
                     .font(.system(size: 12))
@@ -331,16 +366,62 @@ public struct SettingsModalView: View {
                     .font(.system(size: 12))
             }
 
-            settingsSection(title: "PAROLA VE ANAHTAR ZİNCİRİ (KEYCHAIN)") {
+            settingsSection(title: "PAROLA KASASI VE ANAHTAR ZİNCİRİ (KEYCHAIN)") {
                 Toggle("Arşiv parolalarını macOS Anahtar Zinciri'ne kaydet", isOn: $settings.savePasswordsToKeychain)
                     .font(.system(size: 12))
 
-                Button("Kayıtlı Parolaları ve Önbelleği Temizle") {
-                    KeychainService.shared.clearAllSavedPasswords()
-                    vm.cacheClearedMessage = "Tüm kayıtlı parolalar başarıyla silindi."
+                let count = KeychainService.shared.savedArchives.count
+                HStack {
+                    Text("Kayıtlı Parola Sayısı:")
+                        .font(.system(size: 11))
+                        .foregroundColor(.secondary)
+                    Spacer()
+                    CosmicBadge(text: "\(count) ARŞİV", color: count > 0 ? .green : .secondary)
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
+
+                if count > 0 {
+                    VStack(spacing: 4) {
+                        ForEach(KeychainService.shared.savedArchives, id: \.self) { archivePath in
+                            HStack {
+                                Image(systemName: "key.fill")
+                                    .font(.system(size: 10))
+                                    .foregroundColor(.orange)
+                                Text((archivePath as NSString).lastPathComponent)
+                                    .font(.system(size: 11, design: .monospaced))
+                                    .lineLimit(1)
+                                Spacer()
+                                Button(action: {
+                                    KeychainService.shared.deletePassword(forArchive: archivePath)
+                                }) {
+                                    Image(systemName: "trash")
+                                        .font(.system(size: 10))
+                                        .foregroundColor(.red)
+                                }
+                                .buttonStyle(.plain)
+                                .help("Bu arşivin parolasını sil")
+                            }
+                            .padding(4)
+                            .background(Color(NSColor.controlBackgroundColor).opacity(0.4))
+                            .cornerRadius(4)
+                        }
+                    }
+                }
+
+                HStack {
+                    Button("Tüm Kayıtlı Parolaları Sil") {
+                        KeychainService.shared.clearAllSavedPasswords()
+                        vm.cacheClearedMessage = "Tüm kayıtlı parolalar başarıyla silindi."
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                    .disabled(count == 0)
+
+                    if let msg = vm.cacheClearedMessage {
+                        Text(msg)
+                            .font(.system(size: 10, weight: .semibold))
+                            .foregroundColor(.green)
+                    }
+                }
             }
 
             settingsSection(title: "SANDBOX VE GEÇİCİ ÖNBELLEK") {

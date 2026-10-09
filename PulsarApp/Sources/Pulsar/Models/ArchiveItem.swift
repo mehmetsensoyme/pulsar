@@ -37,9 +37,13 @@ public struct ArchiveItem: Identifiable, Hashable {
         self.attributes = attributes
     }
 
+    public static func formatBytes(_ bytes: Int64) -> String {
+        return ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
+    }
+
     public var formattedSize: String {
         if isDirectory { return "--" }
-        return ByteCountFormatter.string(fromByteCount: size, countStyle: .file)
+        return ArchiveItem.formatBytes(size)
     }
 
     public var formattedCompressedSize: String {

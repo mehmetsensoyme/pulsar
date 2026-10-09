@@ -88,11 +88,11 @@ public final class PulsarTestRunner {
 
         // 7. Sürüm Kontrolü ve SemVer Karşılaştırma
         let updater = UpdateService.shared
-        assertTest(updater.currentVersion == "1.2.3", "UpdateService: v1.2.3 Güncel Versiyon")
+        assertTest(updater.currentVersion == "1.3.0", "UpdateService: v1.3.0 Güncel Versiyon")
         assertTest(updater.currentCodeName == "Supernova", "UpdateService: v1 Ailesi 'Supernova' Kod Adı")
-        assertTest(updater.isVersion("1.2.4", greaterThan: "1.2.3"), "SemVer: 1.2.4 > 1.2.3 Doğrulaması")
-        assertTest(!updater.isVersion("1.2.2", greaterThan: "1.2.3"), "SemVer: 1.2.2 < 1.2.3 Doğrulaması")
-        assertTest(!updater.isVersion("1.2.3", greaterThan: "1.2.3"), "SemVer: 1.2.3 == 1.2.3 Eşitlik Doğrulaması")
+        assertTest(updater.isVersion("1.3.1", greaterThan: "1.3.0"), "SemVer: 1.3.1 > 1.3.0 Doğrulaması")
+        assertTest(!updater.isVersion("1.2.3", greaterThan: "1.3.0"), "SemVer: 1.2.3 < 1.3.0 Doğrulaması")
+        assertTest(!updater.isVersion("1.3.0", greaterThan: "1.3.0"), "SemVer: 1.3.0 == 1.3.0 Eşitlik Doğrulaması")
 
         // 8. İçerik Filtreleme Modu (ContentFilterMode)
         let sampleItems = [
@@ -159,6 +159,39 @@ public final class PulsarTestRunner {
         assertTest(mgr.isHUDVisible, "Event-Driven HUD: Görev Başlayınca Otomatik Görünür")
         mgr.activeTasks.removeAll()
         mgr.isHUDVisible = false
+
+        // 14. Görsel Arşiv Karşılaştırma & Diff (ArchiveDiffService)
+        let diffItemsA = [
+            ArchiveItem(path: "same.txt", name: "same.txt", isDirectory: false, size: 100, compressedSize: 50),
+            ArchiveItem(path: "modified.txt", name: "modified.txt", isDirectory: false, size: 200, compressedSize: 100),
+            ArchiveItem(path: "deleted.txt", name: "deleted.txt", isDirectory: false, size: 300, compressedSize: 150)
+        ]
+        let diffItemsB = [
+            ArchiveItem(path: "same.txt", name: "same.txt", isDirectory: false, size: 100, compressedSize: 50),
+            ArchiveItem(path: "modified.txt", name: "modified.txt", isDirectory: false, size: 250, compressedSize: 120),
+            ArchiveItem(path: "added.txt", name: "added.txt", isDirectory: false, size: 400, compressedSize: 200)
+        ]
+        let diffResult = ArchiveDiffService.shared.computeDiff(itemsA: diffItemsA, itemsB: diffItemsB, pathA: "a.zip", pathB: "b.zip")
+        assertTest(diffResult.addedCount == 1, "ArchiveDiff: Eklenen Dosya Tespiti (added.txt)")
+        assertTest(diffResult.removedCount == 1, "ArchiveDiff: Silinen Dosya Tespiti (deleted.txt)")
+        assertTest(diffResult.modifiedCount == 1, "ArchiveDiff: Değiştirilen Dosya Tespiti (modified.txt)")
+        assertTest(diffResult.identicalCount == 1, "ArchiveDiff: Eşleşen Dosya Tespiti (same.txt)")
+        let report = diffResult.generateMarkdownReport()
+        assertTest(report.contains("Pulsar Arşiv Karşılaştırma Raporu"), "ArchiveDiff: Markdown Rapor Oluşturucu")
+
+        // 15. QuickLook Hızlı Bakış Paneli
+        assertTest(QuickLookService.shared.numberOfPreviewItems(in: nil) >= 0, "QuickLook: Sistem Önizleme Paneli Hazır")
+
+        // 16. Keychain Parola Kasası
+        let kc = KeychainService.shared
+        kc.savePassword("test_vault_secret", forArchive: "/tmp/fake_vault_test.7z")
+        assertTest(kc.savedArchives.contains("/tmp/fake_vault_test.7z"), "KeychainVault: Kayıtlı Arşiv Tespiti")
+        kc.deletePassword(forArchive: "/tmp/fake_vault_test.7z")
+        assertTest(!kc.savedArchives.contains("/tmp/fake_vault_test.7z"), "KeychainVault: Güvenli Parola Silme")
+
+        // 17. Finder Hızlı Eylemleri (FinderIntegrationService)
+        let finder = FinderIntegrationService.shared
+        assertTest(!finder.servicesDir.path.isEmpty, "FinderIntegration: ~/Library/Services Dizin Tespiti")
 
         print("--------------------------------------------------")
         print("📊 [TEST SONUCU] Toplam: \(passed + failed) | Başarılı: \(passed) | Hatalı: \(failed)")

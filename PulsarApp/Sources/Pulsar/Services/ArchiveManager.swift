@@ -74,6 +74,7 @@ public final class ArchiveManager: ObservableObject {
     @Published public var checksumTargetItem: ArchiveItem? = nil
     @Published public var showConverterSheet: Bool = false
     @Published public var showOnboardingSheet: Bool = false
+    @Published public var showDiffSheet: Bool = false
 
     // MARK: - Hata ve Bilgi
     @Published public var errorMessage: String? = nil
@@ -272,6 +273,10 @@ public final class ArchiveManager: ObservableObject {
     }
 
     public func promptPassword(for path: String) {
+        if let savedPwd = keychain.getPassword(forArchive: path) {
+            self.openArchive(at: path, password: savedPwd)
+            return
+        }
         self.showPasswordModal = true
         self.passwordPromptCallback = { [weak self] pwd in
             guard let self = self, let pwd = pwd, !pwd.isEmpty else { return }
@@ -421,6 +426,30 @@ public final class ArchiveManager: ObservableObject {
             } catch {
                 await MainActor.run {
                     self.errorMessage = "Önizleme dosyası çıkarılamadı: \(error.localizedDescription)"
+                }
+            }
+        }
+    }
+
+    // MARK: - Yerel macOS QuickLook (Hızlı Bakış)
+    public func quickLookItem(_ item: ArchiveItem) {
+        guard !item.isDirectory, let archive = currentArchivePath else { return }
+
+        let tempDir = NSTemporaryDirectory().appending("PulsarQuickLook_\(UUID().uuidString)")
+        try? FileManager.default.createDirectory(atPath: tempDir, withIntermediateDirectories: true)
+        TempCacheManager.shared.registerTempDirectory(tempDir)
+
+        Task {
+            do {
+                try await sevenZip.extract(archiveAt: archive, to: tempDir, selectedFiles: [item.path])
+                let extractedFilePath = (tempDir as NSString).appendingPathComponent(item.path)
+                let url = URL(fileURLWithPath: extractedFilePath)
+                await MainActor.run {
+                    QuickLookService.shared.togglePreview(for: url)
+                }
+            } catch {
+                await MainActor.run {
+                    self.errorMessage = "Hızlı önizleme dosyası çıkarılamadı: \(error.localizedDescription)"
                 }
             }
         }

@@ -99,6 +99,14 @@ public struct PulsarToolbarContent: ToolbarContent {
             }
             .help("Bozuk Arşiv Kurtarma İstasyonu")
 
+            // Arşiv Karşılaştırma & Diff (⌘⇧D)
+            Button(action: {
+                manager.showDiffSheet = true
+            }) {
+                Label("Arşiv Karşılaştır", systemImage: "square.split.2x1")
+            }
+            .help("İki arşiv arasındaki farkları karşılaştır (⌘⇧D)")
+
             // Yüzen HUD Aç/Kapat
             Button(action: {
                 manager.isHUDVisible.toggle()

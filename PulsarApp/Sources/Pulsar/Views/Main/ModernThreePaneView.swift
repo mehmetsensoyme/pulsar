@@ -416,8 +416,8 @@ public struct FileTableView: View {
                     if !manager.selectedItemIds.isEmpty {
                         if let firstId = manager.selectedItemIds.first,
                            let firstItem = manager.allItems.first(where: { $0.id == firstId }) {
-                            Button("Önizle (QuickLook)") {
-                                manager.openOrPreviewItem(firstItem)
+                            Button("Hızlı Bakış (QuickLook) ⎵") {
+                                manager.quickLookItem(firstItem)
                             }
 
                             if !firstItem.isDirectory {
@@ -485,7 +485,7 @@ public struct FileTableView: View {
                 .onKeyPress(.space) {
                     if let firstId = manager.selectedItemIds.first,
                        let item = manager.allItems.first(where: { $0.id == firstId }) {
-                        manager.openOrPreviewItem(item)
+                        manager.quickLookItem(item)
                         return .handled
                     }
                     return .ignored

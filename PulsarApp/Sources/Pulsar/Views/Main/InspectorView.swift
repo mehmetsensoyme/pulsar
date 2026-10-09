@@ -135,9 +135,13 @@ public struct InspectorView: View {
                         // Hızlı Aksiyonlar
                         HStack(spacing: 12) {
                             Button(action: {
-                                manager.openOrPreviewItem(item)
+                                if item.isDirectory {
+                                    manager.openFolder(item: item)
+                                } else {
+                                    manager.quickLookItem(item)
+                                }
                             }) {
-                                Label(item.isDirectory ? "Klasörü Aç" : "Önizle", systemImage: item.isDirectory ? "folder.fill" : "eye.fill")
+                                Label(item.isDirectory ? "Klasörü Aç" : "Hızlı Bakış (⎵)", systemImage: item.isDirectory ? "folder.fill" : "eye.fill")
                                     .frame(maxWidth: .infinity)
                             }
                             .buttonStyle(.borderedProminent)

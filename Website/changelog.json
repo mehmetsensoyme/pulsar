@@ -1,22 +1,35 @@
 {
   "project": "Pulsar",
   "tagline": "macOS İçin Işık Hızında Arşiv ve Sıkıştırma Gücü",
-  "currentVersion": "1.2.3",
+  "currentVersion": "1.3.0",
   "currentCodeName": "Supernova",
-  "build": "2616",
+  "build": "2617",
   "releaseDate": "Ekim 2026",
   "download": {
-    "dmgUrl": "https://github.com/mehmetsensoyme/pulsar/releases/download/v1.2.3/Pulsar-1.2.3-arm64.dmg",
+    "dmgUrl": "https://github.com/mehmetsensoyme/pulsar/releases/download/v1.3.0/Pulsar-1.3.0-arm64.dmg",
     "dmgSize": "3.1 MB",
-    "sha256": "96cba0cd333b5a76d0a58829934b051d4c73fce4bab3a495fc07bddbcb03c428",
+    "sha256": "6b6044a9af8fcb06a5e6439f30f514c045403421820ec81ba84075203b3b50aa",
     "architecture": "Apple Silicon (Universal / ARM64)"
   },
   "releases": [
     {
-      "version": "1.2.3",
+      "version": "1.3.0",
       "codeName": "Supernova",
       "date": "2026-10-10",
       "isLatest": true,
+      "highlights": [
+        "Dahili macOS QuickLook Önizleme: Arşivdeki dosyalara Space (Boşluk) tuşuna basarak anında sistem QuickLook penceresinde görüntüleme",
+        "Görsel Arşiv Karşılaştırma & Diff (⌘⇧D): İki arşiv arasındaki eklenen, silinen ve boyutu değişen dosyaları yan yana analiz etme ve Markdown raporlama",
+        "Apple Anahtar Zinciri (Keychain) Parola Kasası: Şifreli arşivler için otomatik kilit açma ve Ayarlar'da kayıtlı parolaları yönetme",
+        "Finder Sağ Tık Hızlı Eylemleri (Quick Actions): 'Pulsar ile Sıkıştır' ve 'Pulsar ile Çıkar' Finder servisleri",
+        "macOS Finder & Dock İkon Entegrasyonu ve 55/55 Otomatik Stabilite Doğrulaması"
+      ]
+    },
+    {
+      "version": "1.2.3",
+      "codeName": "Supernova",
+      "date": "2026-10-10",
+      "isLatest": false,
       "highlights": [
         "macOS Finder & Dock İkon Entegrasyonu: LaunchServices ve AppKit dinamik ikon ataması ile kusursuz AppIcon gösterimi",
         "GitHub Actions CI/CD Pipeline Onarımı: Pillow bağımsız derleme ve otomatik DMG release yayınlama",

@@ -124,6 +124,9 @@ public struct MainWindowView: View {
         .sheet(isPresented: $manager.showOnboardingSheet) {
             OnboardingSheetView()
         }
+        .sheet(isPresented: $manager.showDiffSheet) {
+            ArchiveDiffModalView()
+        }
         .tint(settings.resolvedAccentColor)
         .preferredColorScheme(settings.resolvedColorScheme)
         .alert(isPresented: Binding<Bool>(

@@ -98,8 +98,8 @@ public struct FileGridView: View {
                                 itemProvider(for: item)
                             }
                             .contextMenu {
-                                Button("Önizle (QuickLook)") {
-                                    manager.openOrPreviewItem(item)
+                                Button("Hızlı Bakış (QuickLook) ⎵") {
+                                    manager.quickLookItem(item)
                                 }
 
                                 if !item.isDirectory {
@@ -145,6 +145,14 @@ public struct FileGridView: View {
                     .padding(16)
                 }
             }
+        }
+        .onKeyPress(.space) {
+            if let firstId = manager.selectedItemIds.first,
+               let item = manager.allItems.first(where: { $0.id == firstId }) {
+                manager.quickLookItem(item)
+                return .handled
+            }
+            return .ignored
         }
     }
 }

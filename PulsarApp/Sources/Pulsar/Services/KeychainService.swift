@@ -1,11 +1,39 @@
 import Foundation
 import Security
+import Combine
 
-public final class KeychainService {
+public struct SavedPasswordItem: Identifiable, Equatable {
+    public var id: String { archivePath }
+    public let archivePath: String
+    public var archiveName: String {
+        return (archivePath as NSString).lastPathComponent
+    }
+
+    public init(archivePath: String) {
+        self.archivePath = archivePath
+    }
+}
+
+public final class KeychainService: ObservableObject {
     public static let shared = KeychainService()
     private let serviceName = "com.pulsar.archive.passwords"
+    private let knownArchivesKey = "PulsarKeychainKnownArchives"
 
-    private init() {}
+    @Published public var savedArchives: [String] = []
+
+    private init() {
+        loadKnownArchives()
+    }
+
+    private func loadKnownArchives() {
+        if let list = UserDefaults.standard.stringArray(forKey: knownArchivesKey) {
+            self.savedArchives = list
+        }
+    }
+
+    private func persistKnownArchives() {
+        UserDefaults.standard.set(savedArchives, forKey: knownArchivesKey)
+    }
 
     public func savePassword(_ password: String, forArchive archivePath: String) {
         guard let data = password.data(using: .utf8) else { return }
@@ -22,6 +50,11 @@ public final class KeychainService {
         ]
 
         SecItemAdd(query as CFDictionary, nil)
+
+        if !savedArchives.contains(archivePath) {
+            savedArchives.append(archivePath)
+            persistKnownArchives()
+        }
     }
 
     public func getPassword(forArchive archivePath: String) -> String? {
@@ -50,13 +83,30 @@ public final class KeychainService {
             kSecAttrAccount as String: archivePath
         ]
         SecItemDelete(query as CFDictionary)
+
+        if let idx = savedArchives.firstIndex(of: archivePath) {
+            savedArchives.remove(at: idx)
+            persistKnownArchives()
+        }
     }
 
     public func clearAllSavedPasswords() {
-        let query: [String: Any] = [
+        for path in savedArchives {
+            let query: [String: Any] = [
+                kSecClass as String: kSecClassGenericPassword,
+                kSecAttrService as String: serviceName,
+                kSecAttrAccount as String: path
+            ]
+            SecItemDelete(query as CFDictionary)
+        }
+
+        let queryAll: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: serviceName
         ]
-        SecItemDelete(query as CFDictionary)
+        SecItemDelete(queryAll as CFDictionary)
+
+        savedArchives.removeAll()
+        persistKnownArchives()
     }
 }
