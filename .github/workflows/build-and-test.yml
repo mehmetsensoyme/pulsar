@@ -14,6 +14,10 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
+    - name: Prepare Python Environment
+      run: |
+        python3 -m pip install --break-system-packages pillow 2>/dev/null || pip3 install pillow 2>/dev/null || true
+
     - name: Build Application Bundle
       run: |
         chmod +x Scripts/*.sh

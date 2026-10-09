@@ -2,6 +2,13 @@ import SwiftUI
 import AppKit
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        if let iconPath = Bundle.main.path(forResource: "AppIcon", ofType: "icns") ?? Bundle.main.path(forResource: "logo", ofType: "png"),
+           let img = NSImage(contentsOfFile: iconPath) {
+            NSApplication.shared.applicationIconImage = img
+        }
+    }
+
     func applicationWillTerminate(_ notification: Notification) {
         TempCacheManager.shared.cleanupAllTempDirectories()
     }

@@ -1,22 +1,35 @@
 {
   "project": "Pulsar",
   "tagline": "macOS İçin Işık Hızında Arşiv ve Sıkıştırma Gücü",
-  "currentVersion": "1.2.2",
+  "currentVersion": "1.2.3",
   "currentCodeName": "Supernova",
-  "build": "2615",
+  "build": "2616",
   "releaseDate": "Ekim 2026",
   "download": {
-    "dmgUrl": "https://github.com/mehmetsensoyme/pulsar/releases/download/v1.2.2/Pulsar-1.2.2-arm64.dmg",
+    "dmgUrl": "https://github.com/mehmetsensoyme/pulsar/releases/download/v1.2.3/Pulsar-1.2.3-arm64.dmg",
     "dmgSize": "3.1 MB",
-    "sha256": "8c3963cb9ba0e337467f17bc02771abf5e75abaac17da19d95a1eaf661e52df0",
+    "sha256": "96cba0cd333b5a76d0a58829934b051d4c73fce4bab3a495fc07bddbcb03c428",
     "architecture": "Apple Silicon (Universal / ARM64)"
   },
   "releases": [
     {
-      "version": "1.2.2",
+      "version": "1.2.3",
       "codeName": "Supernova",
       "date": "2026-10-10",
       "isLatest": true,
+      "highlights": [
+        "macOS Finder & Dock İkon Entegrasyonu: LaunchServices ve AppKit dinamik ikon ataması ile kusursuz AppIcon gösterimi",
+        "GitHub Actions CI/CD Pipeline Onarımı: Pillow bağımsız derleme ve otomatik DMG release yayınlama",
+        "Özgün Pulsar Logosu & macOS AppIcon: macOS Sequoia squircle formatında nötron yıldızı ve veri kapsülü ikonu",
+        "Olay-Güdümlü (Event-Driven) Akıllı HUD: İşlem yokken ekranda görünmez, aktif işlemde canlı ilerleme",
+        "Gelişmiş İlk Kurulum Sihirbazı (Onboarding) ve Sistem Genelinde Stabilite Onayları"
+      ]
+    },
+    {
+      "version": "1.2.2",
+      "codeName": "Supernova",
+      "date": "2026-10-10",
+      "isLatest": false,
       "highlights": [
         "Özgün Pulsar Logosu & macOS AppIcon: macOS Sequoia squircle standardında nötron yıldızı ve parlayan şeffaf veri kapsülü ikonu; tüm Retina çözünürlüklerinde AppIcon.icns",
         "Gelişmiş İlk Kurulum Sihirbazı (Onboarding): Yeni logo ve Pulsar'ın 4 ana gücünü (Apple Silicon hızı, Finder sürükle-bırak, güvenlik kilidi, akıllı filtreler) tanıtan bilgi kartları",

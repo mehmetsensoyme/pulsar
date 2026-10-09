@@ -30,28 +30,28 @@ public struct PulsarReleaseInfo: Codable, Identifiable {
 public final class UpdateService: ObservableObject {
     public static let shared = UpdateService()
 
-    public let currentVersion = "1.2.2"
+    public let currentVersion = "1.2.3"
     public let currentCodeName = "Supernova"
-    public let currentBuild = "2615"
+    public let currentBuild = "2616"
 
     @Published public var isChecking: Bool = false
     @Published public var hasUpdateAvailable: Bool = false
     @Published public var latestRelease: PulsarReleaseInfo?
     @Published public var lastCheckDate: Date? = nil
-    @Published public var checkStatusMessage: String = "Pulsar güncel (v1.2.2 Supernova)"
+    @Published public var checkStatusMessage: String = "Pulsar güncel (v1.2.3 Supernova)"
 
     private init() {
         latestRelease = PulsarReleaseInfo(
-            version: "1.2.2",
+            version: "1.2.3",
             codeName: "Supernova",
             releaseDate: "Ekim 2026",
             downloadUrl: "https://github.com/mehmetsensoyme/pulsar/releases/latest",
             releaseNotes: [
-                "Özgün Pulsar Logosu & macOS AppIcon: macOS Sequoia squircle formatında nötron yıldızı ve veri kapsülü ikonu",
-                "Gelişmiş İlk Kurulum Sihirbazı (Onboarding): Yeni logo ve Pulsar'ın 4 temel yeteneğini özetleyen bilgi kartları",
-                "Olay-Güdümlü (Event-Driven) Akıllı HUD: Dosya veya görev yokken gizli, aktif işlemde canlı ilerleme ve bittiğinde 3 saniye sonra otomatik kapanma",
-                "Sistem Genelinde Buton ve Sekme Denetimi: 3 pencere düzeni ve tüm modallarda test edilmiş pürüzsüz çalışma",
-                "Temiz ve Şeffaf Açık Kaynak Dokümantasyonu"
+                "macOS Finder & Dock İkon Entegrasyonu: LaunchServices ve AppKit ile kusursuz AppIcon gösterimi",
+                "GitHub Actions CI/CD Pipeline Onarımı: Pillow bağımsız derleme ve otomatik DMG release yayınlama",
+                "Özgün Pulsar Logosu & macOS AppIcon: macOS Sequoia squircle nötron yıldızı ve veri kapsülü ikonu",
+                "Olay-Güdümlü (Event-Driven) Akıllı HUD: İşlem yokken gizli, aktif işlemde canlı ilerleme",
+                "Gelişmiş İlk Kurulum Sihirbazı (Onboarding) ve Sistem Genelinde Stabilite Onayları"
             ],
             isCritical: false
         )

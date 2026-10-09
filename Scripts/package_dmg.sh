@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 APP_PATH="$ROOT_DIR/build/Pulsar.app"
 DIST_DIR="$ROOT_DIR/dist"
-DMG_NAME="Pulsar-1.2.2-arm64.dmg"
+DMG_NAME="Pulsar-1.2.3-arm64.dmg"
 DMG_PATH="$DIST_DIR/$DMG_NAME"
 TEMP_DMG_DIR="$ROOT_DIR/build/dmg_temp"
 

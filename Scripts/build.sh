@@ -61,11 +61,22 @@ cp "$PULSAR_BIN" "$BUNDLE_DIR/Contents/MacOS/Pulsar"
 [ -f "$BIN_DIR/unrar" ] && cp "$BIN_DIR/unrar" "$BUNDLE_DIR/Contents/Resources/bin/"
 
 # Uygulama İkonu ve Logo Varlıklarını Ekle
-if [ ! -f "$ROOT_DIR/build/AppIcon.icns" ]; then
-    python3 "$ROOT_DIR/Scripts/generate_app_icon.py"
+if [ -f "$APP_DIR/Sources/Pulsar/Resources/AppIcon.icns" ]; then
+    cp "$APP_DIR/Sources/Pulsar/Resources/AppIcon.icns" "$BUNDLE_DIR/Contents/Resources/AppIcon.icns"
+elif [ -f "$ROOT_DIR/assets/AppIcon.icns" ]; then
+    cp "$ROOT_DIR/assets/AppIcon.icns" "$BUNDLE_DIR/Contents/Resources/AppIcon.icns"
+elif [ -f "$ROOT_DIR/build/AppIcon.icns" ]; then
+    cp "$ROOT_DIR/build/AppIcon.icns" "$BUNDLE_DIR/Contents/Resources/AppIcon.icns"
+elif python3 -c "import PIL" 2>/dev/null; then
+    python3 "$ROOT_DIR/Scripts/generate_app_icon.py" || true
+    [ -f "$ROOT_DIR/build/AppIcon.icns" ] && cp "$ROOT_DIR/build/AppIcon.icns" "$BUNDLE_DIR/Contents/Resources/AppIcon.icns"
 fi
-[ -f "$ROOT_DIR/build/AppIcon.icns" ] && cp "$ROOT_DIR/build/AppIcon.icns" "$BUNDLE_DIR/Contents/Resources/AppIcon.icns"
-[ -f "$ROOT_DIR/assets/logo.png" ] && cp "$ROOT_DIR/assets/logo.png" "$BUNDLE_DIR/Contents/Resources/logo.png"
+
+if [ -f "$ROOT_DIR/assets/logo.png" ]; then
+    cp "$ROOT_DIR/assets/logo.png" "$BUNDLE_DIR/Contents/Resources/logo.png"
+elif [ -f "$APP_DIR/Sources/Pulsar/Resources/logo.png" ]; then
+    cp "$APP_DIR/Sources/Pulsar/Resources/logo.png" "$BUNDLE_DIR/Contents/Resources/logo.png"
+fi
 
 chmod +x "$BUNDLE_DIR/Contents/MacOS/Pulsar"
 for rbin in "$BUNDLE_DIR/Contents/Resources/bin"/*; do
@@ -87,15 +98,15 @@ cat << 'EOF' > "$BUNDLE_DIR/Contents/Info.plist"
     <key>CFBundleDisplayName</key>
     <string>Pulsar</string>
     <key>CFBundleIconFile</key>
-    <string>AppIcon</string>
+    <string>AppIcon.icns</string>
     <key>CFBundleIconName</key>
     <string>AppIcon</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.2.2</string>
+    <string>1.2.3</string>
     <key>CFBundleVersion</key>
-    <string>2615</string>
+    <string>2616</string>
     <key>LSMinimumSystemVersion</key>
     <string>14.0</string>
     <key>NSHighResolutionCapable</key>
@@ -105,6 +116,17 @@ cat << 'EOF' > "$BUNDLE_DIR/Contents/Info.plist"
 </dict>
 </plist>
 EOF
+
+# Finder İkon Özniteliğini Uygula (Custom Icon Attribute)
+if [ -f "$BUNDLE_DIR/Contents/Resources/AppIcon.icns" ]; then
+    swift -e '
+    import AppKit
+    let path = "'"$BUNDLE_DIR"'"
+    if let img = NSImage(contentsOfFile: "\(path)/Contents/Resources/AppIcon.icns") {
+        _ = NSWorkspace.shared.setIcon(img, forFile: path, options: [])
+    }
+    ' 2>/dev/null || true
+fi
 
 # Kod İmzalama (Ad-Hoc)
 echo "🔏 [Codesign] Ad-hoc kod imzalama uygulanıyor..."
