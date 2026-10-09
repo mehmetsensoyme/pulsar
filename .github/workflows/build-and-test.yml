@@ -9,37 +9,32 @@ on:
 jobs:
   build-and-test:
     runs-on: macos-14
+    permissions:
+      contents: write
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Diagnostics & Toolchain Info
-      run: |
-        echo "### 🛠️ Toolchain Diagnostics" >> $GITHUB_STEP_SUMMARY
-        echo "- **Developer Dir:** \`$(xcode-select -p)\`" >> $GITHUB_STEP_SUMMARY
-        echo "- **Swift:** \`$(swift --version | head -n 1)\`" >> $GITHUB_STEP_SUMMARY
-        echo "- **macOS:** \`$(sw_vers -productVersion)\`" >> $GITHUB_STEP_SUMMARY
-
     - name: Build Application Bundle
       run: |
         chmod +x Scripts/*.sh
-        ./Scripts/build.sh 2>&1 | tee /tmp/build.log || {
-          echo "### ❌ Build Failure Log" >> $GITHUB_STEP_SUMMARY
-          echo '```text' >> $GITHUB_STEP_SUMMARY
-          tail -n 120 /tmp/build.log >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          exit 1
-        }
-        echo "### ✅ Build Succeeded" >> $GITHUB_STEP_SUMMARY
+        BUILD_EXIT=0
+        ./Scripts/build.sh > /tmp/build.log 2>&1 || BUILD_EXIT=$?
+        echo "Build exit code: $BUILD_EXIT"
+        cat /tmp/build.log
+
+        if [ "$BUILD_EXIT" -ne 0 ]; then
+          git config user.name "CI Bot"
+          git config user.email "ci@pulsar.app"
+          git checkout -B ci-debug
+          cp /tmp/build.log ci-build-error.log
+          git add ci-build-error.log
+          git commit -m "debug: capture ci build error"
+          git push -f origin ci-debug
+          exit $BUILD_EXIT
+        fi
 
     - name: Run Automated Stability & Functionality Tests
       run: |
-        ./Scripts/run_tests.sh 2>&1 | tee /tmp/test.log || {
-          echo "### ❌ Test Failure Log" >> $GITHUB_STEP_SUMMARY
-          echo '```text' >> $GITHUB_STEP_SUMMARY
-          tail -n 120 /tmp/test.log >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          exit 1
-        }
-        echo "### ✅ All 26 Stability Tests Passed" >> $GITHUB_STEP_SUMMARY
+        ./Scripts/run_tests.sh
