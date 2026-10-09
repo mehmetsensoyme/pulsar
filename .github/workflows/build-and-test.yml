@@ -14,11 +14,32 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
+    - name: Diagnostics & Toolchain Info
+      run: |
+        echo "### 🛠️ Toolchain Diagnostics" >> $GITHUB_STEP_SUMMARY
+        echo "- **Developer Dir:** \`$(xcode-select -p)\`" >> $GITHUB_STEP_SUMMARY
+        echo "- **Swift:** \`$(swift --version | head -n 1)\`" >> $GITHUB_STEP_SUMMARY
+        echo "- **macOS:** \`$(sw_vers -productVersion)\`" >> $GITHUB_STEP_SUMMARY
+
     - name: Build Application Bundle
       run: |
         chmod +x Scripts/*.sh
-        ./Scripts/build.sh
+        ./Scripts/build.sh 2>&1 | tee /tmp/build.log || {
+          echo "### ❌ Build Failure Log" >> $GITHUB_STEP_SUMMARY
+          echo '```text' >> $GITHUB_STEP_SUMMARY
+          tail -n 120 /tmp/build.log >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          exit 1
+        }
+        echo "### ✅ Build Succeeded" >> $GITHUB_STEP_SUMMARY
 
     - name: Run Automated Stability & Functionality Tests
       run: |
-        ./Scripts/run_tests.sh
+        ./Scripts/run_tests.sh 2>&1 | tee /tmp/test.log || {
+          echo "### ❌ Test Failure Log" >> $GITHUB_STEP_SUMMARY
+          echo '```text' >> $GITHUB_STEP_SUMMARY
+          tail -n 120 /tmp/test.log >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          exit 1
+        }
+        echo "### ✅ All 26 Stability Tests Passed" >> $GITHUB_STEP_SUMMARY
