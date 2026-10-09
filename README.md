@@ -4,7 +4,7 @@
 
 [![macOS](https://img.shields.io/badge/macOS-14.0%2B%20%7C%2015.0%2B-blue?logo=apple&style=for-the-badge)](https://apple.com)
 [![Architecture](https://img.shields.io/badge/Architecture-Apple%20Silicon%20(Universal%2FARM64)-cyan?style=for-the-badge)](https://apple.com)
-[![Version](https://img.shields.io/badge/Version-v1.1.0%20(Supernova)-8B5CF6?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-v1.1.1%20(Supernova)-8B5CF6?style=for-the-badge)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 > **GitHub Repository Description (0 / 350 characters):**  
@@ -15,33 +15,33 @@
 
 ## 🖥️ Screen Showcase & Visual Tour
 
-Pulsar is designed strictly adhering to macOS Sonoma & Sequoia Human Interface Guidelines (HIG), featuring translucent Liquid Glass / Vibrancy, SF Symbols, and dynamic neutron glow aesthetics.
+Pulsar strictly adheres to **Apple Human Interface Guidelines (HIG)**, featuring dynamic Light & Dark mode adaptation, native macOS Finder file/folder icons, and clean grouped form card architecture.
 
-```
-+---------------------------------------------------------------------------------------------------------+
-|  [● ● ●]   [ View: 3-Pane | Compact | Tabbed ]   [ ⤒ Extract ]  [ + New ]  [ 🔒 Read-Only ] ...         |
-+---------------------------------------------------------------------------------------------------------+
-|  NAVIGATION          |  📁 Root > Source_Codes > Models                 |  [ INSPECTOR & DETAILS ]      |
-|  ------------------- |  ----------------------------------------------- |  ---------------------------  |
-|  📂 All Items        |  📁 Models              --          --       --  |            📄                 |
-|  📄 Files Only       |  📄 ArchiveFormat.swift 3.4 KB      1.1 KB   68% |       ArchiveFormat.swift     |
-|                      |  📄 ArchiveItem.swift   4.2 KB      1.2 KB   71% |       [ SWIFT SOURCE ]        |
-|  RECENT ARCHIVES     |  📄 TaskProgress.swift  2.1 KB      0.7 KB   66% |                               |
-|  ------------------- |  📄 Preset.swift        2.8 KB      0.9 KB   67% |  Original:      3.4 KB        |
-|  📦 Project_2026.7z  |  ⚙️ 7zz                 2.68 MB     1.1 MB   59% |  Compressed:    1.1 KB        |
-|  📦 Backup_Pack.rar  |                                                 |  Ratio:         67.6%         |
-|  📦 Windows.zip      |                                                 |  CRC32:         E4F91B02      |
-|                      |                                                 |  ---------------------------  |
-|  SYSTEM MODULES      |                                                 |  [ 👁 Preview ] [ ⤒ Extract ]  |
-|  ⚡ Warp Benchmark   |                                                 |                               |
-|  🌌 Black Hole       |                                                 |                               |
-|  🔧 Repair Station   |                                                 |    +---------------------+    |
-|                      |                                                 |    | 🛸 PULSAR HUD  [x]  |    |
-|                      |                                                 |    |       ( 84% )       |    |
-|                      |                                                 |    |      124.5 MB/s     |    |
-|                      |                                                 |    +---------------------+    |
-+---------------------------------------------------------------------------------------------------------+
-```
+### 🌓 Dynamic System Themes: Dark Mode & Light Mode
+
+| Dark Mode (macOS Ventura / Sonoma / Sequoia) | Light Mode (macOS Ventura / Sonoma / Sequoia) |
+| :---: | :---: |
+| <img src="assets/screenshots/hero_dark.png" width="450" alt="Pulsar Empty State Hero (Dark)"> | <img src="assets/screenshots/hero_light.png" width="450" alt="Pulsar Empty State Hero (Light)"> |
+| **Empty State Hero (Dark Mode)** | **Empty State Hero (Light Mode)** |
+
+### ⚙️ Settings Studio & Preferences (`⌘,`)
+
+| Dark Mode Settings Studio | Light Mode Settings Studio |
+| :---: | :---: |
+| <img src="assets/screenshots/settings_dark.png" width="450" alt="Pulsar Settings Studio (Dark)"> | <img src="assets/screenshots/settings_light.png" width="450" alt="Pulsar Settings Studio (Light)"> |
+| **Compact Segmented Tabs & Form Cards (Dark)** | **Clean Native System Appearance (Light)** |
+
+### 📦 Compression Studio (`⌘N`) & Sci-Fi Modules
+
+| Compression Studio (`⌘N`) | Hardware Warp Benchmark (`⌘⇧B`) |
+| :---: | :---: |
+| <img src="assets/screenshots/compress_dark.png" width="450" alt="Compress Studio"> | <img src="assets/screenshots/benchmark_dark.png" width="450" alt="Warp Benchmark"> |
+| **Smart Presets & Destination Picker** | **Apple Silicon Multithreaded MIPS Benchmark** |
+
+| Archive Repair Station | Clean Native System Appearance |
+| :---: | :---: |
+| <img src="assets/screenshots/repair_dark.png" width="450" alt="Repair Station"> | <img src="assets/screenshots/compress_light.png" width="450" alt="Light Mode Compress"> |
+| **WinRAR Recovery Record Repair Station** | **Light Mode Compression Studio** |
 
 ---
 
@@ -159,7 +159,7 @@ cd pulsar
 ./Scripts/package_dmg.sh
 ```
 
-The compiled release will be available at `dist/Pulsar-1.1.0-arm64.dmg`.
+The compiled release will be available at `dist/Pulsar-1.1.1-arm64.dmg`.
 
 ### Running Automated Stability Tests:
 ```bash
@@ -174,7 +174,7 @@ Executes all built-in unit tests verifying format detection, encryption, disk sa
 1. **Pushing Changes:**
    ```bash
    git push -u origin main
-   git push origin v1.1.0
+   git push origin v1.1.1
    ```
 
 2. **Automated CI/CD:**

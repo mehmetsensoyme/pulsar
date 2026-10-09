@@ -88,10 +88,10 @@ public final class PulsarTestRunner {
 
         // 7. Sürüm Kontrolü ve SemVer Karşılaştırma
         let updater = UpdateService.shared
-        assertTest(updater.currentVersion == "1.1.0", "UpdateService: v1.1.0 Güncel Versiyon")
-        assertTest(updater.isVersion("1.1.1", greaterThan: "1.1.0"), "SemVer: 1.1.1 > 1.1.0 Doğrulaması")
-        assertTest(!updater.isVersion("1.0.0", greaterThan: "1.1.0"), "SemVer: 1.0.0 < 1.1.0 Doğrulaması")
-        assertTest(!updater.isVersion("1.1.0", greaterThan: "1.1.0"), "SemVer: 1.1.0 == 1.1.0 Eşitlik Doğrulaması")
+        assertTest(updater.currentVersion == "1.1.1", "UpdateService: v1.1.1 Güncel Versiyon")
+        assertTest(updater.isVersion("1.1.2", greaterThan: "1.1.1"), "SemVer: 1.1.2 > 1.1.1 Doğrulaması")
+        assertTest(!updater.isVersion("1.1.0", greaterThan: "1.1.1"), "SemVer: 1.1.0 < 1.1.1 Doğrulaması")
+        assertTest(!updater.isVersion("1.1.1", greaterThan: "1.1.1"), "SemVer: 1.1.1 == 1.1.1 Eşitlik Doğrulaması")
 
         // 8. İçerik Filtreleme Modu (ContentFilterMode)
         let sampleItems = [

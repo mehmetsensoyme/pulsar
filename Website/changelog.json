@@ -1,22 +1,37 @@
 {
   "project": "Pulsar",
   "tagline": "macOS İçin Işık Hızında Arşiv ve Sıkıştırma Gücü",
-  "currentVersion": "1.1.0",
+  "currentVersion": "1.1.1",
   "currentCodeName": "Supernova",
-  "build": "2611",
+  "build": "2612",
   "releaseDate": "Ekim 2026",
   "download": {
-    "dmgUrl": "https://github.com/mehmetsensoyme/pulsar/releases/download/v1.1.0/Pulsar-1.1.0-arm64.dmg",
+    "dmgUrl": "https://github.com/mehmetsensoyme/pulsar/releases/download/v1.1.1/Pulsar-1.1.1-arm64.dmg",
     "dmgSize": "2.9 MB",
-    "sha256": "21c14eda192a0d247911521e96b736562d4e1d773ac661518713c19b551f320c",
+    "sha256": "00a1b48e0b792573d8c79fce555030cef860516b3ac15a1198741c08531caad0",
     "architecture": "Apple Silicon (Universal / ARM64)"
   },
   "releases": [
     {
-      "version": "1.1.0",
+      "version": "1.1.1",
       "codeName": "Supernova",
       "date": "2026-10-09",
       "isLatest": true,
+      "highlights": [
+        "Apple Human Interface Guidelines (HIG) tam uyumlu sade ve dinamik tasarım dili",
+        "Dinamik Sistem Teması: macOS Açık ve Koyu moduna anlık otomatik renk ve kontrast uyumu",
+        "Gerçek macOS Finder Dosya & Klasör Simgeleri (NSWorkspace & UTType FileIconView entegrasyonu)",
+        "Ferah ve Ortalanmış Boş Durum (Empty State Hero Zone): Arşiv açık değilken tüm alana yayılan Apple drop-zone",
+        "Arşivi Kapat Kısayolu (⌘W / Dosya -> Arşivi Kapat) ile anında ana karşılama ekranına dönme",
+        "Standartlaştırılmış 600px Modal Pencereler (Yeni Arşiv, Warp Benchmark, Kara Delik, Kurtarma İstasyonu)",
+        "Gizlilik Koruması: Kullanıcı dosya yollarının ~ (tilde) ile maskelenmesi"
+      ]
+    },
+    {
+      "version": "1.1.0",
+      "codeName": "Supernova",
+      "date": "2026-10-09",
+      "isLatest": false,
       "highlights": [
         "Gelişmiş Çok Sekmeli Ayarlar Stüdyosu (Genel, Motorlar & Teşhis, Güvenlik, Kara Delik, Yüzen HUD, Hakkında & Güncellemeler)",
         "Gerçek Zamanlı GitHub Releases API & SemVer Sürüm Kontrolü ve Güncelleme Bildirimi",

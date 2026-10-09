@@ -30,29 +30,29 @@ public struct PulsarReleaseInfo: Codable, Identifiable {
 public final class UpdateService: ObservableObject {
     public static let shared = UpdateService()
 
-    public let currentVersion = "1.1.0"
+    public let currentVersion = "1.1.1"
     public let currentCodeName = "Supernova"
-    public let currentBuild = "2611"
+    public let currentBuild = "2612"
 
     @Published public var isChecking: Bool = false
     @Published public var hasUpdateAvailable: Bool = false
     @Published public var latestRelease: PulsarReleaseInfo?
     @Published public var lastCheckDate: Date? = nil
-    @Published public var checkStatusMessage: String = "Pulsar güncel (v1.1.0 Supernova)"
+    @Published public var checkStatusMessage: String = "Pulsar güncel (v1.1.1 Supernova)"
 
     private init() {
         latestRelease = PulsarReleaseInfo(
-            version: "1.1.0",
+            version: "1.1.1",
             codeName: "Supernova",
             releaseDate: "Ekim 2026",
             downloadUrl: "https://github.com/mehmetsensoyme/pulsar/releases/latest",
             releaseNotes: [
-                "Gelişmiş Çok Sekmeli Ayarlar Stüdyosu (Pulsar Settings Studio - ⌘,)",
-                "İnteraktif Kenar Çubuğu Dosya/Klasör Filtreleri (Tüm İçerik vs Sadece Dosyalar)",
-                "Modern Sci-Fi Karşılama ve Hızlı Bırakma Ekranı (Empty State Drop-Zone)",
-                "Gelişmiş Sıkıştırma Hedef Klasörü Seçimi (Serbest Dizin Belirleme)",
-                "Tablo Satır Geneli Çift Tıklama ve Zengin Sağ Tık Bağlam Menüsü",
-                "Apple Silicon M4/M3/M2 Optimize Edilmiş Swift 6 Eşzamanlılık Güvenliği"
+                "Apple Human Interface Guidelines (HIG) tam uyumlu sade ve dinamik tasarım",
+                "Dinamik Sistem Teması desteği: macOS Açık ve Koyu moduna anlık otomatik uyum",
+                "NSWorkspace ve Finder yerel dosya simgeleri entegrasyonu (FileIconView)",
+                "Yenilenen ferah Boş Durum (Empty State Hero Zone) ve ⌘W Arşivi Kapat kısayolu",
+                "600px birörnek standart modal pencereler ve Esc/⌘W kapatma desteği",
+                "Gelişmiş Çok Sekmeli Ayarlar Stüdyosu (Pulsar Settings Studio - ⌘,)"
             ],
             isCritical: false
         )

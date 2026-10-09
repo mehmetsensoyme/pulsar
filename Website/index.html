@@ -15,11 +15,11 @@
   <header class="navbar">
     <div class="logo">
       <span>🌌 PULSAR</span>
-      <span class="logo-badge version-tag">v1.1.0 (Supernova)</span>
+      <span class="logo-badge version-tag">v1.1.1 (Supernova)</span>
     </div>
     <ul class="nav-links">
       <li><a href="#features">Özellikler</a></li>
-      <li><a href="#modes">Arayüz Modları</a></li>
+      <li><a href="#modes">Arayüz Vitrini</a></li>
       <li><a href="#benchmark">Warp Benchmark</a></li>
       <li><a href="#formats">Formatlar</a></li>
       <li><a href="#changelog">Sürüm Notları</a></li>
@@ -34,11 +34,11 @@
     </div>
     <h1>macOS İçin Işık Hızında<br><span>Arşiv ve Sıkıştırma Gücü</span></h1>
     <p>
-      Evrenin en hızlı dönen nötron yıldızından ilham alan Pulsar; 7-Zip ve WinRAR motorlarını, modern Liquid Glass estetiğini ve benzersiz bilim kurgu modüllerini tek bir çatı altında birleştirir.
+      Evrenin en hızlı dönen nötron yıldızından ilham alan Pulsar; 7-Zip ve WinRAR motorlarını, modern Apple HIG estetiğini ve dinamik Açık/Koyu sistem temalarını tek çatı altında birleştirir.
     </p>
 
     <div class="hero-actions">
-      <a href="https://github.com/mehmetsensoyme/pulsar/releases/download/v1.1.0/Pulsar-1.1.0-arm64.dmg" class="btn-primary">
+      <a href="https://github.com/mehmetsensoyme/pulsar/releases/download/v1.1.1/Pulsar-1.1.1-arm64.dmg" class="btn-primary">
         <span></span> macOS İçin İndir (.DMG)
       </a>
       <a href="https://github.com/mehmetsensoyme/pulsar" target="_blank" class="btn-secondary">
@@ -47,35 +47,38 @@
     </div>
 
     <div class="meta-info">
-      <span class="version-tag">Sürüm: v1.1.0 Supernova</span>
+      <span class="version-tag">Sürüm: v1.1.1 Supernova</span>
       <span class="dmg-size">Boyut: 2.9 MB</span>
       <span class="sha-tag">SHA-256 Doğrulandı</span>
     </div>
   </section>
 
-  <!-- İnteraktif Arayüz Vitrini -->
+  <!-- Canlı Arayüz ve Sistem Teması Vitrini -->
   <section class="preview-container" id="modes">
     <div class="section-title">
-      <h2>3 Değiştirilebilir Arayüz Düzeni</h2>
-      <p>İhtiyacınıza göre tek tıkla veya klavye kısayoluyla modlar arasında geçiş yapın (⌘1, ⌘2, ⌘3)</p>
+      <h2>Apple HIG ve Dinamik Sistem Teması</h2>
+      <p>macOS Sonoma &amp; Sequoia standartlarında Açık ve Koyu mod, yerel Finder simgeleri ve birörnek sheet mimarisi</p>
     </div>
 
-    <div class="glass-window">
-      <div class="window-header">
-        <div class="window-dots">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
-        </div>
-        <div class="window-tabs">
-          <button class="window-tab active" data-mode="threePane">Modern 3-Bölmeli (⌘1)</button>
-          <button class="window-tab" data-mode="compactList">Kompakt Liste (⌘2)</button>
-          <button class="window-tab" data-mode="tabbedStudio">Sekmeli Stüdyo (⌘3)</button>
-        </div>
-        <div style="font-size: 0.8rem; color: #8a99ad; font-family: monospace;">Pulsar Window</div>
+    <!-- Mod ve Tema Kontrol Çubuğu -->
+    <div class="showcase-controls">
+      <div class="showcase-tabs">
+        <button class="showcase-tab active" data-view="hero">Boş Durum (Hero View)</button>
+        <button class="showcase-tab" data-view="settings">Ayarlar Stüdyosu (⌘,)</button>
+        <button class="showcase-tab" data-view="compress">Yeni Arşiv (⌘N)</button>
+        <button class="showcase-tab" data-view="benchmark">Warp Benchmark (⌘⇧B)</button>
+        <button class="showcase-tab" data-view="repair">Kurtarma İstasyonu</button>
       </div>
-      <div class="window-body" id="preview-content">
-        <!-- JS ile dinamik render edilir -->
+      <div class="theme-switcher">
+        <button class="theme-btn active" id="theme-dark-btn">🌙 Koyu Mod</button>
+        <button class="theme-btn" id="theme-light-btn">☀️ Açık Mod</button>
+      </div>
+    </div>
+
+    <div class="screenshot-frame">
+      <img id="main-screenshot" src="assets/hero_dark.png" alt="Pulsar Arayüz Ekran Görüntüsü" class="screenshot-img">
+      <div class="screenshot-caption" id="screenshot-caption">
+        <strong>Ferah Boş Durum (Empty Hero Zone):</strong> Arşiv açık değilken tüm çalışma alanına yayılan Apple karşılama paneli, sürükle-bırak hedef alanı, ⌘O Arşiv Aç, ⌘N Yeni Arşiv ve son kullanılanlar.
       </div>
     </div>
   </section>
@@ -186,9 +189,29 @@
     <div class="changelog-box" style="margin-bottom: 2rem; border-color: rgba(0, 242, 254, 0.4);">
       <div class="changelog-header">
         <div>
-          <strong style="font-size: 1.25rem; color: #00f2fe;">v1.1.0</strong>
+          <strong style="font-size: 1.25rem; color: #00f2fe;">v1.1.1</strong>
           <span style="color: #00f2fe; font-weight: 600; margin-left: 8px;">(Kod Adı: Supernova)</span>
           <span style="background: rgba(0, 242, 254, 0.2); color: #00f2fe; font-size: 0.75rem; padding: 2px 8px; border-radius: 99px; margin-left: 8px; font-weight: bold;">EN GÜNCEL</span>
+        </div>
+        <span style="color: #8a99ad; font-size: 0.9rem;">Ekim 2026</span>
+      </div>
+
+      <ul class="changelog-list">
+        <li><strong>Apple HIG Tasarım Dili &amp; Dinamik Sistem Teması:</strong> macOS Açık ve Koyu moduna anlık otomatik uyum sağlayan Apple yerel semantik renkleri.</li>
+        <li><strong>Gerçek Finder Dosya ve Klasör Simgeleri:</strong> NSWorkspace ve UTType tabanlı FileIconView ile sistemdeki orijinal ikonlar.</li>
+        <li><strong>Yenilenen Ayarlar Stüdyosu (⌘,):</strong> 600×500 px kompakt sheet, üstte segmentli sekme çubuğu, Sonoma/Sequoia form kartları ve Esc/⌘W kapatma.</li>
+        <li><strong>Ferah Boş Durum (Empty State Hero Zone):</strong> Arşiv açık değilken tüm alana yayılan Apple drop-zone ve son kullanılan arşivler.</li>
+        <li><strong>Arşivi Kapat Kısayolu (⌘W / Dosya &rarr; Arşivi Kapat):</strong> Açık arşivden anında ana karşılama ekranına dönme.</li>
+        <li><strong>Standartlaştırılmış 600px Modal Pencereler:</strong> Yeni Arşiv (⌘N), Warp Benchmark (⌘⇧B), Kara Delik ve Kurtarma İstasyonu.</li>
+        <li><strong>Gizlilik Koruması:</strong> Kullanıcı ana dizini yollarının otomatik ~ (tilde) ile kısaltılması.</li>
+      </ul>
+    </div>
+
+    <div class="changelog-box" style="margin-bottom: 2rem;">
+      <div class="changelog-header">
+        <div>
+          <strong style="font-size: 1.25rem; color: #00f2fe;">v1.1.0</strong>
+          <span style="color: #00f2fe; font-weight: 600; margin-left: 8px;">(Kod Adı: Supernova)</span>
         </div>
         <span style="color: #8a99ad; font-size: 0.9rem;">Ekim 2026</span>
       </div>

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2026-10-09 (Apple HIG & Dynamic Themes)
+
+### Added & Refined
+- **Native macOS Finder File & Folder Icons (`FileIconView`)**: Replaced artificial emojis with real system file and folder icons fetched via `NSWorkspace.shared.icon(for:)` and `UniformTypeIdentifiers.UTType`.
+- **Dynamic Light & Dark System Appearance**: Replaced fixed dark colors with native macOS semantic colors (`NSColor.windowBackgroundColor`, `NSColor.controlBackgroundColor`, `accentColor`, `primary`, `secondary`) ensuring seamless dynamic adaptation to macOS appearance settings.
+- **Redesigned Settings Studio (`⌘,`)**: Compact top segmented tab bar with Sonoma/Sequoia grouped form cards, 600×500 px unified sheet dimensions, and `Esc` / `⌘W` / `Bitti` button dismissal.
+- **Full-Width Centered Empty State Hero Zone**: When no archive is opened, the detail inspector is cleanly hidden so the hero drop-zone expands across the entire workspace.
+- **Close Archive Shortcut (`⌘W` / File -> Arşivi Kapat)**: Allows closing open archives to return cleanly to the empty state hero zone.
+- **Unified 600px Modal Sheet Architecture**: Standardized Compress (`⌘N`), Benchmark (`⌘⇧B`), Folder Watcher, and Repair Station modals to 600px width with Esc dismissal.
+- **Tilde Privacy Masking**: Masked all user paths with `~` tilde abbreviations (`~/...`) across all UI displays.
+
 ## [1.1.0] - 2026-10-09 (Supernova)
 
 ### Added

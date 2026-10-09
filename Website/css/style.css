@@ -431,3 +431,97 @@ footer {
   color: var(--text-muted);
   font-size: 0.9rem;
 }
+
+/* Showcase Kontrolleri & Ekran Görüntüleri */
+.showcase-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.showcase-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.showcase-tab {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+  border: 1px solid var(--border-glass);
+  transition: all 0.2s ease;
+}
+
+.showcase-tab:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.showcase-tab.active {
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.2) 0%, rgba(79, 172, 254, 0.3) 100%);
+  border-color: var(--cyan-glow);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+}
+
+.theme-switcher {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glass);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 4px;
+}
+
+.theme-btn {
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.theme-btn.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.screenshot-frame {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-glass);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 242, 254, 0.1);
+  transition: all 0.3s ease;
+}
+
+.screenshot-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: opacity 0.25s ease;
+}
+
+.screenshot-caption {
+  padding: 1.25rem 2rem;
+  background: rgba(18, 24, 38, 0.85);
+  border-top: 1px solid var(--border-glass);
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.screenshot-caption strong {
+  color: var(--cyan-glow);
+}
