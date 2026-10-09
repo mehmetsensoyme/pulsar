@@ -15,10 +15,13 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Build Application Bundle & DMG
+    - name: Build Application Bundle
       run: |
         chmod +x Scripts/*.sh
         ./Scripts/build.sh
+
+    - name: Package DMG
+      run: |
         ./Scripts/package_dmg.sh
 
     - name: Create GitHub Release
