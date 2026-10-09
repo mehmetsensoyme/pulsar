@@ -43,64 +43,90 @@ public struct FloatingHUDView: View {
             }
 
             if let task = activeTask {
-                // Aktif İşlem Göstergesi (Canlı İlerleme)
-                VStack(spacing: 6) {
-                    ZStack {
-                        Circle()
-                            .stroke(Color.primary.opacity(0.1), lineWidth: 5)
-                            .frame(width: 54, height: 54)
+                if task.status == .completed {
+                    // Tamamlandı Durumu (3 Saniyelik Yeşil Onay)
+                    VStack(spacing: 6) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.green.opacity(0.18))
+                                .frame(width: 52, height: 52)
 
-                        Circle()
-                            .trim(from: 0.0, to: CGFloat(task.percent))
-                            .stroke(
-                                AngularGradient(
-                                    gradient: Gradient(colors: [.blue, .purple, .cyan]),
-                                    center: .center
-                                ),
-                                style: StrokeStyle(lineWidth: 5, lineCap: .round)
-                            )
-                            .frame(width: 54, height: 54)
-                            .rotationEffect(.degrees(-90))
-                            .animation(.linear(duration: 0.2), value: task.percent)
+                            Image(systemName: "checkmark")
+                                .font(.system(size: 24, weight: .bold))
+                                .foregroundColor(.green)
+                        }
 
-                        Text(String(format: "%%%.0f", task.percent * 100))
-                            .font(.system(size: 12, weight: .bold, design: .monospaced))
-                    }
+                        Text("Tamamlandı!")
+                            .font(.system(size: 11, weight: .bold))
+                            .foregroundColor(.green)
 
-                    Text(task.title)
-                        .font(.system(size: 11, weight: .medium))
-                        .lineLimit(1)
-
-                    if !task.currentFilename.isEmpty {
-                        Text(task.currentFilename)
+                        Text(task.title)
                             .font(.system(size: 9))
                             .foregroundColor(.secondary)
                             .lineLimit(1)
                     }
+                    .padding(.vertical, 4)
+                    .transition(.scale.combined(with: .opacity))
+                } else {
+                    // Aktif İşlem Göstergesi (Canlı İlerleme)
+                    VStack(spacing: 6) {
+                        ZStack {
+                            Circle()
+                                .stroke(Color.primary.opacity(0.1), lineWidth: 5)
+                                .frame(width: 54, height: 54)
 
-                    HStack(spacing: 8) {
-                        Text(task.formattedSpeed)
-                            .font(.system(size: 9, design: .monospaced))
-                            .foregroundColor(.cyan)
+                            Circle()
+                                .trim(from: 0.0, to: CGFloat(task.percent))
+                                .stroke(
+                                    AngularGradient(
+                                        gradient: Gradient(colors: [.blue, .purple, .cyan]),
+                                        center: .center
+                                    ),
+                                    style: StrokeStyle(lineWidth: 5, lineCap: .round)
+                                )
+                                .frame(width: 54, height: 54)
+                                .rotationEffect(.degrees(-90))
+                                .animation(.linear(duration: 0.2), value: task.percent)
 
-                        Text(task.formattedRemainingTime)
-                            .font(.system(size: 9))
-                            .foregroundColor(.secondary)
+                            Text(String(format: "%%%.0f", task.percent * 100))
+                                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                        }
+
+                        Text(task.title)
+                            .font(.system(size: 11, weight: .medium))
+                            .lineLimit(1)
+
+                        if !task.currentFilename.isEmpty {
+                            Text(task.currentFilename)
+                                .font(.system(size: 9))
+                                .foregroundColor(.secondary)
+                                .lineLimit(1)
+                        }
+
+                        HStack(spacing: 8) {
+                            Text(task.formattedSpeed)
+                                .font(.system(size: 9, design: .monospaced))
+                                .foregroundColor(.cyan)
+
+                            Text(task.formattedRemainingTime)
+                                .font(.system(size: 9))
+                                .foregroundColor(.secondary)
+                        }
+
+                        Button(action: {
+                            manager.cancelTask(id: task.id)
+                        }) {
+                            Text("İptal Et")
+                                .font(.system(size: 9, weight: .bold))
+                                .foregroundColor(.red)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 2)
+                                .background(Color.red.opacity(0.12))
+                                .cornerRadius(4)
+                        }
+                        .buttonStyle(.plain)
+                        .padding(.top, 2)
                     }
-
-                    Button(action: {
-                        manager.cancelTask(id: task.id)
-                    }) {
-                        Text("İptal Et")
-                            .font(.system(size: 9, weight: .bold))
-                            .foregroundColor(.red)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 2)
-                            .background(Color.red.opacity(0.12))
-                            .cornerRadius(4)
-                    }
-                    .buttonStyle(.plain)
-                    .padding(.top, 2)
                 }
             } else {
                 // Boşta: Hızlı Bırakma Alanı (Drop-Zone)
@@ -160,6 +186,9 @@ public struct FloatingHUDView: View {
                     let path = url.path
                     if ArchiveFormat.detect(from: path) != nil {
                         self.manager.openArchive(at: path)
+                        withAnimation(.easeInOut(duration: 0.35)) {
+                            self.manager.isHUDVisible = false
+                        }
                     } else {
                         self.compressDroppedFile(at: path)
                     }
@@ -177,7 +206,7 @@ public struct FloatingHUDView: View {
             type: .compress,
             archivePath: dest
         )
-        manager.activeTasks.append(task)
+        manager.startTask(task)
 
         Task {
             do {
@@ -198,8 +227,13 @@ public struct FloatingHUDView: View {
                     if let idx = self.manager.activeTasks.firstIndex(where: { $0.id == task.id }) {
                         self.manager.activeTasks[idx].percent = 1.0
                         self.manager.activeTasks[idx].status = .completed
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                             self.manager.activeTasks.removeAll(where: { $0.id == task.id })
+                            if self.manager.activeTasks.isEmpty {
+                                withAnimation(.easeInOut(duration: 0.35)) {
+                                    self.manager.isHUDVisible = false
+                                }
+                            }
                         }
                     }
                     NSWorkspace.shared.selectFile(dest, inFileViewerRootedAtPath: (dest as NSString).deletingLastPathComponent)
@@ -208,6 +242,14 @@ public struct FloatingHUDView: View {
                 await MainActor.run {
                     if let idx = self.manager.activeTasks.firstIndex(where: { $0.id == task.id }) {
                         self.manager.activeTasks[idx].status = .failed(error.localizedDescription)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
+                            self.manager.activeTasks.removeAll(where: { $0.id == task.id })
+                            if self.manager.activeTasks.isEmpty {
+                                withAnimation(.easeInOut(duration: 0.35)) {
+                                    self.manager.isHUDVisible = false
+                                }
+                            }
+                        }
                     }
                 }
             }

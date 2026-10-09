@@ -60,6 +60,13 @@ cp "$PULSAR_BIN" "$BUNDLE_DIR/Contents/MacOS/Pulsar"
 [ -f "$BIN_DIR/rar" ] && cp "$BIN_DIR/rar" "$BUNDLE_DIR/Contents/Resources/bin/"
 [ -f "$BIN_DIR/unrar" ] && cp "$BIN_DIR/unrar" "$BUNDLE_DIR/Contents/Resources/bin/"
 
+# Uygulama İkonu ve Logo Varlıklarını Ekle
+if [ ! -f "$ROOT_DIR/build/AppIcon.icns" ]; then
+    python3 "$ROOT_DIR/Scripts/generate_app_icon.py"
+fi
+[ -f "$ROOT_DIR/build/AppIcon.icns" ] && cp "$ROOT_DIR/build/AppIcon.icns" "$BUNDLE_DIR/Contents/Resources/AppIcon.icns"
+[ -f "$ROOT_DIR/assets/logo.png" ] && cp "$ROOT_DIR/assets/logo.png" "$BUNDLE_DIR/Contents/Resources/logo.png"
+
 chmod +x "$BUNDLE_DIR/Contents/MacOS/Pulsar"
 for rbin in "$BUNDLE_DIR/Contents/Resources/bin"/*; do
     [ -f "$rbin" ] && chmod +x "$rbin" 2>/dev/null || true
@@ -79,12 +86,16 @@ cat << 'EOF' > "$BUNDLE_DIR/Contents/Info.plist"
     <string>Pulsar</string>
     <key>CFBundleDisplayName</key>
     <string>Pulsar</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
+    <key>CFBundleIconName</key>
+    <string>AppIcon</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.2.1</string>
+    <string>1.2.2</string>
     <key>CFBundleVersion</key>
-    <string>2614</string>
+    <string>2615</string>
     <key>LSMinimumSystemVersion</key>
     <string>14.0</string>
     <key>NSHighResolutionCapable</key>

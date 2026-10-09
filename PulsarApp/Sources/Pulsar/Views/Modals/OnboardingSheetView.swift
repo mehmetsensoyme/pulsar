@@ -38,38 +38,70 @@ public struct OnboardingSheetView: View {
 
     public var body: some View {
         VStack(spacing: 0) {
-            // Karşılama Başlığı
-            VStack(spacing: 8) {
-                ZStack {
-                    Circle()
-                        .fill(settings.resolvedAccentColor.opacity(0.15))
-                        .frame(width: 60, height: 60)
+            // Karşılama Başlığı & Logo
+            VStack(spacing: 10) {
+                PulsarLogoView(size: 68)
 
-                    Image(systemName: "sparkles")
-                        .font(.system(size: 28))
+                VStack(spacing: 4) {
+                    Text("Pulsar'a Hoş Geldiniz")
+                        .font(.system(size: 22, weight: .bold))
+
+                    Text("macOS İçin Işık Hızında Arşiv ve Sıkıştırma Gücü")
+                        .font(.system(size: 13, weight: .medium))
                         .foregroundColor(settings.resolvedAccentColor)
+
+                    Text("Kullanım tercihlerinizi kişiselleştirin. Bu ayarları dilediğiniz zaman Ayarlar (⌘,) menüsünden değiştirebilirsiniz.")
+                        .font(.system(size: 11))
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 28)
                 }
-
-                Text("Pulsar'a Hoş Geldiniz")
-                    .font(.system(size: 20, weight: .bold))
-
-                Text("macOS arşiv deneyiminizi kişiselleştirin. Bu tercihleri daha sonra Ayarlar (⌘,) menüsünden istediğiniz zaman değiştirebilirsiniz.")
-                    .font(.system(size: 12))
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
             }
-            .padding(.top, 24)
-            .padding(.bottom, 16)
+            .padding(.top, 20)
+            .padding(.bottom, 14)
 
             Divider()
 
             ScrollView {
-                VStack(spacing: 20) {
+                VStack(spacing: 22) {
+                    // 0. Pulsar Yetenekleri ve Bilgilendirme
+                    VStack(alignment: .leading, spacing: 8) {
+                        Label("Öne Çıkan Yetenekler", systemImage: "sparkles")
+                            .font(.system(size: 11, weight: .bold))
+                            .foregroundColor(.secondary)
+
+                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
+                            featureBriefCard(
+                                icon: "bolt.fill",
+                                color: .cyan,
+                                title: "Apple Silicon Gücü",
+                                desc: "Yerel 7-Zip & WinRAR motorları ile M-serisi çiplerde ultra hızlı arşivleme."
+                            )
+                            featureBriefCard(
+                                icon: "hand.draw.fill",
+                                color: .purple,
+                                title: "Finder Sürükle-Bırak",
+                                desc: "Arşivdeki dosyaları masaüstüne sürükleyerek anında dışa aktarma (.onDrag)."
+                            )
+                            featureBriefCard(
+                                icon: "lock.shield.fill",
+                                color: .green,
+                                title: "Güvenlik & Temizlik",
+                                desc: "Salt-okunur koruma kilidi ve Windows uyumlu .DS_Store metadata filtresi."
+                            )
+                            featureBriefCard(
+                                icon: "line.3.horizontal.decrease.circle.fill",
+                                color: .orange,
+                                title: "Akıllı Filtreler",
+                                desc: "Görseller, belgeler, kaynak kodları ve medyayı tek tıkla kategorilendirme."
+                            )
+                        }
+                    }
+
                     // 1. Tema Seçimi
                     VStack(alignment: .leading, spacing: 8) {
                         Label("Görünüm & Tema", systemImage: "circle.lefthalf.filled")
-                            .font(.system(size: 12, weight: .bold))
+                            .font(.system(size: 11, weight: .bold))
                             .foregroundColor(.secondary)
 
                         HStack(spacing: 12) {
@@ -168,7 +200,36 @@ public struct OnboardingSheetView: View {
             .padding(16)
             .background(Color(NSColor.controlBackgroundColor))
         }
-        .frame(width: 520, height: 530)
+        .frame(width: 560, height: 580)
+    }
+
+    private func featureBriefCard(icon: String, color: Color, title: String, desc: String) -> some View {
+        HStack(alignment: .top, spacing: 8) {
+            Image(systemName: icon)
+                .font(.system(size: 16))
+                .foregroundColor(color)
+                .frame(width: 22, height: 22)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(.primary)
+
+                Text(desc)
+                    .font(.system(size: 10))
+                    .foregroundColor(.secondary)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .padding(10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color(NSColor.controlBackgroundColor).opacity(0.6))
+        .cornerRadius(8)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.primary.opacity(0.06), lineWidth: 1)
+        )
     }
 
     private func themeOptionCard(id: String, title: String, icon: String) -> some View {

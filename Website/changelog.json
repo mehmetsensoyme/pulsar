@@ -1,22 +1,34 @@
 {
   "project": "Pulsar",
   "tagline": "macOS İçin Işık Hızında Arşiv ve Sıkıştırma Gücü",
-  "currentVersion": "1.2.1",
+  "currentVersion": "1.2.2",
   "currentCodeName": "Supernova",
-  "build": "2614",
+  "build": "2615",
   "releaseDate": "Ekim 2026",
   "download": {
-    "dmgUrl": "https://github.com/mehmetsensoyme/pulsar/releases/download/v1.2.1/Pulsar-1.2.1-arm64.dmg",
-    "dmgSize": "3.0 MB",
-    "sha256": "327ce6b226f7df91a6807aed2af5357d202fb0e80d0368faed6a256c566201bd",
+    "dmgUrl": "https://github.com/mehmetsensoyme/pulsar/releases/download/v1.2.2/Pulsar-1.2.2-arm64.dmg",
+    "dmgSize": "3.1 MB",
+    "sha256": "8c3963cb9ba0e337467f17bc02771abf5e75abaac17da19d95a1eaf661e52df0",
     "architecture": "Apple Silicon (Universal / ARM64)"
   },
   "releases": [
     {
-      "version": "1.2.1",
+      "version": "1.2.2",
       "codeName": "Supernova",
       "date": "2026-10-10",
       "isLatest": true,
+      "highlights": [
+        "Özgün Pulsar Logosu & macOS AppIcon: macOS Sequoia squircle standardında nötron yıldızı ve parlayan şeffaf veri kapsülü ikonu; tüm Retina çözünürlüklerinde AppIcon.icns",
+        "Gelişmiş İlk Kurulum Sihirbazı (Onboarding): Yeni logo ve Pulsar'ın 4 ana gücünü (Apple Silicon hızı, Finder sürükle-bırak, güvenlik kilidi, akıllı filtreler) tanıtan bilgi kartları",
+        "Olay-Güdümlü (Event-Driven) Akıllı HUD: İşlem yokken ekranda görünmez; dosya bırakıldığında veya işlem başladığında açılır, bittiğinde 3 saniye yeşil onay gösterip yumuşakça kaybolur",
+        "Sistem Genelinde Buton ve Sekme Denetimi: Toolbar, sekmeli stüdyo, kompakt liste ve tüm modallarda test edilmiş hatasız çalışma"
+      ]
+    },
+    {
+      "version": "1.2.1",
+      "codeName": "Supernova",
+      "date": "2026-10-10",
+      "isLatest": false,
       "highlights": [
         "Apple HIG Gezinme Kenar Çubuğu: 20px sabit simge yuvası ile mükemmel dikey hizalama, İçerik ve Akıllı Filtreler gruplaması ve canlı sayaç rozetleri",
         "Son Açılan Arşivler Yönetimi: Kenar çubuğu başlığında tek tıkla 'Temizle' butonu, sağ tık bağlam menüsü (Finder'da Göster / Listeden Kaldır / Geçmişi Temizle) ve boş ekranda geçmiş temizleyici",

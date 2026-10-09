@@ -52,7 +52,14 @@ public final class ArchiveManager: ObservableObject {
 
     // MARK: - Arka Plan Görevleri
     @Published public var activeTasks: [TaskProgress] = []
-    @Published public var isHUDVisible: Bool = true
+    @Published public var isHUDVisible: Bool = false
+
+    public func startTask(_ task: TaskProgress) {
+        activeTasks.append(task)
+        withAnimation(.easeInOut(duration: 0.25)) {
+            isHUDVisible = true
+        }
+    }
 
     // MARK: - Modal Tetikleyicileri
     @Published public var showCompressSheet: Bool = false
@@ -288,6 +295,11 @@ public final class ArchiveManager: ObservableObject {
             activeTasks[idx].status = .failed("İşlem kullanıcı tarafından iptal edildi.")
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 self.activeTasks.removeAll(where: { $0.id == id })
+                if self.activeTasks.isEmpty {
+                    withAnimation(.easeInOut(duration: 0.35)) {
+                        self.isHUDVisible = false
+                    }
+                }
             }
         }
 
@@ -310,7 +322,7 @@ public final class ArchiveManager: ObservableObject {
             type: .extract,
             archivePath: archive
         )
-        activeTasks.append(task)
+        startTask(task)
 
         Task {
             do {
@@ -360,7 +372,7 @@ public final class ArchiveManager: ObservableObject {
             type: .extract,
             archivePath: archive
         )
-        activeTasks.append(task)
+        startTask(task)
 
         Task {
             do {
@@ -527,8 +539,13 @@ public final class ArchiveManager: ObservableObject {
         if let idx = activeTasks.firstIndex(where: { $0.id == id }) {
             activeTasks[idx].percent = 1.0
             activeTasks[idx].status = .completed
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                 self.activeTasks.removeAll(where: { $0.id == id })
+                if self.activeTasks.isEmpty {
+                    withAnimation(.easeInOut(duration: 0.35)) {
+                        self.isHUDVisible = false
+                    }
+                }
             }
         }
     }
@@ -536,6 +553,14 @@ public final class ArchiveManager: ObservableObject {
     private func failTask(id: UUID, error: String) {
         if let idx = activeTasks.firstIndex(where: { $0.id == id }) {
             activeTasks[idx].status = .failed(error)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) {
+                self.activeTasks.removeAll(where: { $0.id == id })
+                if self.activeTasks.isEmpty {
+                    withAnimation(.easeInOut(duration: 0.35)) {
+                        self.isHUDVisible = false
+                    }
+                }
+            }
         }
     }
 
@@ -636,7 +661,7 @@ public final class ArchiveManager: ObservableObject {
             type: .compress,
             archivePath: targetPath
         )
-        activeTasks.append(task)
+        startTask(task)
 
         let tempExtractDir = NSTemporaryDirectory().appending("PulsarConvert_\(UUID().uuidString)")
         try? FileManager.default.createDirectory(atPath: tempExtractDir, withIntermediateDirectories: true)

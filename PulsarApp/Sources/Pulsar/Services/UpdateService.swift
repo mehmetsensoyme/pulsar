@@ -30,28 +30,28 @@ public struct PulsarReleaseInfo: Codable, Identifiable {
 public final class UpdateService: ObservableObject {
     public static let shared = UpdateService()
 
-    public let currentVersion = "1.2.1"
+    public let currentVersion = "1.2.2"
     public let currentCodeName = "Supernova"
-    public let currentBuild = "2614"
+    public let currentBuild = "2615"
 
     @Published public var isChecking: Bool = false
     @Published public var hasUpdateAvailable: Bool = false
     @Published public var latestRelease: PulsarReleaseInfo?
     @Published public var lastCheckDate: Date? = nil
-    @Published public var checkStatusMessage: String = "Pulsar güncel (v1.2.1 Supernova)"
+    @Published public var checkStatusMessage: String = "Pulsar güncel (v1.2.2 Supernova)"
 
     private init() {
         latestRelease = PulsarReleaseInfo(
-            version: "1.2.1",
+            version: "1.2.2",
             codeName: "Supernova",
             releaseDate: "Ekim 2026",
             downloadUrl: "https://github.com/mehmetsensoyme/pulsar/releases/latest",
             releaseNotes: [
-                "Apple HIG Gezinme Kenar Çubuğu: 20px sabit simge yuvası ile hizalı 'İçerik' ve 'Akıllı Filtreler' sekmeleri ve canlı sayaç rozetleri",
-                "Son Açılan Arşivler Yönetimi: Kenar çubuğu ve ana ekranda geçmişi tek tıkla temizleme ve sağ tık bağlam menüsü",
-                "İlk Kurulum Sihirbazı (Onboarding): Tema, vurgu rengi, arayüz yoğunluğu ve varsayılan düzen seçimi",
-                "Kişiselleştirilebilir Görünüm: Ayarlar'dan dinamik tema, 5 farklı vurgu rengi ve 3 yoğunluk seviyesi seçimi",
-                "Finder Doğrudan Dışa Aktarma (.onDrag) ve Izgara/Galeri Görünümü İyileştirmeleri"
+                "Özgün Pulsar Logosu & macOS AppIcon: macOS Sequoia squircle formatında nötron yıldızı ve veri kapsülü ikonu",
+                "Gelişmiş İlk Kurulum Sihirbazı (Onboarding): Yeni logo ve Pulsar'ın 4 temel yeteneğini özetleyen bilgi kartları",
+                "Olay-Güdümlü (Event-Driven) Akıllı HUD: Dosya veya görev yokken gizli, aktif işlemde canlı ilerleme ve bittiğinde 3 saniye sonra otomatik kapanma",
+                "Sistem Genelinde Buton ve Sekme Denetimi: 3 pencere düzeni ve tüm modallarda test edilmiş pürüzsüz çalışma",
+                "Temiz ve Şeffaf Açık Kaynak Dokümantasyonu"
             ],
             isCritical: false
         )

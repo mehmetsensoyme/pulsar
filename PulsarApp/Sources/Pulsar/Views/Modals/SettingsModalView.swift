@@ -417,15 +417,21 @@ public struct SettingsModalView: View {
             }
 
             settingsSection(title: "PANEL KONTROLÜ") {
-                HStack {
-                    Text("Mevcut Görünürlük Durumu:")
-                        .font(.system(size: 12))
-                    Spacer()
-                    Button(manager.isHUDVisible ? "HUD'u Gizle" : "HUD'u Göster") {
-                        manager.isHUDVisible.toggle()
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Pulsar HUD, bir işlem başladığında veya dosya bırakıldığında otomatik açılır ve bittiğinde 3 saniye sonra kendiliğinden kapanır.")
+                        .font(.system(size: 11))
+                        .foregroundColor(.secondary)
+
+                    HStack {
+                        Text("Manuel Görünürlük:")
+                            .font(.system(size: 11))
+                        Spacer()
+                        Button(manager.isHUDVisible ? "HUD'u Gizle" : "HUD'u Göster") {
+                            manager.isHUDVisible.toggle()
+                        }
+                        .buttonStyle(.bordered)
+                        .controlSize(.small)
                     }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
                 }
             }
         }
@@ -434,14 +440,7 @@ public struct SettingsModalView: View {
     // MARK: - 6. Hakkında ve Güncellemeler
     private var aboutSettingsTab: some View {
         VStack(spacing: 16) {
-            ZStack {
-                Circle()
-                    .fill(Color.cyan.opacity(0.15))
-                    .frame(width: 72, height: 72)
-                Image(systemName: "sparkles")
-                    .font(.system(size: 36))
-                    .foregroundColor(.cyan)
-            }
+            PulsarLogoView(size: 72)
 
             VStack(spacing: 4) {
                 Text("PULSAR ARCHIVE")

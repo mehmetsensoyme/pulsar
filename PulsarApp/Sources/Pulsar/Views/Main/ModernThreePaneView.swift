@@ -196,16 +196,7 @@ public struct EmptyArchiveHeroView: View {
             Spacer()
 
             VStack(spacing: 16) {
-                ZStack {
-                    Circle()
-                        .fill(Color.accentColor.opacity(0.12))
-                        .frame(width: 110, height: 110)
-
-                    Image(systemName: "archivebox.circle.fill")
-                        .font(.system(size: 64))
-                        .symbolRenderingMode(.hierarchical)
-                        .foregroundColor(.accentColor)
-                }
+                PulsarLogoView(size: 96)
 
                 VStack(spacing: 6) {
                     Text("Pulsar")

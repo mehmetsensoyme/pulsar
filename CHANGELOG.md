@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2026-10-10 (Icon, Onboarding & Event-Driven HUD)
+
+### Added & Refined
+- **Bespoke Pulsar Logo & macOS AppIcon (`AppIcon.icns`)**: Designed authentic macOS Sequoia squircle icon featuring rotating neutron star plasma beams and translucent geometric data capsule; compiled via `iconutil` into full Retina multi-resolution `.icns`.
+- **Enriched Onboarding Setup Assistant**: Integrated official Pulsar Logo and 4 core capability cards (Apple Silicon speed, Finder drag-and-drop, safety lock & Windows cleaner, smart filters) into first-run walkthrough.
+- **Event-Driven Floating HUD**: Hidden by default; only manifests when files are dropped or compression/extraction tasks are actively running; automatically displays green checkmark for 3 seconds before auto-dismissing.
+- **System-Wide UI Auditing & Polishing**: Verified interactive button states, sheet dismissals, and empty hero states across Modern 3-Pane, Compact List, and Tabbed Studio modes.
+- **Celestial Codename Rule Adherence**: Retained "Supernova" for v1.x series under the cosmic versioning specification.
+
 ## [1.2.1] - 2026-10-10 (Sidebar Refinement & Onboarding)
 
 ### Added & Refined

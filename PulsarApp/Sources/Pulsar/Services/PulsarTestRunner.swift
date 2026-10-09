@@ -88,10 +88,11 @@ public final class PulsarTestRunner {
 
         // 7. Sürüm Kontrolü ve SemVer Karşılaştırma
         let updater = UpdateService.shared
-        assertTest(updater.currentVersion == "1.2.1", "UpdateService: v1.2.1 Güncel Versiyon")
-        assertTest(updater.isVersion("1.2.2", greaterThan: "1.2.1"), "SemVer: 1.2.2 > 1.2.1 Doğrulaması")
-        assertTest(!updater.isVersion("1.2.0", greaterThan: "1.2.1"), "SemVer: 1.2.0 < 1.2.1 Doğrulaması")
-        assertTest(!updater.isVersion("1.2.1", greaterThan: "1.2.1"), "SemVer: 1.2.1 == 1.2.1 Eşitlik Doğrulaması")
+        assertTest(updater.currentVersion == "1.2.2", "UpdateService: v1.2.2 Güncel Versiyon")
+        assertTest(updater.currentCodeName == "Supernova", "UpdateService: v1 Ailesi 'Supernova' Kod Adı")
+        assertTest(updater.isVersion("1.2.3", greaterThan: "1.2.2"), "SemVer: 1.2.3 > 1.2.2 Doğrulaması")
+        assertTest(!updater.isVersion("1.2.1", greaterThan: "1.2.2"), "SemVer: 1.2.1 < 1.2.2 Doğrulaması")
+        assertTest(!updater.isVersion("1.2.2", greaterThan: "1.2.2"), "SemVer: 1.2.2 == 1.2.2 Eşitlik Doğrulaması")
 
         // 8. İçerik Filtreleme Modu (ContentFilterMode)
         let sampleItems = [
@@ -149,6 +150,15 @@ public final class PulsarTestRunner {
         assertTest(mgr.recentArchives.count == 1 && !mgr.recentArchives.contains("/tmp/test1.zip"), "RecentArchives: Tek Öğe Kaldırma")
         mgr.clearRecentArchives()
         assertTest(mgr.recentArchives.isEmpty, "RecentArchives: Geçmişi Tamamen Temizleme")
+
+        // 13. Olay-Güdümlü (Event-Driven) HUD Yaşam Döngüsü
+        mgr.isHUDVisible = false
+        assertTest(!mgr.isHUDVisible, "Event-Driven HUD: Boşta İken Gizli")
+        let dummyTask = TaskProgress(title: "Test Extract", type: .extract, archivePath: "/tmp/test.zip")
+        mgr.startTask(dummyTask)
+        assertTest(mgr.isHUDVisible, "Event-Driven HUD: Görev Başlayınca Otomatik Görünür")
+        mgr.activeTasks.removeAll()
+        mgr.isHUDVisible = false
 
         print("--------------------------------------------------")
         print("📊 [TEST SONUCU] Toplam: \(passed + failed) | Başarılı: \(passed) | Hatalı: \(failed)")

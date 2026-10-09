@@ -1,15 +1,23 @@
-# 🌌 PULSAR
-### Next-Generation macOS Archive & Data Compression Ecosystem
-#### *Light-Speed Performance Powered by Apple Silicon, Native 7-Zip & WinRAR Engines*
+<p align="center">
+  <img src="assets/logo.png" width="128" height="128" alt="Pulsar macOS App Icon">
+</p>
+
+# <div align="center">🌌 PULSAR</div>
+<div align="center"><strong>Next-Generation macOS Archive & Data Compression Ecosystem</strong></div>
+<div align="center"><em>Light-Speed Performance Powered by Apple Silicon, Native 7-Zip & WinRAR Engines</em></div>
+
+<br>
+
+<div align="center">
 
 [![macOS](https://img.shields.io/badge/macOS-14.0%2B%20%7C%2015.0%2B-blue?logo=apple&style=for-the-badge)](https://apple.com)
 [![Architecture](https://img.shields.io/badge/Architecture-Apple%20Silicon%20(Universal%2FARM64)-cyan?style=for-the-badge)](https://apple.com)
-[![Version](https://img.shields.io/badge/Version-v1.2.1%20(Supernova)-8B5CF6?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-v1.2.2%20(Supernova)-8B5CF6?style=for-the-badge)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-> **GitHub Repository Description (0 / 350 characters):**  
-> `🚀 Fast, sci-fi themed archive manager for macOS powered by native 7-Zip & WinRAR engines. Supports 7z, RAR, ZIP, TAR, GZ, XZ, ISO, DMG and more with 3 layout modes, Warp Benchmark, instant cancellation, background HUD, and zero dependencies.`  
-> *(247 / 350 characters - Ready to use)*
+</div>
+
+> A high-performance, space-themed archive manager for macOS powered by native Apple Silicon 7-Zip & WinRAR engines. Supports 7z, RAR, ZIP, TAR, GZ, XZ, ISO, DMG, and more with 3 layout modes, dynamic system themes, and zero dependencies.
 
 ---
 
@@ -173,7 +181,7 @@ cd pulsar
 ./Scripts/package_dmg.sh
 ```
 
-The compiled release will be available at `dist/Pulsar-1.2.1-arm64.dmg`.
+The compiled release will be available at `dist/Pulsar-1.2.2-arm64.dmg`.
 
 ### Running Automated Stability Tests:
 ```bash
@@ -188,7 +196,7 @@ Executes all built-in unit tests verifying format detection, encryption, disk sa
 1. **Pushing Changes:**
    ```bash
    git push -u origin main
-   git push origin v1.2.1
+   git push origin v1.2.2
    ```
 
 2. **Automated CI/CD:**
