@@ -1,13 +1,25 @@
 import Foundation
 
-public final class RAREngine {
+public final class RAREngine: @unchecked Sendable {
     public static let shared = RAREngine()
     private let locator = EngineLocator.shared
+    private let lock = NSLock()
+    private var activeProcesses: [UUID: Process] = [:]
 
     private init() {}
 
+    /// Aktif bir RAR CLI sürecini sonlandırır
+    public func cancelProcess(for taskId: UUID) {
+        lock.lock()
+        let process = activeProcesses.removeValue(forKey: taskId)
+        lock.unlock()
+
+        process?.terminate()
+    }
+
     /// RARLAB resmi rar motoru ile yeni .rar arşivi oluşturur
     public func createArchive(
+        taskId: UUID = UUID(),
         at destinationPath: String,
         from sourcePaths: [String],
         preset: Preset,
@@ -51,8 +63,7 @@ public final class RAREngine {
         args.append(destinationPath)
         args.append(contentsOf: sourcePaths)
 
-        _ = try await runProcess(binary: binary, arguments: args) { line in
-            // Parse progress percentage if available
+        _ = try await runProcess(taskId: taskId, binary: binary, arguments: args) { line in
             if let pct = self.parsePercentage(from: line) {
                 progress?(pct, line)
             }
@@ -60,24 +71,30 @@ public final class RAREngine {
     }
 
     /// Bozuk veya hasarlı RAR arşivini kurtarma kaydıyla onarır
-    public func repairArchive(at archivePath: String) async throws -> (success: Bool, log: String) {
+    public func repairArchive(taskId: UUID = UUID(), at archivePath: String) async throws -> (success: Bool, log: String) {
         let binary = locator.pathForRar()
         let dir = (archivePath as NSString).deletingLastPathComponent
         let args = ["r", archivePath]
 
-        let output = try await runProcess(binary: binary, arguments: args, workingDirectory: dir)
+        let output = try await runProcess(taskId: taskId, binary: binary, arguments: args, workingDirectory: dir)
         let success = output.contains("Done") || output.contains("rebuilt") || output.contains("fixed")
         return (success, output)
     }
 
     /// RAR arşivini unrar ile çıkarır (Bozuk dosyaları koruma seçeneği ile)
     public func extract(
+        taskId: UUID = UUID(),
         archiveAt path: String,
         to destinationDirectory: String,
         password: String? = nil,
         keepBrokenFiles: Bool = true,
+        requiredDiskBytes: Int64 = 0,
         progress: ((Double, String) -> Void)? = nil
     ) async throws {
+        if requiredDiskBytes > 0 {
+            try DiskSpaceGuard.shared.validateSpace(forRequiredBytes: requiredDiskBytes, atDestination: destinationDirectory)
+        }
+
         let binary = locator.pathForUnrar()
         var args = ["x", "-y"]
 
@@ -96,7 +113,7 @@ public final class RAREngine {
         if !dest.hasSuffix("/") { dest += "/" }
         args.append(dest)
 
-        _ = try await runProcess(binary: binary, arguments: args) { line in
+        _ = try await runProcess(taskId: taskId, binary: binary, arguments: args) { line in
             if let pct = self.parsePercentage(from: line) {
                 progress?(pct, line)
             }
@@ -115,6 +132,7 @@ public final class RAREngine {
     }
 
     private func runProcess(
+        taskId: UUID? = nil,
         binary: String,
         arguments: [String],
         workingDirectory: String? = nil,
@@ -125,6 +143,8 @@ public final class RAREngine {
                 let process = Process()
                 process.executableURL = URL(fileURLWithPath: binary)
                 process.arguments = arguments
+                process.standardInput = FileHandle.nullDevice
+
                 if let wd = workingDirectory {
                     process.currentDirectoryURL = URL(fileURLWithPath: wd)
                 }
@@ -132,6 +152,12 @@ public final class RAREngine {
                 let pipe = Pipe()
                 process.standardOutput = pipe
                 process.standardError = pipe
+
+                if let tid = taskId {
+                    self.lock.lock()
+                    self.activeProcesses[tid] = process
+                    self.lock.unlock()
+                }
 
                 var fullOutput = ""
                 let handle = pipe.fileHandleForReading
@@ -153,8 +179,21 @@ public final class RAREngine {
                     process.waitUntilExit()
                     handle.readabilityHandler = nil
 
+                    if let tid = taskId {
+                        self.lock.lock()
+                        self.activeProcesses.removeValue(forKey: tid)
+                        self.lock.unlock()
+                    }
+
                     if process.terminationStatus == 0 || process.terminationStatus == 1 {
                         continuation.resume(returning: fullOutput)
+                    } else if process.terminationReason == .uncaughtSignal {
+                        let err = NSError(
+                            domain: "PulsarRAR",
+                            code: -999,
+                            userInfo: [NSLocalizedDescriptionKey: "İşlem kullanıcı tarafından iptal edildi."]
+                        )
+                        continuation.resume(throwing: err)
                     } else {
                         let err = NSError(
                             domain: "PulsarRAR",
@@ -164,6 +203,11 @@ public final class RAREngine {
                         continuation.resume(throwing: err)
                     }
                 } catch {
+                    if let tid = taskId {
+                        self.lock.lock()
+                        self.activeProcesses.removeValue(forKey: tid)
+                        self.lock.unlock()
+                    }
                     continuation.resume(throwing: error)
                 }
             }

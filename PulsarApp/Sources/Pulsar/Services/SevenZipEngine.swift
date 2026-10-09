@@ -1,10 +1,21 @@
 import Foundation
 
-public final class SevenZipEngine {
+public final class SevenZipEngine: @unchecked Sendable {
     public static let shared = SevenZipEngine()
     private let locator = EngineLocator.shared
+    private let lock = NSLock()
+    private var activeProcesses: [UUID: Process] = [:]
 
     private init() {}
+
+    /// Aktif bir CLI sürecini anında sonlandırır
+    public func cancelProcess(for taskId: UUID) {
+        lock.lock()
+        let process = activeProcesses.removeValue(forKey: taskId)
+        lock.unlock()
+
+        process?.terminate()
+    }
 
     /// Arşiv içeriğini listeler
     public func listArchive(at path: String, password: String? = nil) async throws -> [ArchiveItem] {
@@ -22,12 +33,19 @@ public final class SevenZipEngine {
 
     /// Arşivi çıkartır
     public func extract(
+        taskId: UUID = UUID(),
         archiveAt path: String,
         to destinationDirectory: String,
         selectedFiles: [String]? = nil,
         password: String? = nil,
+        requiredDiskBytes: Int64 = 0,
         progress: ((Double, String) -> Void)? = nil
     ) async throws {
+        // Disk alanı kontrolü
+        if requiredDiskBytes > 0 {
+            try DiskSpaceGuard.shared.validateSpace(forRequiredBytes: requiredDiskBytes, atDestination: destinationDirectory)
+        }
+
         let binary = locator.pathForSevenZip()
         var args = ["x", "-y", "-o\(destinationDirectory)", path]
         if let pwd = password, !pwd.isEmpty {
@@ -40,7 +58,7 @@ public final class SevenZipEngine {
             args.append(contentsOf: files)
         }
 
-        _ = try await runProcess(binary: binary, arguments: args) { line in
+        _ = try await runProcess(taskId: taskId, binary: binary, arguments: args) { line in
             if let pct = self.parsePercentage(from: line) {
                 progress?(pct, line)
             }
@@ -49,6 +67,7 @@ public final class SevenZipEngine {
 
     /// Yeni arşiv oluşturur
     public func createArchive(
+        taskId: UUID = UUID(),
         at destinationPath: String,
         from sourcePaths: [String],
         preset: Preset,
@@ -93,7 +112,7 @@ public final class SevenZipEngine {
 
         args.append(contentsOf: sourcePaths)
 
-        _ = try await runProcess(binary: binary, arguments: args) { line in
+        _ = try await runProcess(taskId: taskId, binary: binary, arguments: args) { line in
             if let pct = self.parsePercentage(from: line) {
                 progress?(pct, line)
             }
@@ -136,6 +155,7 @@ public final class SevenZipEngine {
 
     // MARK: - Process Runner
     private func runProcess(
+        taskId: UUID? = nil,
         binary: String,
         arguments: [String],
         onOutputLine: ((String) -> Void)? = nil
@@ -145,10 +165,18 @@ public final class SevenZipEngine {
                 let process = Process()
                 process.executableURL = URL(fileURLWithPath: binary)
                 process.arguments = arguments
+                // Donma koruması: stdin'i kapat
+                process.standardInput = FileHandle.nullDevice
 
                 let pipe = Pipe()
                 process.standardOutput = pipe
                 process.standardError = pipe
+
+                if let tid = taskId {
+                    self.lock.lock()
+                    self.activeProcesses[tid] = process
+                    self.lock.unlock()
+                }
 
                 var fullOutput = ""
                 let handle = pipe.fileHandleForReading
@@ -170,8 +198,21 @@ public final class SevenZipEngine {
                     process.waitUntilExit()
                     handle.readabilityHandler = nil
 
+                    if let tid = taskId {
+                        self.lock.lock()
+                        self.activeProcesses.removeValue(forKey: tid)
+                        self.lock.unlock()
+                    }
+
                     if process.terminationStatus == 0 || process.terminationStatus == 1 {
                         continuation.resume(returning: fullOutput)
+                    } else if process.terminationReason == .uncaughtSignal {
+                        let err = NSError(
+                            domain: "PulsarSevenZip",
+                            code: -999,
+                            userInfo: [NSLocalizedDescriptionKey: "İşlem kullanıcı tarafından iptal edildi."]
+                        )
+                        continuation.resume(throwing: err)
                     } else {
                         let err = NSError(
                             domain: "PulsarSevenZip",
@@ -181,6 +222,11 @@ public final class SevenZipEngine {
                         continuation.resume(throwing: err)
                     }
                 } catch {
+                    if let tid = taskId {
+                        self.lock.lock()
+                        self.activeProcesses.removeValue(forKey: tid)
+                        self.lock.unlock()
+                    }
                     continuation.resume(throwing: error)
                 }
             }

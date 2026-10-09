@@ -354,6 +354,7 @@ public struct CompressSheetView: View {
             do {
                 if finalPreset.format == .rar {
                     try await RAREngine.shared.createArchive(
+                        taskId: task.id,
                         at: dest,
                         from: vm.sourcePaths,
                         preset: finalPreset,
@@ -368,6 +369,7 @@ public struct CompressSheetView: View {
                     }
                 } else {
                     try await SevenZipEngine.shared.createArchive(
+                        taskId: task.id,
                         at: dest,
                         from: vm.sourcePaths,
                         preset: finalPreset,

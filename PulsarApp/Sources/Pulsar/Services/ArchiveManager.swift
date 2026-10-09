@@ -171,11 +171,35 @@ public final class ArchiveManager: ObservableObject {
         }
     }
 
+    // MARK: - Görev İptal Etme (Cancellation)
+    public func cancelTask(id: UUID) {
+        guard let task = activeTasks.first(where: { $0.id == id }) else { return }
+
+        // Motorlardaki arka plan sürecini sonlandır
+        sevenZip.cancelProcess(for: id)
+        rar.cancelProcess(for: id)
+
+        // Görevi iptal edildi olarak işaretle
+        if let idx = activeTasks.firstIndex(where: { $0.id == id }) {
+            activeTasks[idx].status = .failed("İşlem kullanıcı tarafından iptal edildi.")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.activeTasks.removeAll(where: { $0.id == id })
+            }
+        }
+
+        // Sıkıştırma işleminde yarım kalan bozuk dosyayı temizle
+        if task.type == .compress && !task.archivePath.isEmpty {
+            try? FileManager.default.removeItem(atPath: task.archivePath)
+        }
+    }
+
     // MARK: - Çıkarma İşlemi
     public func extractAll(to destinationFolder: String? = nil) {
         guard let archive = currentArchivePath else { return }
         let dest = destinationFolder ?? (archive as NSString).deletingPathExtension
         try? FileManager.default.createDirectory(atPath: dest, withIntermediateDirectories: true)
+
+        let totalUncompressedBytes = allItems.reduce(0) { $0 + $1.size }
 
         let task = TaskProgress(
             title: "Arşiv Çıkarılıyor",
@@ -187,11 +211,21 @@ public final class ArchiveManager: ObservableObject {
         Task {
             do {
                 if currentFormat == .rar {
-                    try await rar.extract(archiveAt: archive, to: dest) { pct, line in
+                    try await rar.extract(
+                        taskId: task.id,
+                        archiveAt: archive,
+                        to: dest,
+                        requiredDiskBytes: totalUncompressedBytes
+                    ) { pct, line in
                         self.updateTaskProgress(id: task.id, percent: pct, file: line)
                     }
                 } else {
-                    try await sevenZip.extract(archiveAt: archive, to: dest) { pct, line in
+                    try await sevenZip.extract(
+                        taskId: task.id,
+                        archiveAt: archive,
+                        to: dest,
+                        requiredDiskBytes: totalUncompressedBytes
+                    ) { pct, line in
                         self.updateTaskProgress(id: task.id, percent: pct, file: line)
                     }
                 }
@@ -211,8 +245,11 @@ public final class ArchiveManager: ObservableObject {
 
     public func extractSelected(to destinationFolder: String) {
         guard let archive = currentArchivePath else { return }
-        let selectedFiles = allItems.filter { selectedItemIds.contains($0.id) }.map { $0.path }
+        let selectedItems = allItems.filter { selectedItemIds.contains($0.id) }
+        let selectedFiles = selectedItems.map { $0.path }
         guard !selectedFiles.isEmpty else { return }
+
+        let selectedBytes = selectedItems.reduce(0) { $0 + $1.size }
 
         let task = TaskProgress(
             title: "\(selectedFiles.count) Dosya Çıkarılıyor",
@@ -223,7 +260,13 @@ public final class ArchiveManager: ObservableObject {
 
         Task {
             do {
-                try await sevenZip.extract(archiveAt: archive, to: destinationFolder, selectedFiles: selectedFiles) { pct, line in
+                try await sevenZip.extract(
+                    taskId: task.id,
+                    archiveAt: archive,
+                    to: destinationFolder,
+                    selectedFiles: selectedFiles,
+                    requiredDiskBytes: selectedBytes
+                ) { pct, line in
                     self.updateTaskProgress(id: task.id, percent: pct, file: line)
                 }
 
@@ -248,6 +291,7 @@ public final class ArchiveManager: ObservableObject {
 
         let tempDir = NSTemporaryDirectory().appending("PulsarPreview_\(UUID().uuidString)")
         try? FileManager.default.createDirectory(atPath: tempDir, withIntermediateDirectories: true)
+        TempCacheManager.shared.registerTempDirectory(tempDir)
 
         Task {
             do {

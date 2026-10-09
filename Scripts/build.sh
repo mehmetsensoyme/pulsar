@@ -74,4 +74,8 @@ cat << 'EOF' > "$BUNDLE_DIR/Contents/Info.plist"
 </plist>
 EOF
 
+# Kod İmzalama (Ad-Hoc)
+echo "🔏 [Codesign] Ad-hoc kod imzalama uygulanıyor..."
+codesign --force --deep --sign - "$BUNDLE_DIR"
+
 echo "✨ [PULSAR] Başarıyla derlendi ve paketlendi: $BUNDLE_DIR"

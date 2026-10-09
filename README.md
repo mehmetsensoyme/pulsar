@@ -7,6 +7,10 @@
 [![Version](https://img.shields.io/badge/Version-v1.0.0%20(Event%20Horizon)-8B5CF6?style=for-the-badge)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
+> **GitHub Repository Description (0 / 350 characters):**  
+> `🚀 Fast, sci-fi themed archive manager for macOS powered by native 7-Zip & WinRAR engines. Supports 7z, RAR, ZIP, TAR, GZ, XZ, ISO, DMG and more with 3 layout modes, Warp Benchmark, instant cancellation, background HUD, and zero dependencies.`  
+> *(247 / 350 karakter - Tam hazır)*
+
 ---
 
 ## 🖥️ Uygulama Ekranları ve UX Vitrini / Screen Showcase & Visual Tour
@@ -137,7 +141,7 @@ Pulsar, çift motorlu altyapısı sayesinde sektör standardı tüm formatları 
 ### Tek Komutla Derleme:
 ```bash
 # 1. Projeyi klonlayın
-git clone https://github.com/USERNAME/pulsar.git
+git clone https://github.com/mehmetsensoyme/pulsar.git
 cd pulsar
 
 # 2. Pulsar.app paketini derleyin
@@ -157,7 +161,7 @@ Pulsar'ı kendi GitHub hesabınızda yayınlamak için:
 
 1. **Uzak Depoyu Ekleyin:**
    ```bash
-   git remote add origin https://github.com/KULLANICI_ADINIZ/pulsar.git
+   git remote add origin https://github.com/mehmetsensoyme/pulsar.git
    git push -u origin main
    ```
 
@@ -172,7 +176,7 @@ Pulsar'ı kendi GitHub hesabınızda yayınlamak için:
    * Repo ayarlarınızda **Settings ➔ Pages** sekmesine gidin.
    * **Source:** `Deploy from a branch`
    * **Branch:** `main` | **Folder:** `/Website` seçip kaydedin.
-   * Siteniz `https://KULLANICI_ADINIZ.github.io/pulsar` adresinde canlıya geçer!
+   * Siteniz `https://mehmetsensoyme.github.io/pulsar` adresinde canlıya geçer!
 
 ---
 

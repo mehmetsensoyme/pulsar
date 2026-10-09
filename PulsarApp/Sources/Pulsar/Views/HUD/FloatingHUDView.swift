@@ -87,6 +87,20 @@ public struct FloatingHUDView: View {
                             .font(.system(size: 9))
                             .foregroundColor(.secondary)
                     }
+
+                    Button(action: {
+                        manager.cancelTask(id: task.id)
+                    }) {
+                        Text("İptal Et")
+                            .font(.system(size: 9, weight: .bold))
+                            .foregroundColor(.red)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 2)
+                            .background(Color.red.opacity(0.12))
+                            .cornerRadius(4)
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.top, 2)
                 }
             } else {
                 // Boşta: Hızlı Bırakma Alanı (Drop-Zone)

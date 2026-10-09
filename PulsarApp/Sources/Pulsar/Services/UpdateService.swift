@@ -29,7 +29,7 @@ public final class UpdateService: ObservableObject {
             version: "1.0.0",
             codeName: "Event Horizon",
             releaseDate: "Ekim 2026",
-            downloadUrl: "https://github.com/pulsar-archive/pulsar/releases/latest",
+            downloadUrl: "https://github.com/mehmetsensoyme/pulsar/releases/latest",
             releaseNotes: [
                 "Apple Silicon M4/M3/M2 yerel 7-Zip (7zz 26.04) ve WinRAR motor entegrasyonu",
                 "3 Değiştirilebilir Görünüm: Modern 3-Bölmeli, Kompakt Liste, Sekmeli Stüdyo",

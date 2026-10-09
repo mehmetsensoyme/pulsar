@@ -7,7 +7,7 @@ on:
     branches: [ main, master ]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: macos-14
 
     steps:
@@ -16,10 +16,9 @@ jobs:
 
     - name: Build 7-Zip Native Engine
       run: |
-        chmod +x Scripts/build.sh
+        chmod +x Scripts/build.sh Scripts/run_tests.sh
         Scripts/build.sh
 
-    - name: Run Pulsar Verification
+    - name: Run Automated Stability & Functionality Tests
       run: |
-        file build/Pulsar.app/Contents/MacOS/Pulsar
-        build/Pulsar.app/Contents/Resources/bin/7zz --help | head -n 5
+        Scripts/run_tests.sh

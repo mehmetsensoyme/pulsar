@@ -1,12 +1,25 @@
 import SwiftUI
+import AppKit
+
+final class AppDelegate: NSObject, NSApplicationDelegate {
+    func applicationWillTerminate(_ notification: Notification) {
+        TempCacheManager.shared.cleanupAllTempDirectories()
+    }
+}
 
 @main
 struct PulsarApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var manager = ArchiveManager.shared
     @StateObject private var settings = PulsarSettings.shared
     @StateObject private var updater = UpdateService.shared
 
     init() {
+        if CommandLine.arguments.contains("--run-tests") {
+            let success = PulsarTestRunner.runAllTests()
+            exit(success ? 0 : 1)
+        }
+
         // Otomatik Klasör İzleyici aktifse başlat
         if PulsarSettings.shared.enableFolderWatcher {
             FolderWatcherService.shared.startWatching(path: PulsarSettings.shared.folderWatcherPath)
