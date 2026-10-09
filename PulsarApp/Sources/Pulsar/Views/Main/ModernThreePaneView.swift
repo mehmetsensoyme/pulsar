@@ -320,6 +320,21 @@ public struct FileTableView: View {
                             Button("Önizle (QuickLook)") {
                                 manager.openOrPreviewItem(firstItem)
                             }
+
+                            if !firstItem.isDirectory {
+                                Menu("Şununla Aç...") {
+                                    Button("Metin Düzenleyici (TextEdit)") {
+                                        manager.openWithApp(item: firstItem, appBundleId: "com.apple.TextEdit")
+                                    }
+                                    Button("Önizleme (Preview)") {
+                                        manager.openWithApp(item: firstItem, appBundleId: "com.apple.Preview")
+                                    }
+                                    Divider()
+                                    Button("Diğer Uygulama Seç...") {
+                                        manager.openWithCustomApp(item: firstItem)
+                                    }
+                                }
+                            }
                         }
 
                         Button("Seçileni Çıkar...") {

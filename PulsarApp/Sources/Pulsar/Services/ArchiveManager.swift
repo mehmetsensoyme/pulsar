@@ -382,6 +382,67 @@ public final class ArchiveManager: ObservableObject {
         }
     }
 
+    // MARK: - Şununla Aç (Open With)
+    public func openWithApp(item: ArchiveItem, appBundleId: String) {
+        guard !item.isDirectory, let archive = currentArchivePath else { return }
+        let tempDir = NSTemporaryDirectory().appending("PulsarOpenWith_\(UUID().uuidString)")
+        try? FileManager.default.createDirectory(atPath: tempDir, withIntermediateDirectories: true)
+        TempCacheManager.shared.registerTempDirectory(tempDir)
+
+        Task {
+            do {
+                try await sevenZip.extract(archiveAt: archive, to: tempDir, selectedFiles: [item.path])
+                let extractedFilePath = (tempDir as NSString).appendingPathComponent(item.path)
+                let url = URL(fileURLWithPath: extractedFilePath)
+
+                await MainActor.run {
+                    if let appUrl = NSWorkspace.shared.urlForApplication(withBundleIdentifier: appBundleId) {
+                        NSWorkspace.shared.open([url], withApplicationAt: appUrl, configuration: NSWorkspace.OpenConfiguration()) { _, _ in }
+                    } else {
+                        NSWorkspace.shared.open(url)
+                    }
+                }
+            } catch {
+                await MainActor.run {
+                    self.errorMessage = "Dosya açılamadı: \(error.localizedDescription)"
+                }
+            }
+        }
+    }
+
+    public func openWithCustomApp(item: ArchiveItem) {
+        guard !item.isDirectory, let archive = currentArchivePath else { return }
+        let panel = NSOpenPanel()
+        panel.directoryURL = URL(fileURLWithPath: "/Applications")
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = false
+        panel.prompt = "Aç"
+        panel.message = "\(item.name) dosyasını açmak için bir uygulama seçin"
+
+        if panel.runModal() == .OK, let appUrl = panel.url {
+            let tempDir = NSTemporaryDirectory().appending("PulsarOpenWith_\(UUID().uuidString)")
+            try? FileManager.default.createDirectory(atPath: tempDir, withIntermediateDirectories: true)
+            TempCacheManager.shared.registerTempDirectory(tempDir)
+
+            Task {
+                do {
+                    try await sevenZip.extract(archiveAt: archive, to: tempDir, selectedFiles: [item.path])
+                    let extractedFilePath = (tempDir as NSString).appendingPathComponent(item.path)
+                    let url = URL(fileURLWithPath: extractedFilePath)
+
+                    await MainActor.run {
+                        NSWorkspace.shared.open([url], withApplicationAt: appUrl, configuration: NSWorkspace.OpenConfiguration()) { _, _ in }
+                    }
+                } catch {
+                    await MainActor.run {
+                        self.errorMessage = "Dosya açılamadı: \(error.localizedDescription)"
+                    }
+                }
+            }
+        }
+    }
+
     // MARK: - Düzenleme Modu İşlemleri
     public func deleteSelectedItems() {
         guard isEditingUnlocked, let archive = currentArchivePath else { return }

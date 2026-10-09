@@ -53,7 +53,34 @@ public struct TabbedStudioView: View {
                                 manager.activeTabIndex = index
                                 manager.openArchive(at: path)
                             }
+                            .contextMenu {
+                                Button("Sekmeyi Kapat") {
+                                    closeTab(at: index)
+                                }
+                                Button("Sekmeyi Çoğalt") {
+                                    duplicateTab(at: index)
+                                }
+                                Divider()
+                                Button("Diğer Sekmeleri Kapat") {
+                                    closeOtherTabs(except: index)
+                                }
+                            }
                         }
+
+                        // Safari Tarzı Yeni Sekme Butonu (+)
+                        Button(action: {
+                            openNewTab()
+                        }) {
+                            Image(systemName: "plus")
+                                .font(.system(size: 11, weight: .semibold))
+                                .foregroundColor(.secondary)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 6)
+                                .background(Color.primary.opacity(0.04))
+                                .cornerRadius(6)
+                        }
+                        .buttonStyle(.plain)
+                        .help("Yeni Sekmede Arşiv Aç (⌘T)")
                     }
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
@@ -65,6 +92,30 @@ public struct TabbedStudioView: View {
             // Sekme İçeriği
             ModernThreePaneView()
         }
+    }
+
+    private func openNewTab() {
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        panel.prompt = "Sekmede Aç"
+        if panel.runModal() == .OK, let url = panel.url {
+            manager.openArchive(at: url.path)
+        }
+    }
+
+    private func duplicateTab(at index: Int) {
+        guard index < manager.openTabs.count else { return }
+        let path = manager.openTabs[index]
+        manager.openTabs.insert(path, at: index + 1)
+        manager.activeTabIndex = index + 1
+    }
+
+    private func closeOtherTabs(except keepIndex: Int) {
+        guard keepIndex < manager.openTabs.count else { return }
+        let keepPath = manager.openTabs[keepIndex]
+        manager.openTabs = [keepPath]
+        manager.activeTabIndex = 0
     }
 
     private func closeTab(at index: Int) {

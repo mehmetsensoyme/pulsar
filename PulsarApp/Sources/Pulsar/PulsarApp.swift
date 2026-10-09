@@ -103,6 +103,18 @@ struct PulsarApp: App {
                 }
                 .keyboardShortcut("O", modifiers: .command)
 
+                Button("Yeni Sekmede Arşiv Aç...") {
+                    let panel = NSOpenPanel()
+                    panel.allowsMultipleSelection = false
+                    panel.canChooseDirectories = false
+                    panel.prompt = "Sekmede Aç"
+                    if panel.runModal() == .OK, let url = panel.url {
+                        manager.currentLayoutMode = .tabbedStudio
+                        manager.openArchive(at: url.path)
+                    }
+                }
+                .keyboardShortcut("t", modifiers: .command)
+
                 Divider()
 
                 Button("Arşivi Kapat") {
