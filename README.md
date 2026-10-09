@@ -1,6 +1,6 @@
 # 🌌 PULSAR
 ### Next-Generation macOS Archive & Data Compression Ecosystem
-#### *Light-Speed Performance Powered by Apple Silicon, 7-Zip Native & WinRAR Engines*
+#### *Light-Speed Performance Powered by Apple Silicon, Native 7-Zip & WinRAR Engines*
 
 [![macOS](https://img.shields.io/badge/macOS-14.0%2B%20%7C%2015.0%2B-blue?logo=apple&style=for-the-badge)](https://apple.com)
 [![Architecture](https://img.shields.io/badge/Architecture-Apple%20Silicon%20(Universal%2FARM64)-cyan?style=for-the-badge)](https://apple.com)
@@ -9,177 +9,186 @@
 
 > **GitHub Repository Description (0 / 350 characters):**  
 > `🚀 Fast, sci-fi themed archive manager for macOS powered by native 7-Zip & WinRAR engines. Supports 7z, RAR, ZIP, TAR, GZ, XZ, ISO, DMG and more with 3 layout modes, Warp Benchmark, instant cancellation, background HUD, and zero dependencies.`  
-> *(247 / 350 karakter - Tam hazır)*
+> *(247 / 350 characters - Ready to use)*
 
 ---
 
-## 🖥️ Uygulama Ekranları ve UX Vitrini / Screen Showcase & Visual Tour
+## 🖥️ Screen Showcase & Visual Tour
 
-Pulsar, macOS Sonoma ve Sequoia Human Interface Guidelines (HIG) ilkelerine tam uyumlu; yarı saydam canlı cam (Liquid Glass/Vibrancy), SF Symbols ve dinamik nötron ışımaları ile tasarlanmıştır.
+Pulsar is designed strictly adhering to macOS Sonoma & Sequoia Human Interface Guidelines (HIG), featuring translucent Liquid Glass / Vibrancy, SF Symbols, and dynamic neutron glow aesthetics.
 
 ```
 +---------------------------------------------------------------------------------------------------------+
-|  [● ● ●]   [ Görünüm: 3-Bölmeli | Kompakt | Sekmeli ]   [ ⤒ Çıkar ]  [ + Yeni ]  [ 🔒 Salt Okunur ] ...  |
+|  [● ● ●]   [ View: 3-Pane | Compact | Tabbed ]   [ ⤒ Extract ]  [ + New ]  [ 🔒 Read-Only ] ...         |
 +---------------------------------------------------------------------------------------------------------+
-|  GEZİNME             |  📁 Kök > Kaynak_Kodlar > Models                 |  [ İNCELEME & DETAY PANELİ ]  |
+|  NAVIGATION          |  📁 Root > Source_Codes > Models                 |  [ INSPECTOR & DETAILS ]      |
 |  ------------------- |  ----------------------------------------------- |  ---------------------------  |
-|  📂 Tüm İçerik       |  📁 Models              --          --       --  |            📄                 |
-|  📄 Sadece Dosyalar  |  📄 ArchiveFormat.swift 3.4 KB      1.1 KB  %68 |       ArchiveFormat.swift     |
-|                      |  📄 ArchiveItem.swift   4.2 KB      1.2 KB  %71 |       [ SWIFT SOURCE ]        |
-|  SON ARŞİVLER        |  📄 TaskProgress.swift  2.1 KB      0.7 KB  %66 |                               |
-|  ------------------- |  📄 Preset.swift        2.8 KB      0.9 KB  %67 |  Orijinal:      3.4 KB        |
-|  📦 Proje_2026.7z    |  ⚙️ 7zz                 2.68 MB     1.1 MB  %59 |  Sıkıştırılmış: 1.1 KB        |
-|  📦 Yedek_Paket.rar  |                                                 |  Oran:          %67.6         |
+|  📂 All Items        |  📁 Models              --          --       --  |            📄                 |
+|  📄 Files Only       |  📄 ArchiveFormat.swift 3.4 KB      1.1 KB   68% |       ArchiveFormat.swift     |
+|                      |  📄 ArchiveItem.swift   4.2 KB      1.2 KB   71% |       [ SWIFT SOURCE ]        |
+|  RECENT ARCHIVES     |  📄 TaskProgress.swift  2.1 KB      0.7 KB   66% |                               |
+|  ------------------- |  📄 Preset.swift        2.8 KB      0.9 KB   67% |  Original:      3.4 KB        |
+|  📦 Project_2026.7z  |  ⚙️ 7zz                 2.68 MB     1.1 MB   59% |  Compressed:    1.1 KB        |
+|  📦 Backup_Pack.rar  |                                                 |  Ratio:         67.6%         |
 |  📦 Windows.zip      |                                                 |  CRC32:         E4F91B02      |
 |                      |                                                 |  ---------------------------  |
-|  SİSTEM MODÜLLERİ    |                                                 |  [ 👁 Önizle ]  [ ⤒ Çıkar ]    |
-|  ⚡ Warp Benchmark  |                                                 |                               |
-|  🌌 Kara Delik       |                                                 |                               |
-|  🔧 Kurtarma         |                                                 |    +---------------------+    |
+|  SYSTEM MODULES      |                                                 |  [ 👁 Preview ] [ ⤒ Extract ]  |
+|  ⚡ Warp Benchmark   |                                                 |                               |
+|  🌌 Black Hole       |                                                 |                               |
+|  🔧 Repair Station   |                                                 |    +---------------------+    |
 |                      |                                                 |    | 🛸 PULSAR HUD  [x]  |    |
-|                      |                                                 |    |    ( %84 )          |    |
-|                      |                                                 |    |    124.5 MB/s       |    |
+|                      |                                                 |    |       ( 84% )       |    |
+|                      |                                                 |    |      124.5 MB/s     |    |
 |                      |                                                 |    +---------------------+    |
 +---------------------------------------------------------------------------------------------------------+
 ```
 
 ---
 
-### 1. Ana Tarayıcı ve 3 Değiştirilebilir Düzen (`⌘1`, `⌘2`, `⌘3`)
+### 1. Main Browser with 3 Switchable Layouts (`⌘1`, `⌘2`, `⌘3`)
 
-Pulsar, her kullanıcının çalışma tarzına uyum sağlayan 3 bağımsız arayüz modu sunar:
+Pulsar adapts to your workflow with three dedicated presentation modes:
 
-* **Mod 1: Modern 3-Bölmeli Düzen (Inspector - `⌘1`)**:
-  * **Sol Panel (Sidebar):** Son açılan arşivler listesi, sık kullanılanlar ve sistem modüllerine (Warp Benchmark, Kara Delik, Kurtarma İstasyonu) tek tıkla hızlı erişim.
-  * **Orta Panel (Browser):** Tıklanabilir ekmek kırıntısı (Breadcrumbs) ile arşiv içi derin klasörlerde gezinme, dosya adı, sıkıştırılmış boyut, orijinal boyut, sıkıştırma oranı ve tarih tablosu. Çift tıkla klasöre girme veya dosya önizleme.
-  * **Sağ Panel (Inspector):** Seçili dosyanın canlı QuickLook önizlemesi, dosya türü rozeti, CRC32 sağlama toplamı, izinler ve `[Önizle]` / `[Çıkar]` hızlı aksiyon butonları.
-* **Mod 2: Kompakt Klasik Liste (Finder / WinRAR Stili - `⌘2`)**:
-  * Yan panelleri gizleyerek tüm ekranı yüksek bilgi yoğunluklu dosya hiyerarşisine ayırır. Yüzlerce dosyayı hızlıca taramak isteyen profesyoneller için idealdir.
-* **Mod 3: Sekmeli Stüdyo (Tabbed Studio - `⌘3`)**:
-  * Aynı anda birden çok arşivi sekmeler halinde açık tutar. Sekmeler arasında dosya sürükleyip bırakarak bir arşivden diğerine anında dosya aktarımı yapabilirsiniz.
-
----
-
-### 2. Çift Modlu Güvenlik Kilidi (Safe Lock UX - `⌘L`)
-
-* **🔒 Salt Okunur Mod (Varsayılan)**: Arşivin kazara değiştirilmesini, bozulmasını veya üzerine yazılmasını engeller. Çift tıklanan dosyalar güvenli sanal sandbox alanında açılır.
-* **🔓 Canlı Düzenleme Modu**: Araç çubuğundaki kilit butonuna tıklandığında aktifleşir. Finder'dan doğrudan açık arşiv penceresine dosya sürükleyip ekleyebilir (`⌘N`), seçili dosyaları arşivden silebilir (`Delete`) veya harici programda düzenlenen dosyaları anında arşive geri yazabilirsiniz.
+* **Mode 1: Modern 3-Pane Layout (Inspector - `⌘1`)**:
+  * **Sidebar:** Quick access to recently opened archives, favorites, and sci-fi system modules (Warp Benchmark, Black Hole, Repair Station).
+  * **Browser (Center):** Interactive breadcrumbs for deep directory traversal, detailed table view showing name, compressed size, uncompressed size, compression ratio, and modification date. Double-click to traverse folders or preview files.
+  * **Inspector (Right):** Live QuickLook preview pane, format badge, CRC32 checksum verification, file permissions, and instant action buttons (`Preview` / `Extract`).
+* **Mode 2: Compact Classic List (Finder / WinRAR Style - `⌘2`)**:
+  * Hides auxiliary sidebars to prioritize high information density. Perfect for power users scanning through archives with hundreds of files.
+* **Mode 3: Tabbed Studio (`⌘3`)**:
+  * Manage multiple open archives simultaneously across clean tabs. Effortlessly drag-and-drop files across tabs to copy between archives.
 
 ---
 
-### 3. Yüzen Mini Panel (Floating HUD / Widget - `⌘⇧H`)
+### 2. Dual-Mode Safe Lock UX (`⌘L`)
 
-* Ekranın 4 köşesinden birine mıknatıslanarak sabitlenebilen veya serbest taşınabilen yarı saydam kompakt widget kartı.
-* **Akıllı Drop-Zone:** Üzerine masaüstünden herhangi bir dosya veya klasör bırakıldığında en son kullanılan önayarla (varsayılan: Windows Dostu Temiz ZIP) anında arka planda sıkıştırır.
-* **Canlı Nötron Halkası:** Aktif sıkıştırma/çıkarma işlemlerini dairesel yüzde animasyonu, MB/s anlık transfer hızı ve kalan süre göstergesi ile takip eder.
-
----
-
-### 4. Sıkıştırma Konfigüratörü & "Windows Dostu" Filtre
-
-Yeni arşiv oluştururken 3 farklı seviyede kontrol:
-1. **Akıllı Önayarlar (Presets):** Tek tıkla "Windows Uyumlu Temiz ZIP", "7-Zip Ultra Maksimum", "Hızlı Paylaşım ZIP", "RAR 100MB Parçalı Arşiv".
-2. **Adım Adım Sihirbaz (Wizard):** 3 adımlı rehber (1. Format ➔ 2. Güvenlik & Parola ➔ 3. Hedef Konum).
-3. **Uzman Kontrol Paneli:** Sözlük boyutu, CPU çekirdek sayısı (threads), katı blok (solid) sıkıştırma, ciltlere bölme boyutu (volume split) ve AES-256 şifreleme parametreleri.
-4. **Temiz Mac Filtresi:** macOS'un oluşturduğu `.DS_Store`, AppleDouble `._*` ve `__MACOSX` gizli metadata artıklarını otomatik ayıklar; Windows kullanıcılarına temiz dosya iletir.
+* **🔒 Read-Only Mode (Default)**: Prevents accidental archive corruption or unwanted modifications. Double-clicked files are unpacked into temporary isolated sandbox directories for safe viewing.
+* **🔓 Live Edit Mode**: Activated via the toolbar lock button. Allows dragging new files directly into the active archive (`⌘N`), deleting items (`Delete`), or writing updated content back to the archive on the fly.
 
 ---
 
-### 5. Bilim Kurgu Modülleri
+### 3. Floating Mini Widget (Floating HUD - `⌘⇧H`)
 
-#### ⚡ Pulsar Warp Core (Apple Silicon Donanım Hız Testi - `⌘⇧B`)
-Apple Silicon çipinizin (M1/M2/M3/M4 Pro/Max/Ultra) tüm performans ve verimlilik çekirdeklerini çalıştırır. Yerleşik multithreaded 7-Zip motorunu koşturarak gerçek zamanlı **MIPS** (Million Instructions Per Second) ve saniyelik veri akışını hesaplar; uzay temalı dairesel hız göstergesiyle raporlar.
-
-#### 🌌 Kara Delik Klasör İzleyici (Black Hole Folder Watcher)
-macOS `FSEvents` API'si ile `~/Downloads` klasörünüzü arka planda gözlemler. Yeni bir `.zip`, `.rar`, `.7z`, `.tar.gz` dosyası indirildiği anda arşivi otomatik olarak kendi adındaki klasöre açar, tercihe göre orijinal arşivi Çöp Sepetine taşır ve yerel macOS sesli bildirimi gönderir.
-
-#### 🔧 Arşiv Kurtarma İstasyonu (Archive Repair Station)
-Bozuk, CRC hatalı veya eksik inmiş RAR arşivlerini WinRAR dahili **Kurtarma Kaydı (Recovery Record)** algoritması ile tarar ve hasarlı sektörleri onararak `rebuilt.arşiv_adı.rar` olarak yeniden inşa eder.
+* A translucent, magnetic HUD card that can be docked to any screen corner or positioned freely.
+* **Smart Drop-Zone:** Drag any file or folder from your desktop onto the widget to instantly compress it in the background using your active preset (default: Clean Windows ZIP).
+* **Live Neutron Ring:** Visual circular progress ring, real-time MB/s throughput telemetry, and estimated time remaining (ETA).
 
 ---
 
-## 🌌 Evrensel Format Galaksisi / Supported Formats
+### 4. Advanced Compression Studio & "Clean Mac" Filter
 
-Pulsar, çift motorlu altyapısı sayesinde sektör standardı tüm formatları destekler:
+Three tailored levels of compression control:
+1. **Smart Presets:** One-click presets for "Windows-Friendly Clean ZIP", "7-Zip Ultra Maximum", "Fast Share ZIP", and "RAR 100MB Multi-Volume".
+2. **Step-by-Step Wizard:** 3-step guided flow (1. Format ➔ 2. Encryption & Passwords ➔ 3. Destination).
+3. **Expert Control Panel:** Dictionary size, CPU thread allocation, solid block grouping, multi-volume splitting, and AES-256 encryption.
+4. **Clean Mac Filter:** Automatically purges macOS metadata residues (`.DS_Store`, AppleDouble `._*`, `__MACOSX`) so archives shared with Windows users remain clean and junk-free.
 
-| Kategori | Desteklenen Dosya Uzantıları | Motor | Özellikler |
+---
+
+### 5. Sci-Fi System Modules
+
+#### ⚡ Pulsar Warp Core (Apple Silicon Benchmark - `⌘⇧B`)
+Maxes out all Performance and Efficiency cores on your Apple Silicon chip (M1/M2/M3/M4 Pro/Max/Ultra). Runs native multithreaded 7-Zip benchmark routines to calculate real-time **MIPS** (Million Instructions Per Second) and data bandwidth, visualized via a circular sci-fi tachometer.
+
+#### 🌌 Black Hole Folder Watcher
+Monitors your `~/Downloads` directory via macOS `FSEvents`. Automatically extracts incoming `.zip`, `.rar`, `.7z`, and `.tar.gz` archives into organized destination folders, optionally moves source archives to Trash, and delivers native macOS notifications.
+
+#### 🔧 Archive Repair Station
+Scans damaged, CRC-mismatched, or incomplete RAR archives using WinRAR's built-in **Recovery Record** algorithms, reconstructing corrupted sectors into `rebuilt.filename.rar`.
+
+---
+
+## 🛡️ Stability & Security Safeguards
+
+* **Anti-Hang Protection:** Subprocesses are detached from interactive STDIN pipes (`FileHandle.nullDevice`), preventing CLI tools from hanging indefinitely on prompts.
+* **Instant Cancellation:** Real-time PID tracking in `SevenZipEngine` and `RAREngine` allows instant task termination and automatic cleanup of partial files.
+* **Pre-Flight Disk Capacity Guard (`DiskSpaceGuard`):** Calculates volume headroom before extraction or compression, halting execution if available space is insufficient.
+* **Sandbox Cache Lifecycle (`TempCacheManager`):** Guarantees zero disk residue by automatically purging temporary QuickLook preview folders on archive closure or application exit.
+
+---
+
+## 🌌 Universal Format Galaxy / Supported Formats
+
+| Category | Supported Extensions | Engine | Capabilities |
 | :--- | :--- | :--- | :--- |
-| **Tam Okuma & Yazma** | `.7z`, `.zip`, `.tar`, `.gz`, `.bz2`, `.xz` | 7-Zip ARM64 | AES-256, Katı Blok, Çoklu Çekirdek |
-| **Resmi WinRAR** | `.rar` | WinRAR CLI | Oluşturma, Açma, Kurtarma Kaydı Onarımı |
-| **Yeni Nesil Hız** | `.zst`, `.zstd`, `.tzst`, `.lzma` | 7-Zip ARM64 | Ultra Yüksek Hızlı Zstandard Algoritması |
-| **Paket & İmajlar** | `.iso`, `.img`, `.dmg`, `.wim`, `.swm`, `.esd` | 7-Zip ARM64 | Disk Kalıplarını ve İmajlarını İnceleme/Çıkarma |
-| **Sistem & Dağıtım** | `.rpm`, `.deb`, `.cpio`, `.xar`, `.pkg` | 7-Zip ARM64 | Linux ve macOS Paketlerini İnceleme/Açma |
-| **Eski & Özel** | `.cab`, `.arj`, `.lzh`, `.lha`, `.chm`, `.001` | 7-Zip ARM64 | Arşiv ve Parçalı Dosya Desteği |
+| **Full Read & Write** | `.7z`, `.zip`, `.tar`, `.gz`, `.bz2`, `.xz` | 7-Zip ARM64 | AES-256, Solid Block, Multi-threading |
+| **Official WinRAR** | `.rar` | WinRAR CLI | Creation, Extraction, Recovery Record Repair |
+| **Next-Gen Speed** | `.zst`, `.zstd`, `.tzst`, `.lzma` | 7-Zip ARM64 | High-Speed Zstandard Decompression |
+| **Packages & Images** | `.iso`, `.img`, `.dmg`, `.wim`, `.swm`, `.esd` | 7-Zip ARM64 | Disk Image Browsing & Extraction |
+| **System & Distribution**| `.rpm`, `.deb`, `.cpio`, `.xar`, `.pkg` | 7-Zip ARM64 | Linux & macOS Package Inspection |
+| **Legacy & Multi-Volume** | `.cab`, `.arj`, `.lzh`, `.lha`, `.chm`, `.001` | 7-Zip ARM64 | Split & Vintage Archive Extraction |
 
 ---
 
-## ⌨️ Klavye Kısayolları / Keyboard Shortcuts
+## ⌨️ Keyboard Shortcuts
 
-| Kısayol | Eylem |
+| Shortcut | Action |
 | :--- | :--- |
-| `⌘1` | Modern 3-Bölmeli Düzen (Inspector) |
-| `⌘2` | Kompakt Liste Düzeni |
-| `⌘3` | Sekmeli Stüdyo Düzeni |
-| `⌘⇧H` | Yüzen HUD Mini Paneli Göster / Gizle |
-| `⌘L` | Güvenlik Kilidini Aç / Kapat (Salt Okunur vs Düzenleme) |
-| `⌘N` | Yeni Arşiv Oluştur (Sıkıştırma Paneli) |
-| `⌘O` | Arşiv Aç |
-| `⌘E` | Açık Arşivin Tümünü Çıkar |
-| `⌘⇧B` | Pulsar Warp Core Hız Testini Aç |
-| `Space` | Seçili Dosyayı Canlı Önizle (QuickLook) |
-| `Delete` | Seçili Dosyayı Arşivden Sil (Düzenleme açıkken) |
+| `⌘1` | Modern 3-Pane Layout (Inspector) |
+| `⌘2` | Compact List Layout |
+| `⌘3` | Tabbed Studio Layout |
+| `⌘⇧H` | Toggle Floating HUD Widget |
+| `⌘L` | Toggle Safe Lock (Read-Only vs Live Edit) |
+| `⌘N` | New Archive (Compression Studio) |
+| `⌘O` | Open Archive |
+| `⌘E` | Extract All Archive Contents |
+| `⌘⇧B` | Launch Pulsar Warp Core Benchmark |
+| `Space` | QuickLook File Preview |
+| `Delete` | Delete Selected Item (When Edit Mode is active) |
 
 ---
 
-## 🛠️ Derleme ve Kurulum / Build & Installation
+## 🛠️ Build & Installation
 
-### Gereksinimler:
-* macOS 14.0 (Sonoma) veya macOS 15.0+ (Sequoia)
-* Apple Silicon (M1/M2/M3/M4) veya Universal mimari
-* Swift 5.9+ / Command Line Tools
+### Requirements:
+* macOS 14.0 (Sonoma) or macOS 15.0+ (Sequoia)
+* Apple Silicon (M1/M2/M3/M4) architecture
+* Swift 5.9+ / macOS Command Line Tools
 
-### Tek Komutla Derleme:
+### One-Command Build:
 ```bash
-# 1. Projeyi klonlayın
+# 1. Clone repository
 git clone https://github.com/mehmetsensoyme/pulsar.git
 cd pulsar
 
-# 2. Pulsar.app paketini derleyin
+# 2. Compile release application bundle (ad-hoc signed)
 ./Scripts/build.sh
 
-# 3. Dağıtım DMG imajını oluşturun
+# 3. Build DMG distribution image
 ./Scripts/package_dmg.sh
 ```
 
-Üretilen `.dmg` dosyası `dist/Pulsar-1.0.0-arm64.dmg` konumunda hazır olacaktır.
+The compiled release will be available at `dist/Pulsar-1.0.0-arm64.dmg`.
+
+### Running Automated Stability Tests:
+```bash
+./Scripts/run_tests.sh
+```
+Executes all 26 built-in unit tests verifying format detection, encryption, disk safety guards, and cache purging.
 
 ---
 
-## 🚀 GitHub'da Yayınlama Rehberi / Release Guide
+## 🚀 GitHub Release & Deployment
 
-Pulsar'ı kendi GitHub hesabınızda yayınlamak için:
-
-1. **Uzak Depoyu Ekleyin:**
+1. **Pushing Changes:**
    ```bash
-   git remote add origin https://github.com/mehmetsensoyme/pulsar.git
    git push -u origin main
-   ```
-
-2. **İlk Sürümü (Release) Gönderin:**
-   GitHub Actions otomasyonu (`release.yml`), etiket gönderildiğinde otomatik derleme yapar ve DMG dosyasını Releases sayfasına ekler:
-   ```bash
-   git tag v1.0.0
    git push origin v1.0.0
    ```
 
-3. **Tanıtım Web Sitesini Canlıya Alın (GitHub Pages):**
-   * Repo ayarlarınızda **Settings ➔ Pages** sekmesine gidin.
-   * **Source:** `Deploy from a branch`
-   * **Branch:** `main` | **Folder:** `/Website` seçip kaydedin.
-   * Siteniz `https://mehmetsensoyme.github.io/pulsar` adresinde canlıya geçer!
+2. **Automated CI/CD:**
+   GitHub Actions workflows (`build-and-test.yml` and `release.yml`) automatically test builds and publish DMG artifacts upon tag creation.
+
+3. **Promotional Landing Website (GitHub Pages):**
+   * Go to repository **Settings ➔ Pages**.
+   * Under **Build and deployment > Source**, select `Deploy from a branch`.
+   * Choose **Branch:** `main` | **Folder:** `/Website` and click **Save**.
+   * Your site will be live at `https://mehmetsensoyme.github.io/pulsar`.
 
 ---
 
-## 📄 Lisans / License
+## 📄 License & Credits
 
-Bu proje **MIT Lisansı** altında lisanslanmıştır. Dahili 7-Zip motoru Igor Pavlov'un LGPL lisansına, RAR motoru ise RARLAB kullanım koşullarına tabidir.
+* Pulsar is distributed under the **MIT License**.
+* Embedded 7-Zip (`7zz`) engine is developed by Igor Pavlov under the GNU LGPL.
+* Official RAR / UnRAR binaries are property of Alexander Roshal / RARLAB.
