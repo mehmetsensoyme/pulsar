@@ -6,6 +6,10 @@ public enum ContentFilterMode: String, CaseIterable, Identifiable {
     case all = "Tüm İçerik"
     case filesOnly = "Sadece Dosyalar"
     case foldersOnly = "Sadece Klasörler"
+    case images = "Görseller"
+    case documents = "Belgeler"
+    case code = "Kod & Betik"
+    case media = "Medya"
 
     public var id: String { rawValue }
     public var iconName: String {
@@ -13,6 +17,10 @@ public enum ContentFilterMode: String, CaseIterable, Identifiable {
         case .all: return "tray.full.fill"
         case .filesOnly: return "doc.fill"
         case .foldersOnly: return "folder.fill"
+        case .images: return "photo.fill"
+        case .documents: return "doc.text.fill"
+        case .code: return "chevron.left.forwardslash.chevron.right"
+        case .media: return "play.circle.fill"
         }
     }
 }
@@ -30,6 +38,9 @@ public final class ArchiveManager: ObservableObject {
     @Published public var selectedItemIds: Set<UUID> = []
     @Published public var sortColumn: String = "name"
     @Published public var sortAscending: Bool = true
+
+    // MARK: - Görünüm Modu ve Seçenekler
+    @Published public var isGridView: Bool = false
 
     // MARK: - Güvenlik ve Modlar
     @Published public var isEditingUnlocked: Bool = false
@@ -52,6 +63,9 @@ public final class ArchiveManager: ObservableObject {
     @Published public var showSettingsSheet: Bool = false
     @Published public var showPasswordModal: Bool = false
     @Published public var passwordPromptCallback: ((String?) -> Void)? = nil
+    @Published public var showChecksumSheet: Bool = false
+    @Published public var checksumTargetItem: ArchiveItem? = nil
+    @Published public var showConverterSheet: Bool = false
 
     // MARK: - Hata ve Bilgi
     @Published public var errorMessage: String? = nil
@@ -93,7 +107,7 @@ public final class ArchiveManager: ObservableObject {
             }
         }
 
-        // Filtre Modu (Tüm İçerik, Sadece Dosyalar, Sadece Klasörler)
+        // Filtre Modu (Tüm İçerik, Sadece Dosyalar, Klasörler, Görseller, Belgeler, Kod, Medya)
         switch filterMode {
         case .all:
             break
@@ -101,6 +115,18 @@ public final class ArchiveManager: ObservableObject {
             items = items.filter { !$0.isDirectory }
         case .foldersOnly:
             items = items.filter { $0.isDirectory }
+        case .images:
+            let exts = ["png", "jpg", "jpeg", "gif", "webp", "svg", "heic", "tiff", "bmp", "ico"]
+            items = items.filter { !$0.isDirectory && exts.contains($0.fileExtension.lowercased()) }
+        case .documents:
+            let exts = ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "rtf", "pages", "numbers"]
+            items = items.filter { !$0.isDirectory && exts.contains($0.fileExtension.lowercased()) }
+        case .code:
+            let exts = ["swift", "py", "js", "ts", "c", "cpp", "h", "html", "css", "json", "xml", "sh", "zsh", "yml", "yaml", "rb", "go", "rs"]
+            items = items.filter { !$0.isDirectory && exts.contains($0.fileExtension.lowercased()) }
+        case .media:
+            let exts = ["mp3", "wav", "aac", "flac", "m4a", "mp4", "mov", "mkv", "avi"]
+            items = items.filter { !$0.isDirectory && exts.contains($0.fileExtension.lowercased()) }
         }
 
         // Önce klasörler, sonra seçilen sütuna göre sırala
@@ -519,6 +545,110 @@ public final class ArchiveManager: ObservableObject {
     private func loadRecents() {
         if let recents = UserDefaults.standard.stringArray(forKey: "PulsarRecents") {
             recentArchives = recents
+        }
+    }
+
+    // MARK: - Seçim ve Pano Yardımcıları
+    public var selectedTotalSize: String {
+        let selected = allItems.filter { selectedItemIds.contains($0.id) }
+        let total = selected.reduce(0) { $0 + $1.size }
+        return ByteCountFormatter.string(fromByteCount: total, countStyle: .file)
+    }
+
+    public var freeDiskSpaceText: String? {
+        guard let path = currentArchivePath ?? FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first?.path else { return nil }
+        if let bytes = DiskSpaceGuard.shared.availableFreeBytes(atPath: path) {
+            return ByteCountFormatter.string(fromByteCount: bytes, countStyle: .file)
+        }
+        return nil
+    }
+
+    public func selectAllItems() {
+        self.selectedItemIds = Set(currentFolderItems.map { $0.id })
+    }
+
+    public func copySelectedPaths() {
+        let selected = allItems.filter { selectedItemIds.contains($0.id) }
+        let paths = selected.map { $0.path }.joined(separator: "\n")
+        guard !paths.isEmpty else { return }
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(paths, forType: .string)
+    }
+
+    public func openChecksumModal(for item: ArchiveItem? = nil) {
+        self.checksumTargetItem = item
+        self.showChecksumSheet = true
+    }
+
+    // MARK: - Arşiv Format Dönüştürücü (Converter)
+    public func convertCurrentArchive(to targetFormat: ArchiveFormat, completion: @escaping (Bool) -> Void) {
+        guard let sourceArchive = currentArchivePath else {
+            completion(false)
+            return
+        }
+        let sourceUrl = URL(fileURLWithPath: sourceArchive)
+        let baseName = sourceUrl.deletingPathExtension().lastPathComponent
+        let dir = sourceUrl.deletingLastPathComponent().path
+        let targetPath = (dir as NSString).appendingPathComponent("\(baseName)_converted.\(targetFormat.rawValue)")
+
+        let totalBytes = allItems.reduce(0) { $0 + $1.size }
+        let task = TaskProgress(
+            title: "\(targetFormat.rawValue.uppercased()) Formatına Dönüştürülüyor",
+            type: .compress,
+            archivePath: targetPath
+        )
+        activeTasks.append(task)
+
+        let tempExtractDir = NSTemporaryDirectory().appending("PulsarConvert_\(UUID().uuidString)")
+        try? FileManager.default.createDirectory(atPath: tempExtractDir, withIntermediateDirectories: true)
+        TempCacheManager.shared.registerTempDirectory(tempExtractDir)
+
+        Task {
+            do {
+                // 1. Önce içeriği geçici klasöre çıkar
+                try await sevenZip.extract(
+                    taskId: task.id,
+                    archiveAt: sourceArchive,
+                    to: tempExtractDir,
+                    requiredDiskBytes: totalBytes
+                ) { pct, line in
+                    self.updateTaskProgress(id: task.id, percent: pct * 0.5, file: "Çıkarılıyor: " + line)
+                }
+
+                // 2. Geçici klasördeki dosyaları yeni formata sıkıştır
+                let contents = try FileManager.default.contentsOfDirectory(atPath: tempExtractDir).map {
+                    (tempExtractDir as NSString).appendingPathComponent($0)
+                }
+
+                let preset = Preset(
+                    name: "Converter",
+                    format: targetFormat,
+                    level: .normal,
+                    solidBlock: true,
+                    threads: PulsarSettings.shared.maxCpuThreads
+                )
+
+                try await sevenZip.createArchive(
+                    taskId: task.id,
+                    at: targetPath,
+                    from: contents,
+                    preset: preset
+                ) { pct, line in
+                    self.updateTaskProgress(id: task.id, percent: 0.5 + (pct * 0.5), file: "Paketleniyor: " + line)
+                }
+
+                await MainActor.run {
+                    self.finishTask(id: task.id)
+                    self.openArchive(at: targetPath)
+                    completion(true)
+                }
+            } catch {
+                await MainActor.run {
+                    self.failTask(id: task.id, error: error.localizedDescription)
+                    self.errorMessage = "Dönüştürme başarısız oldu: \(error.localizedDescription)"
+                    completion(false)
+                }
+            }
         }
     }
 }

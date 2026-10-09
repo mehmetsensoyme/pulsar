@@ -82,6 +82,31 @@ public final class SevenZipEngine: @unchecked Sendable {
         }
     }
 
+    /// Finder'a sürükle-bırak için senkron tek/çoklu dosya çıkarma
+    public func extractSync(
+        archiveAt path: String,
+        to destinationDirectory: String,
+        selectedFiles: [String]? = nil,
+        password: String? = nil
+    ) {
+        let binary = locator.pathForSevenZip()
+        var args = ["x", "-y", "-o\(destinationDirectory)", path]
+        if let pwd = password, !pwd.isEmpty {
+            args.append("-p\(pwd)")
+        } else {
+            args.append("-p-")
+        }
+        if let files = selectedFiles, !files.isEmpty {
+            args.append(contentsOf: files)
+        }
+
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: binary)
+        process.arguments = args
+        try? process.run()
+        process.waitUntilExit()
+    }
+
     /// Yeni arşiv oluşturur
     public func createArchive(
         taskId: UUID = UUID(),

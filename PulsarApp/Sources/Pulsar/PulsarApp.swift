@@ -130,7 +130,44 @@ struct PulsarApp: App {
                 .disabled(manager.currentArchivePath == nil)
             }
 
-            // Araçlar Menüsü
+            // Düzen Menüsü Kısayolları (⌘A, ⌘C, ⌘⌫)
+            CommandGroup(replacing: .pasteboard) {
+                Button("Tümünü Seç") {
+                    manager.selectAllItems()
+                }
+                .keyboardShortcut("a", modifiers: .command)
+
+                Button("Yolu Kopyala") {
+                    manager.copySelectedPaths()
+                }
+                .keyboardShortcut("c", modifiers: .command)
+
+                Button("Seçilenleri Sil") {
+                    manager.deleteSelectedItems()
+                }
+                .keyboardShortcut(.delete, modifiers: .command)
+                .disabled(!manager.isEditingUnlocked || manager.selectedItemIds.isEmpty)
+            }
+
+            // Git Menüsü (⌘↑, ⌘↓)
+            CommandMenu("Git") {
+                Button("Üst Klasöre Git") {
+                    manager.goUpOneLevel()
+                }
+                .keyboardShortcut(.upArrow, modifiers: .command)
+                .disabled(manager.currentFolderPath.isEmpty)
+
+                Button("Seçileni Aç veya Önizle") {
+                    if let firstId = manager.selectedItemIds.first,
+                       let item = manager.allItems.first(where: { $0.id == firstId }) {
+                        manager.openOrPreviewItem(item)
+                    }
+                }
+                .keyboardShortcut(.downArrow, modifiers: .command)
+                .disabled(manager.selectedItemIds.isEmpty)
+            }
+
+            // Araçlar & Modüller Menüsü
             CommandMenu("Modüller") {
                 Button("Pulsar Warp Benchmark") {
                     manager.showBenchmarkSheet = true
@@ -144,6 +181,18 @@ struct PulsarApp: App {
                 Button("Arşiv Kurtarma İstasyonu") {
                     manager.showRepairSheet = true
                 }
+
+                Divider()
+
+                Button("Arşiv Format Dönüştürücü...") {
+                    manager.showConverterSheet = true
+                }
+                .keyboardShortcut("C", modifiers: [.command, .shift])
+
+                Button("Sağlama Toplamı (Checksum)...") {
+                    manager.openChecksumModal()
+                }
+                .keyboardShortcut("K", modifiers: [.command, .shift])
 
                 Divider()
 

@@ -109,6 +109,36 @@ public final class PulsarTestRunner {
         assertTest(settings.defaultCompressionFormat == "zip", "PulsarSettings: Varsayılan Format zip")
         assertTest(settings.maxCpuThreads >= 1, "PulsarSettings: CPU Çekirdek Sayısı >= 1")
 
+        // 10. Checksum (Sağlama Toplamı) Doğrulama Testi
+        let dummyChecksum = ChecksumResult(
+            fileName: "test.zip",
+            fileSize: 1024,
+            sha256: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+            md5: "5eb63bbbe01eeed093cb22bb8f5acdc3",
+            sha1: "2aae6c35c94fcfb415dbe95f408b9ce91ee846ed"
+        )
+        let sha256Match = dummyChecksum.matches(hash: "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad")
+        assertTest(sha256Match.matched && sha256Match.algorithm == "SHA-256", "Checksum: SHA-256 Eşleşme Doğrulaması")
+
+        let md5Match = dummyChecksum.matches(hash: "5EB63BBBE01EEED093CB22BB8F5ACDC3")
+        assertTest(md5Match.matched && md5Match.algorithm == "MD5", "Checksum: Büyük Harf MD5 Eşleşmesi")
+
+        let mismatch = dummyChecksum.matches(hash: "1234567890abcdef")
+        assertTest(!mismatch.matched, "Checksum: Uyuşmayan Hash Tespiti")
+
+        // 11. Akıllı Filtreleme Mantığı (Görseller & Kod)
+        let smartItems = [
+            ArchiveItem(path: "photo.png", name: "photo.png", isDirectory: false, size: 500, compressedSize: 400),
+            ArchiveItem(path: "script.swift", name: "script.swift", isDirectory: false, size: 300, compressedSize: 150),
+            ArchiveItem(path: "song.mp3", name: "song.mp3", isDirectory: false, size: 1000, compressedSize: 950)
+        ]
+        let imgExts = ["png", "jpg", "jpeg", "gif", "webp", "svg"]
+        let codeExts = ["swift", "py", "js", "ts", "c", "cpp", "h"]
+        let images = smartItems.filter { imgExts.contains($0.fileExtension.lowercased()) }
+        let codeFiles = smartItems.filter { codeExts.contains($0.fileExtension.lowercased()) }
+        assertTest(images.count == 1 && images.first?.name == "photo.png", "Akıllı Filtre: Görseller (photo.png)")
+        assertTest(codeFiles.count == 1 && codeFiles.first?.name == "script.swift", "Akıllı Filtre: Kod (script.swift)")
+
         print("--------------------------------------------------")
         print("📊 [TEST SONUCU] Toplam: \(passed + failed) | Başarılı: \(passed) | Hatalı: \(failed)")
         if failed == 0 {

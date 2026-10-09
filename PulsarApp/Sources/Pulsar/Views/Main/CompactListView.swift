@@ -9,7 +9,11 @@ public struct CompactListView: View {
         } else {
             VStack(spacing: 0) {
                 BreadcrumbBar()
-                FileTableView()
+                if manager.isGridView {
+                    FileGridView()
+                } else {
+                    FileTableView()
+                }
             }
         }
     }

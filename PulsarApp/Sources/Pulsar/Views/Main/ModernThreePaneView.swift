@@ -16,7 +16,11 @@ public struct ModernThreePaneView: View {
             } content: {
                 VStack(spacing: 0) {
                     BreadcrumbBar()
-                    FileTableView()
+                    if manager.isGridView {
+                        FileGridView()
+                    } else {
+                        FileTableView()
+                    }
                 }
             } detail: {
                 InspectorView()
@@ -94,6 +98,20 @@ public struct ModernThreePaneView: View {
                     manager.showRepairSheet = true
                 }) {
                     Label("Kurtarma İstasyonu", systemImage: "wrench.and.screwdriver")
+                }
+                .buttonStyle(.plain)
+
+                Button(action: {
+                    manager.showConverterSheet = true
+                }) {
+                    Label("Format Dönüştürücü", systemImage: "arrow.triangle.2.circlepath")
+                }
+                .buttonStyle(.plain)
+
+                Button(action: {
+                    manager.openChecksumModal()
+                }) {
+                    Label("Sağlama Toplamı (Checksum)", systemImage: "checkmark.shield")
                 }
                 .buttonStyle(.plain)
 
@@ -233,6 +251,19 @@ public struct FileTableView: View {
         }
     }
 
+    private func itemProvider(for item: ArchiveItem) -> NSItemProvider {
+        guard let archive = manager.currentArchivePath else {
+            return NSItemProvider()
+        }
+        let tempDir = NSTemporaryDirectory().appending("PulsarDrag_\(UUID().uuidString)")
+        try? FileManager.default.createDirectory(atPath: tempDir, withIntermediateDirectories: true)
+        TempCacheManager.shared.registerTempDirectory(tempDir)
+        SevenZipEngine.shared.extractSync(archiveAt: archive, to: tempDir, selectedFiles: [item.path])
+        let filePath = (tempDir as NSString).appendingPathComponent(item.path)
+        let url = URL(fileURLWithPath: filePath)
+        return NSItemProvider(object: url as NSURL)
+    }
+
     public var body: some View {
         Group {
             if manager.currentFolderItems.isEmpty {
@@ -256,11 +287,20 @@ public struct FileTableView: View {
                             Text(item.name)
                                 .font(.system(size: 13, weight: item.isDirectory ? .semibold : .regular))
                                 .foregroundColor(.primary)
+
+                            if item.isEncrypted {
+                                Image(systemName: "lock.fill")
+                                    .font(.system(size: 9))
+                                    .foregroundColor(.orange)
+                            }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .contentShape(Rectangle())
                         .onTapGesture(count: 2) {
                             handleItemAction(item)
+                        }
+                        .onDrag {
+                            itemProvider(for: item)
                         }
                     }
                     .width(min: 200, ideal: 300)
@@ -334,8 +374,18 @@ public struct FileTableView: View {
                                         manager.openWithCustomApp(item: firstItem)
                                     }
                                 }
+
+                                Button("Sağlama Toplamı (Checksum)...") {
+                                    manager.openChecksumModal(for: firstItem)
+                                }
                             }
                         }
+
+                        Button("Yolu Kopyala") {
+                            manager.copySelectedPaths()
+                        }
+
+                        Divider()
 
                         Button("Seçileni Çıkar...") {
                             let panel = NSOpenPanel()
