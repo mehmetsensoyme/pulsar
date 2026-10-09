@@ -1,6 +1,23 @@
 import Foundation
 import Combine
 
+private final class BenchmarkLogAccumulator: @unchecked Sendable {
+    private let lock = NSLock()
+    private var text = ""
+
+    func append(_ str: String) {
+        lock.lock()
+        text += str
+        lock.unlock()
+    }
+
+    func value() -> String {
+        lock.lock()
+        defer { lock.unlock() }
+        return text
+    }
+}
+
 public struct BenchmarkResult: Equatable {
     public var cpuModel: String = "Apple Silicon"
     public var threads: Int = ProcessInfo.processInfo.processorCount
@@ -49,14 +66,14 @@ public final class BenchmarkService: ObservableObject {
             p.standardError = pipe
 
             let handle = pipe.fileHandleForReading
-            var logBuffer = ""
+            let accumulator = BenchmarkLogAccumulator()
 
             handle.readabilityHandler = { [weak self] fh in
                 guard let self = self else { return }
                 let data = fh.availableData
                 if data.isEmpty { return }
                 if let str = String(data: data, encoding: .utf8) {
-                    logBuffer += str
+                    accumulator.append(str)
                     DispatchQueue.main.async {
                         self.parseLogUpdate(str)
                     }
@@ -67,6 +84,7 @@ public final class BenchmarkService: ObservableObject {
                 try p.run()
                 p.waitUntilExit()
                 handle.readabilityHandler = nil
+                let logBuffer = accumulator.value()
 
                 DispatchQueue.main.async {
                     self.currentResult.rawLog = logBuffer

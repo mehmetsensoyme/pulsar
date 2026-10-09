@@ -1,5 +1,22 @@
 import Foundation
 
+private final class RAROutputAccumulator: @unchecked Sendable {
+    private let lock = NSLock()
+    private var text = ""
+
+    func append(_ str: String) {
+        lock.lock()
+        text += str
+        lock.unlock()
+    }
+
+    func value() -> String {
+        lock.lock()
+        defer { lock.unlock() }
+        return text
+    }
+}
+
 public final class RAREngine: @unchecked Sendable {
     public static let shared = RAREngine()
     private let locator = EngineLocator.shared
@@ -159,14 +176,14 @@ public final class RAREngine: @unchecked Sendable {
                     self.lock.unlock()
                 }
 
-                var fullOutput = ""
+                let accumulator = RAROutputAccumulator()
                 let handle = pipe.fileHandleForReading
 
                 handle.readabilityHandler = { fh in
                     let data = fh.availableData
                     if data.isEmpty { return }
                     if let str = String(data: data, encoding: .utf8) {
-                        fullOutput += str
+                        accumulator.append(str)
                         let lines = str.components(separatedBy: .newlines)
                         for line in lines where !line.isEmpty {
                             onOutputLine?(line)
@@ -178,6 +195,7 @@ public final class RAREngine: @unchecked Sendable {
                     try process.run()
                     process.waitUntilExit()
                     handle.readabilityHandler = nil
+                    let fullOutput = accumulator.value()
 
                     if let tid = taskId {
                         self.lock.lock()

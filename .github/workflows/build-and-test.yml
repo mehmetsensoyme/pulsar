@@ -9,8 +9,6 @@ on:
 jobs:
   build-and-test:
     runs-on: macos-14
-    permissions:
-      contents: write
 
     steps:
     - name: Checkout Repository
@@ -19,21 +17,7 @@ jobs:
     - name: Build Application Bundle
       run: |
         chmod +x Scripts/*.sh
-        BUILD_EXIT=0
-        ./Scripts/build.sh > /tmp/build.log 2>&1 || BUILD_EXIT=$?
-        echo "Build exit code: $BUILD_EXIT"
-        cat /tmp/build.log
-
-        if [ "$BUILD_EXIT" -ne 0 ]; then
-          git config user.name "CI Bot"
-          git config user.email "ci@pulsar.app"
-          git checkout -B ci-debug
-          cp /tmp/build.log ci-build-error.log
-          git add ci-build-error.log
-          git commit -m "debug: capture ci build error"
-          git push -f origin ci-debug
-          exit $BUILD_EXIT
-        fi
+        ./Scripts/build.sh
 
     - name: Run Automated Stability & Functionality Tests
       run: |
