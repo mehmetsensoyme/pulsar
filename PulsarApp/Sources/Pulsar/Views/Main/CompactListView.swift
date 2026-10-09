@@ -4,9 +4,13 @@ public struct CompactListView: View {
     @ObservedObject var manager = ArchiveManager.shared
 
     public var body: some View {
-        VStack(spacing: 0) {
-            BreadcrumbBar()
-            FileTableView()
+        if manager.currentArchivePath == nil {
+            EmptyArchiveHeroView()
+        } else {
+            VStack(spacing: 0) {
+                BreadcrumbBar()
+                FileTableView()
+            }
         }
     }
 }

@@ -281,7 +281,10 @@ public final class SevenZipEngine: @unchecked Sendable {
                 }
             }
 
-            guard let path = dict["Path"], !path.isEmpty else { continue }
+            guard let rawPath = dict["Path"], !rawPath.isEmpty else { continue }
+            // Windows ters eğik çizgilerini macOS standardı / ile normalize et
+            let path = rawPath.replacingOccurrences(of: "\\", with: "/").trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+            guard !path.isEmpty else { continue }
 
             let isFolder = dict["Folder"] == "+"
             let size = Int64(dict["Size"] ?? "0") ?? 0
@@ -311,6 +314,37 @@ public final class SevenZipEngine: @unchecked Sendable {
             items.append(item)
         }
 
-        return items
+        return synthesizeMissingDirectories(from: items)
+    }
+
+    private func synthesizeMissingDirectories(from items: [ArchiveItem]) -> [ArchiveItem] {
+        var existingPaths = Set(items.map { $0.path })
+        var synthesized: [ArchiveItem] = []
+
+        for item in items {
+            let components = item.path.split(separator: "/").map { String($0) }
+            if components.count > 1 {
+                var currentPath = ""
+                for i in 0..<(components.count - 1) {
+                    let part = components[i]
+                    currentPath = currentPath.isEmpty ? part : "\(currentPath)/\(part)"
+                    if !existingPaths.contains(currentPath) {
+                        existingPaths.insert(currentPath)
+                        synthesized.append(
+                            ArchiveItem(
+                                path: currentPath,
+                                name: part,
+                                isDirectory: true,
+                                size: 0,
+                                compressedSize: 0,
+                                modifiedDate: item.modifiedDate,
+                                attributes: "D"
+                            )
+                        )
+                    }
+                }
+            }
+        }
+        return items + synthesized
     }
 }

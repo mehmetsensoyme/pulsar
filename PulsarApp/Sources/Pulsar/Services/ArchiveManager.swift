@@ -28,6 +28,8 @@ public final class ArchiveManager: ObservableObject {
     @Published public var searchQuery: String = ""
     @Published public var filterMode: ContentFilterMode = .all
     @Published public var selectedItemIds: Set<UUID> = []
+    @Published public var sortColumn: String = "name"
+    @Published public var sortAscending: Bool = true
 
     // MARK: - Güvenlik ve Modlar
     @Published public var isEditingUnlocked: Bool = false
@@ -60,6 +62,9 @@ public final class ArchiveManager: ObservableObject {
     private let keychain = KeychainService.shared
 
     private init() {
+        if let mode = LayoutMode(rawValue: PulsarSettings.shared.defaultLayoutMode) {
+            self.currentLayoutMode = mode
+        }
         loadRecents()
     }
 
@@ -98,12 +103,33 @@ public final class ArchiveManager: ObservableObject {
             items = items.filter { $0.isDirectory }
         }
 
-        // Önce klasörler, sonra alfabetik dosyalar
-        return items.sorted {
-            if $0.isDirectory != $1.isDirectory {
-                return $0.isDirectory && !$1.isDirectory
+        // Önce klasörler, sonra seçilen sütuna göre sırala
+        return items.sorted { item1, item2 in
+            if item1.isDirectory != item2.isDirectory {
+                return item1.isDirectory && !item2.isDirectory
             }
-            return $0.name.localizedStandardCompare($1.name) == .orderedAscending
+            switch sortColumn {
+            case "size":
+                return sortAscending ? item1.size < item2.size : item1.size > item2.size
+            case "compressedSize":
+                return sortAscending ? item1.compressedSize < item2.compressedSize : item1.compressedSize > item2.compressedSize
+            case "ratio":
+                return sortAscending ? item1.compressionRatio < item2.compressionRatio : item1.compressionRatio > item2.compressionRatio
+            case "date":
+                return sortAscending ? item1.dateValue < item2.dateValue : item1.dateValue > item2.dateValue
+            default:
+                let comp = item1.name.localizedStandardCompare(item2.name)
+                return sortAscending ? comp == .orderedAscending : comp == .orderedDescending
+            }
+        }
+    }
+
+    public func toggleSort(column: String) {
+        if sortColumn == column {
+            sortAscending.toggle()
+        } else {
+            sortColumn = column
+            sortAscending = true
         }
     }
 
@@ -121,14 +147,16 @@ public final class ArchiveManager: ObservableObject {
             let slice = components.prefix(index)
             currentFolderPath = slice.joined(separator: "/")
         }
+        if let first = currentFolderItems.first {
+            selectedItemIds = [first.id]
+        }
     }
 
     public func openFolder(item: ArchiveItem) {
         guard item.isDirectory else { return }
-        if currentFolderPath.isEmpty {
-            currentFolderPath = item.name
-        } else {
-            currentFolderPath = "\(currentFolderPath)/\(item.name)"
+        currentFolderPath = item.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        if let first = currentFolderItems.first {
+            selectedItemIds = [first.id]
         }
     }
 
@@ -137,6 +165,9 @@ public final class ArchiveManager: ObservableObject {
         var components = currentFolderPath.split(separator: "/").map { String($0) }
         components.removeLast()
         currentFolderPath = components.joined(separator: "/")
+        if let first = currentFolderItems.first {
+            selectedItemIds = [first.id]
+        }
     }
 
     // MARK: - Arşiv Açma
@@ -174,6 +205,9 @@ public final class ArchiveManager: ObservableObject {
 
                 await MainActor.run {
                     self.allItems = items
+                    if self.selectedItemIds.isEmpty, let first = self.currentFolderItems.first {
+                        self.selectedItemIds = [first.id]
+                    }
                 }
             } catch {
                 await MainActor.run {

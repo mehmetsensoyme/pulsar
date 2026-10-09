@@ -66,6 +66,10 @@ public struct ArchiveItem: Identifiable, Hashable {
         return formatter.string(from: date)
     }
 
+    public var dateValue: Date {
+        modifiedDate ?? Date.distantPast
+    }
+
     public var fileExtension: String {
         (name as NSString).pathExtension.lowercased()
     }

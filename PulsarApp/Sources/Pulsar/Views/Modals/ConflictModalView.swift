@@ -142,6 +142,7 @@ public struct PasswordModalView: View {
                     manager.showPasswordModal = false
                     manager.passwordPromptCallback?(nil)
                 }
+                .keyboardShortcut(.cancelAction)
                 .buttonStyle(.bordered)
 
                 Spacer()
@@ -216,6 +217,7 @@ public struct UpdateModalView: View {
                 Button("Kapat") {
                     dismiss()
                 }
+                .keyboardShortcut(.cancelAction)
                 .buttonStyle(.bordered)
 
                 Spacer()

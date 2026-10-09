@@ -5,6 +5,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ notification: Notification) {
         TempCacheManager.shared.cleanupAllTempDirectories()
     }
+
+    func application(_ application: NSApplication, openFiles filenames: [String]) {
+        if let first = filenames.first {
+            ArchiveManager.shared.openArchive(at: first)
+        }
+    }
 }
 
 @main
@@ -33,6 +39,11 @@ struct PulsarApp: App {
                 .environmentObject(manager)
                 .environmentObject(settings)
                 .environmentObject(updater)
+                .onOpenURL { url in
+                    if url.isFileURL {
+                        manager.openArchive(at: url.path)
+                    }
+                }
         }
         .windowStyle(.titleBar)
         .windowToolbarStyle(.unified)

@@ -350,6 +350,22 @@ public struct FileTableView: View {
                         }
                     }
                 }
+                .onKeyPress(.return) {
+                    if let firstId = manager.selectedItemIds.first,
+                       let item = manager.allItems.first(where: { $0.id == firstId }) {
+                        handleItemAction(item)
+                        return .handled
+                    }
+                    return .ignored
+                }
+                .onKeyPress(.space) {
+                    if let firstId = manager.selectedItemIds.first,
+                       let item = manager.allItems.first(where: { $0.id == firstId }) {
+                        manager.openOrPreviewItem(item)
+                        return .handled
+                    }
+                    return .ignored
+                }
             }
         }
     }

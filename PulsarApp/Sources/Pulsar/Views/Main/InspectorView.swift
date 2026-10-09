@@ -37,7 +37,7 @@ public struct InspectorView: View {
                             Button(action: {
                                 manager.openOrPreviewItem(item)
                             }) {
-                                Label("Önizle", systemImage: "eye.fill")
+                                Label(item.isDirectory ? "Klasörü Aç" : "Önizle", systemImage: item.isDirectory ? "folder.fill" : "eye.fill")
                                     .frame(maxWidth: .infinity)
                             }
                             .buttonStyle(.borderedProminent)

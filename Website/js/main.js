@@ -31,15 +31,35 @@ document.addEventListener("DOMContentLoaded", () => {
       light: "assets/hero_light.png",
       caption: "<strong>Ferah Boş Durum (Empty Hero Zone):</strong> Arşiv açık değilken tüm çalışma alanına yayılan Apple karşılama paneli, sürükle-bırak hedef alanı, ⌘O Arşiv Aç, ⌘N Yeni Arşiv ve son kullanılanlar."
     },
+    browse: {
+      dark: "assets/browse_dark.png",
+      light: "assets/browse_light.png",
+      caption: "<strong>Modern 3-Bölmeli Arşiv Gezgini:</strong> Sanal dizin sentezleme, Finder klasör simgeleri, QuickLook (Boşluk) önizleme, sıralanabilir sütunlar ve dosya denetçisi (Inspector)."
+    },
+    compact: {
+      dark: "assets/compact_dark.png",
+      light: "assets/compact_light.png",
+      caption: "<strong>Kompakt Liste Düzeni (⌘2):</strong> Yalnızca breadcrumb gezinme çubuğu ve yoğunlaştırılmış dosya listesini içeren sade arayüz görünümü."
+    },
     settings: {
       dark: "assets/settings_dark.png",
       light: "assets/settings_light.png",
-      caption: "<strong>Ayarlar Stüdyosu (⌘,):</strong> 600×500 px standart macOS paneli, üstte segmentli sekme çubuğu, Sonoma/Sequoia tarzı form kartları ve Esc / ⌘W / Bitti ile hızlı kapatma."
+      caption: "<strong>Ayarlar Stüdyosu - Genel (⌘,):</strong> 600×500 px standart macOS paneli, Sonoma/Sequoia tarzı form kartları, canlı arayüz düzeni senkronizasyonu ve bildirim kontrolleri."
+    },
+    settings_engines: {
+      dark: "assets/settings_engines_dark.png",
+      light: "assets/settings_engines_light.png",
+      caption: "<strong>Motorlar & Donanım Stüdyosu:</strong> Apple Silicon ARM64 native 7-Zip (7zz 26.04) ve resmi WinRAR motor durumları, çekirdek iş parçacığı ayarı ve canlı sağlık testleri."
     },
     compress: {
       dark: "assets/compress_dark.png",
       light: "assets/compress_light.png",
       caption: "<strong>Yeni Arşiv Oluşturucu (⌘N):</strong> Hedef klasör seçici (Destination Picker), çıkarılabilir kaynak etiketleri, akıllı hazır ayarlar ve Windows uyumlu .DS_Store temizleyici."
+    },
+    folderwatcher: {
+      dark: "assets/folderwatcher_dark.png",
+      light: "assets/folderwatcher_light.png",
+      caption: "<strong>Kara Delik Klasör İzleyici:</strong> İndirilenler klasörüne düşen arşivleri arka planda FSEvents ile yakalayıp otomatik açar ve işlenen arşivleri yönetir."
     },
     benchmark: {
       dark: "assets/benchmark_dark.png",

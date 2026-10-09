@@ -24,12 +24,26 @@ Pulsar strictly adheres to **Apple Human Interface Guidelines (HIG)**, featuring
 | <img src="assets/screenshots/hero_dark.png" width="450" alt="Pulsar Empty State Hero (Dark)"> | <img src="assets/screenshots/hero_light.png" width="450" alt="Pulsar Empty State Hero (Light)"> |
 | **Empty State Hero (Dark Mode)** | **Empty State Hero (Light Mode)** |
 
+### 📂 3-Pane Archive Browser & Inspector (`⌘1`)
+
+| Dark Mode Browser & Inspector | Light Mode Browser & Inspector |
+| :---: | :---: |
+| <img src="assets/screenshots/browse_dark.png" width="450" alt="Pulsar Archive Browser (Dark)"> | <img src="assets/screenshots/browse_light.png" width="450" alt="Pulsar Archive Browser (Light)"> |
+| **Virtual Directory Synthesis, Native Finder Icons & Inspector** | **Clean Light Appearance with QuickLook Preview** |
+
+### 📑 Compact List Layout (`⌘2`)
+
+| Compact List (Dark) | Compact List (Light) |
+| :---: | :---: |
+| <img src="assets/screenshots/compact_dark.png" width="450" alt="Pulsar Compact List (Dark)"> | <img src="assets/screenshots/compact_light.png" width="450" alt="Pulsar Compact List (Light)"> |
+| **High Information Density View (Dark)** | **High Information Density View (Light)** |
+
 ### ⚙️ Settings Studio & Preferences (`⌘,`)
 
-| Dark Mode Settings Studio | Light Mode Settings Studio |
+| Engines & Hardware Performance | Security, Keychain & Sandbox |
 | :---: | :---: |
-| <img src="assets/screenshots/settings_dark.png" width="450" alt="Pulsar Settings Studio (Dark)"> | <img src="assets/screenshots/settings_light.png" width="450" alt="Pulsar Settings Studio (Light)"> |
-| **Compact Segmented Tabs & Form Cards (Dark)** | **Clean Native System Appearance (Light)** |
+| <img src="assets/screenshots/settings_engines_dark.png" width="450" alt="Settings Engines (Dark)"> | <img src="assets/screenshots/settings_security_dark.png" width="450" alt="Settings Security (Dark)"> |
+| **ARM64 Native Engine Diagnostics & Thread Allocation** | **Read-Only Lock & Apple Keychain Password Vault** |
 
 ### 📦 Compression Studio (`⌘N`) & Sci-Fi Modules
 
@@ -38,10 +52,10 @@ Pulsar strictly adheres to **Apple Human Interface Guidelines (HIG)**, featuring
 | <img src="assets/screenshots/compress_dark.png" width="450" alt="Compress Studio"> | <img src="assets/screenshots/benchmark_dark.png" width="450" alt="Warp Benchmark"> |
 | **Smart Presets & Destination Picker** | **Apple Silicon Multithreaded MIPS Benchmark** |
 
-| Archive Repair Station | Clean Native System Appearance |
+| Black Hole Folder Watcher | Archive Repair Station |
 | :---: | :---: |
-| <img src="assets/screenshots/repair_dark.png" width="450" alt="Repair Station"> | <img src="assets/screenshots/compress_light.png" width="450" alt="Light Mode Compress"> |
-| **WinRAR Recovery Record Repair Station** | **Light Mode Compression Studio** |
+| <img src="assets/screenshots/folderwatcher_dark.png" width="450" alt="Folder Watcher"> | <img src="assets/screenshots/repair_dark.png" width="450" alt="Repair Station"> |
+| **FSEvents Background Download Extractor** | **WinRAR Recovery Record Repair Station** |
 
 ---
 

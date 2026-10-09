@@ -52,7 +52,15 @@ public final class EngineLocator {
             return cwdBin
         }
 
-        // 5. System PATH fallback
+        // 5. Common Homebrew and system paths
+        for sysDir in ["/opt/homebrew/bin", "/usr/local/bin", "/usr/bin", "/bin"] {
+            let candidate = (sysDir as NSString).appendingPathComponent(name)
+            if fm.isExecutableFile(atPath: candidate) {
+                return candidate
+            }
+        }
+
+        // 6. System PATH fallback
         return name
     }
 }

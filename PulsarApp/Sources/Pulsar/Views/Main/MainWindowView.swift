@@ -8,10 +8,20 @@ public final class MainWindowViewModel: ObservableObject {
 
 public struct MainWindowView: View {
     @ObservedObject var manager = ArchiveManager.shared
+    @ObservedObject var settings = PulsarSettings.shared
     @StateObject private var vm = MainWindowViewModel()
 
+    private var hudAlignment: Alignment {
+        switch settings.hudCorner {
+        case "topLeft": return .topLeading
+        case "bottomRight": return .bottomTrailing
+        case "bottomLeft": return .bottomLeading
+        default: return .topTrailing
+        }
+    }
+
     public var body: some View {
-        ZStack(alignment: .topTrailing) {
+        ZStack(alignment: hudAlignment) {
             // Ana Düzen
             Group {
                 switch manager.currentLayoutMode {
@@ -25,11 +35,11 @@ public struct MainWindowView: View {
             }
             .frame(minWidth: 800, minHeight: 520)
 
-            // Yüzen HUD Widget (Sağ üst köşe)
+            // Yüzen HUD Widget
             if manager.isHUDVisible {
                 FloatingHUDView()
                     .padding(16)
-                    .transition(.move(edge: .trailing).combined(with: .opacity))
+                    .transition(.opacity)
             }
 
             // Sürükle-Bırak Görsel Geri Bildirimi

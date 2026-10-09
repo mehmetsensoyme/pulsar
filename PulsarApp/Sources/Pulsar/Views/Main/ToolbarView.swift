@@ -62,6 +62,15 @@ public struct PulsarToolbarContent: ToolbarContent {
                 .disabled(manager.selectedItemIds.isEmpty)
                 .help("Seçili dosyaları arşivden sil")
             }
+
+            if manager.currentArchivePath != nil {
+                Button(action: {
+                    manager.closeArchive()
+                }) {
+                    Label("Kapat", systemImage: "xmark.circle")
+                }
+                .help("Açık arşivi kapat ve ana ekrana dön (⌘W)")
+            }
         }
 
         // Sağ Bölüm: Sci-Fi Modülleri & Arama

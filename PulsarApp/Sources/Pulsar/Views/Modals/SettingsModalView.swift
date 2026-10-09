@@ -154,6 +154,11 @@ public struct SettingsModalView: View {
                     Text("Kompakt Liste Düzeni").tag(LayoutMode.compactList.rawValue)
                     Text("Sekmeli Stüdyo Düzeni").tag(LayoutMode.tabbedStudio.rawValue)
                 }
+                .onChange(of: settings.defaultLayoutMode) { _, newMode in
+                    if let mode = LayoutMode(rawValue: newMode) {
+                        manager.currentLayoutMode = mode
+                    }
+                }
 
                 Picker("Varsayılan Sıkıştırma Formatı:", selection: $settings.defaultCompressionFormat) {
                     Text(".zip (Evrensel)").tag("zip")

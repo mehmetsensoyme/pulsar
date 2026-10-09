@@ -40,9 +40,22 @@ public struct RepairStationView: View {
 
             VStack(spacing: 16) {
                 // Hedef Dosya Seçimi
-                HStack {
-                    TextField("Bozuk veya Hasarlı Arşiv Yolu (.rar)", text: $vm.targetArchive)
-                        .textFieldStyle(.roundedBorder)
+                HStack(spacing: 8) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "doc.zipper")
+                            .foregroundColor(.secondary)
+                            .font(.system(size: 12))
+                        Text(vm.targetArchive.isEmpty ? "Bozuk veya Hasarlı Arşiv Seçilmedi (.rar)" : vm.targetArchive.abbreviatingWithTilde)
+                            .font(.system(size: 12, design: .monospaced))
+                            .foregroundColor(vm.targetArchive.isEmpty ? .secondary : .primary)
+                            .lineLimit(1)
+                    }
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 7)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color(NSColor.textBackgroundColor))
+                    .cornerRadius(6)
+                    .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.secondary.opacity(0.2), lineWidth: 1))
 
                     Button("Göz At...") {
                         let panel = NSOpenPanel()
