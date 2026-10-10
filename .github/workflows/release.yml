@@ -28,14 +28,41 @@ jobs:
       run: |
         ./Scripts/package_dmg.sh
 
+    - name: Extract Release Notes
+      id: release_notes
+      run: |
+        python3 -c "
+        import json, os
+        tag = os.environ.get('TAG_NAME', '')
+        ver = tag.lstrip('v')
+        name = f'Pulsar {tag}'
+        notes = ''
+        if os.path.exists('Website/changelog.json'):
+            with open('Website/changelog.json') as f:
+                data = json.load(f)
+            for r in data.get('releases', []):
+                if r.get('version') == ver:
+                    code_name = r.get('codeName', '')
+                    name = f'Pulsar v{ver} ({code_name})' if code_name else f'Pulsar v{ver}'
+                    notes = '\n'.join([f'- {h}' for h in r.get('highlights', [])])
+                    break
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+            out.write(f'release_name={name}\n')
+            out.write('release_body<<EOF\n' + notes + '\nEOF\n')
+        "
+      env:
+        TAG_NAME: ${{ github.ref_name }}
+
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
       with:
+        name: ${{ steps.release_notes.outputs.release_name }}
+        body: ${{ steps.release_notes.outputs.release_body }}
         files: |
           dist/*.dmg
           dist/*.sha256
         draft: false
         prerelease: false
-        generate_release_notes: true
+        generate_release_notes: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
