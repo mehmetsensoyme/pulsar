@@ -149,6 +149,45 @@ public struct SettingsModalView: View {
     // MARK: - 1. Genel Ayarlar
     private var generalSettingsTab: some View {
         VStack(alignment: .leading, spacing: 14) {
+            settingsSection(title: "DİL VE YERELLEŞTİRME (LANGUAGE)") {
+                Picker("Arayüz Dili:", selection: Binding<String>(
+                    get: { settings.selectedLanguage },
+                    set: { LocalizationService.shared.setLanguage($0) }
+                )) {
+                    Text("Sistemle Uyumlu (Otomatik)").tag("auto")
+                    Divider()
+                    ForEach(LocalizationService.shared.availableLanguages) { lang in
+                        Text(lang.isCustom ? "\(lang.name) [Harici]" : lang.name)
+                            .tag(lang.code)
+                    }
+                }
+
+                HStack {
+                    Button(action: {
+                        LocalizationService.shared.openCustomLanguagesFolder()
+                    }) {
+                        HStack(spacing: 5) {
+                            Image(systemName: "folder.badge.gearshape")
+                            Text("Harici Dil Klasörünü Aç (.lang)...")
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .font(.system(size: 11))
+                    .foregroundColor(.accentColor)
+
+                    Spacer()
+
+                    Button(action: {
+                        LocalizationService.shared.reloadAvailableLanguages()
+                    }) {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.system(size: 11))
+                    }
+                    .buttonStyle(.plain)
+                    .help("Dilleri Yenile")
+                }
+            }
+
             settingsSection(title: "GÖRÜNÜM VE TEMA") {
                 Picker("Tema Tercihi:", selection: $settings.selectedTheme) {
                     Text("Sistemle Uyumlu (Otomatik)").tag("system")

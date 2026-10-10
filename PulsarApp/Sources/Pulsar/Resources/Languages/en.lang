@@ -1,0 +1,156 @@
+# ==============================================================================
+# PULSAR LOCALIZATION FILE: ENGLISH (en.lang)
+# Language Name: English
+# Language Code: en
+# ==============================================================================
+
+language.name = English
+language.code = en
+
+# ------------------------------------------------------------------------------
+# App & General
+# ------------------------------------------------------------------------------
+app.name = Pulsar
+app.tagline = Light-Speed Archive & Data Compression Studio for macOS
+
+# ------------------------------------------------------------------------------
+# Main Window & Empty Hero State
+# ------------------------------------------------------------------------------
+main.empty_title = Pulsar
+main.empty_subtitle = Drag and drop an archive file here to open
+main.open_archive = Open Archive (⌘O)
+main.new_archive = New Archive (⌘N)
+main.compare_archives = Compare (⌘⇧D)
+main.recent_archives = RECENT ARCHIVES
+main.clear_history = Clear History
+main.drop_to_open = Drop Archive Here to Open
+main.search_prompt = Search inside archive...
+main.no_items = No items to display in this folder
+main.no_search_results = No files found matching your search
+
+# ------------------------------------------------------------------------------
+# Sidebar Navigation
+# ------------------------------------------------------------------------------
+sidebar.quick_start = Quick Start
+sidebar.content = Content
+sidebar.smart_filters = Smart Filters
+sidebar.recent = Recent Archives
+sidebar.no_recents = No recent archives
+sidebar.clear = Clear
+sidebar.modules = Systems & Modules
+sidebar.all_items = All Content
+sidebar.files_only = Files Only
+sidebar.folders_only = Folders Only
+sidebar.images = Images
+sidebar.documents = Documents
+sidebar.code = Source Code
+sidebar.media = Media
+sidebar.benchmark = Warp Benchmark
+sidebar.folder_watcher = Black Hole Watcher
+sidebar.repair = Recovery Station
+sidebar.converter = Format Converter
+sidebar.checksum = Checksum (Hash)
+sidebar.settings = Settings & Preferences...
+
+# ------------------------------------------------------------------------------
+# Toolbar
+# ------------------------------------------------------------------------------
+toolbar.extract_all = Extract All
+toolbar.new_archive = New Archive
+toolbar.safe_lock_locked = Read-Only
+toolbar.safe_lock_unlocked = Editing Mode
+toolbar.delete = Delete
+toolbar.close = Close
+toolbar.compare = Compare Archives
+toolbar.tools = Tools
+toolbar.hud = Floating HUD
+toolbar.settings = Settings
+toolbar.parent_folder = Parent Folder (⌘↑)
+
+# ------------------------------------------------------------------------------
+# Breadcrumb Bar
+# ------------------------------------------------------------------------------
+breadcrumb.up = Go Up
+breadcrumb.copy_path = Copy Folder Path
+breadcrumb.editing_active = Editing Active
+
+# ------------------------------------------------------------------------------
+# Table & Grid View
+# ------------------------------------------------------------------------------
+column.name = Name
+column.size = Size
+column.compressed = Compressed
+column.ratio = Ratio
+column.date = Date Modified
+table.folder = Folder
+table.encrypted = ENCRYPTED (AES)
+
+# ------------------------------------------------------------------------------
+# Inspector Panel
+# ------------------------------------------------------------------------------
+inspector.content_preview = CONTENT PREVIEW
+inspector.open_folder = Open Folder
+inspector.quick_look = QuickLook (⎵)
+inspector.extract = Extract
+inspector.details = INFORMATION
+inspector.original_size = Original Size
+inspector.compressed_size = Compressed
+inspector.ratio = Compression Ratio
+inspector.modified = Modified
+inspector.crc32 = CRC32
+inspector.attributes = Attributes
+inspector.path = Path
+inspector.no_selection = Select a file to view details and preview
+inspector.total_files = Total Files
+inspector.format = Format
+
+# ------------------------------------------------------------------------------
+# Context Menus
+# ------------------------------------------------------------------------------
+menu.quick_look = QuickLook Preview (⎵)
+menu.open_with = Open With...
+menu.checksum = Checksum...
+menu.copy_path = Copy Path
+menu.extract_selected = Extract Selected...
+menu.extract_all = Extract All...
+menu.delete_item = Delete from Archive
+menu.show_in_finder = Show in Finder
+menu.remove_from_list = Remove from List
+
+# ------------------------------------------------------------------------------
+# Modals & Dialogs
+# ------------------------------------------------------------------------------
+modal.cancel = Cancel
+modal.save = Save
+modal.start = Start
+modal.close = Close
+compress.title = Create New Archive
+compress.presets = Smart Presets
+compress.wizard = Step-by-Step Wizard
+compress.expert = Expert Control Panel
+compress.source = Source:
+compress.output = Output Destination:
+compress.start_btn = Start Compression
+
+# ------------------------------------------------------------------------------
+# Settings & Preferences
+# ------------------------------------------------------------------------------
+settings.title = Pulsar Preferences & Settings
+settings.general = General
+settings.engines = Engines & Diagnostics
+settings.security = Security & Vault
+settings.hud = Floating HUD
+settings.about = About & Updates
+settings.language = Interface Language
+settings.language_auto = System Default (Automatic)
+settings.theme = Appearance Theme
+settings.accent = Cosmic Accent Color
+settings.density = Information Density
+settings.open_custom_lang_dir = Open Custom Languages Folder...
+
+# ------------------------------------------------------------------------------
+# Status Footer
+# ------------------------------------------------------------------------------
+footer.items = items
+footer.selected = selected
+footer.disk_free = Disk: %@ free

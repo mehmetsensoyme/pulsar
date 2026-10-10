@@ -6,6 +6,7 @@ public final class OnboardingViewModel: ObservableObject {
     @Published public var accentColorChoice: String = PulsarSettings.shared.accentColorChoice
     @Published public var uiScale: String = PulsarSettings.shared.uiScale
     @Published public var defaultLayout: String = PulsarSettings.shared.defaultLayoutMode
+    @Published public var selectedLanguage: String = PulsarSettings.shared.selectedLanguage
 
     public init() {}
 
@@ -14,6 +15,7 @@ public final class OnboardingViewModel: ObservableObject {
         PulsarSettings.shared.accentColorChoice = accentColorChoice
         PulsarSettings.shared.uiScale = uiScale
         PulsarSettings.shared.defaultLayoutMode = defaultLayout
+        LocalizationService.shared.setLanguage(selectedLanguage)
         if let mode = LayoutMode(rawValue: defaultLayout) {
             ArchiveManager.shared.currentLayoutMode = mode
         }
@@ -98,7 +100,24 @@ public struct OnboardingSheetView: View {
                         }
                     }
 
-                    // 1. Tema Seçimi
+                    // 1. Dil Seçimi
+                    VStack(alignment: .leading, spacing: 8) {
+                        Label("Arayüz Dili / Interface Language", systemImage: "globe")
+                            .font(.system(size: 11, weight: .bold))
+                            .foregroundColor(.secondary)
+
+                        Picker("", selection: $vm.selectedLanguage) {
+                            Text("Sistemle Uyumlu (Otomatik)").tag("auto")
+                            Divider()
+                            ForEach(LocalizationService.shared.availableLanguages) { lang in
+                                Text(lang.name).tag(lang.code)
+                            }
+                        }
+                        .pickerStyle(.menu)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+
+                    // 2. Tema Seçimi
                     VStack(alignment: .leading, spacing: 8) {
                         Label("Görünüm & Tema", systemImage: "circle.lefthalf.filled")
                             .font(.system(size: 11, weight: .bold))

@@ -15,6 +15,7 @@ public final class PulsarSettings: ObservableObject {
     @AppStorage("selectedTheme") public var selectedTheme: String = "system" // system, dark, light
     @AppStorage("accentColorChoice") public var accentColorChoice: String = "cyan" // cyan, purple, orange, green, blue
     @AppStorage("uiScale") public var uiScale: String = "standard" // compact, standard, spacious
+    @AppStorage("selectedLanguage") public var selectedLanguage: String = "auto" // auto, en, tr, or custom
 
     public var resolvedAccentColor: Color {
         switch accentColorChoice {

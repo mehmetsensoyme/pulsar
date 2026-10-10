@@ -200,6 +200,33 @@ public final class PulsarTestRunner {
         assertTest(manager.pendingCompressPaths.count == 1, "ArchiveManager: Sürükle-Bırak Ön-Doldurma Ataması")
         manager.pendingCompressPaths = []
 
+        // 19. Dil ve Yerelleştirme Motoru (LocalizationService & .lang Parser)
+        let l10n = LocalizationService.shared
+        assertTest(!l10n.availableLanguages.isEmpty, "Localization: Mevcut Diller Listesi Yüklendi")
+        assertTest(l10n.availableLanguages.contains(where: { $0.code == "en" }), "Localization: İngilizce (en) Tanımlı")
+        assertTest(l10n.availableLanguages.contains(where: { $0.code == "tr" }), "Localization: Türkçe (tr) Tanımlı")
+
+        // Parser testi
+        let testContent = """
+        # Test Language
+        language.name = TestLang
+        language.code = tl
+
+        [sample]
+        title = Hello Test
+        desc: Pulsar Test
+        """
+        let parsed = l10n.parseLangContent(testContent, fallbackCode: "tl")
+        assertTest(parsed != nil && parsed?.code == "tl", "Localization: .lang Parser Dil Kodu Tespiti")
+        assertTest(parsed?.dict["sample.title"] == "Hello Test", "Localization: .lang Parser [section] ve Anahtar Eşleşmesi")
+
+        // Çeviri ve Fallback Testi
+        l10n.setLanguage("en")
+        assertTest(L10n.tr("toolbar.extract_all") == "Extract All", "Localization: İngilizce Çeviri (toolbar.extract_all)")
+        l10n.setLanguage("tr")
+        assertTest(L10n.tr("toolbar.extract_all") == "Tümünü Çıkar", "Localization: Türkçe Çeviri (toolbar.extract_all)")
+        assertTest(L10n.tr("nonexistent_test_key_123", fallback: "FallbackValue") == "FallbackValue", "Localization: Güvenli Fallback Mekanizması")
+
         print("--------------------------------------------------")
         print("📊 [TEST SONUCU] Toplam: \(passed + failed) | Başarılı: \(passed) | Hatalı: \(failed)")
         if failed == 0 {

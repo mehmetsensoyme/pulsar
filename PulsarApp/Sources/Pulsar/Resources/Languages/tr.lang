@@ -1,0 +1,156 @@
+# ==============================================================================
+# PULSAR YERELLEŞTİRME DOSYASI: TÜRKÇE (tr.lang)
+# Dil Adı: Türkçe
+# Dil Kodu: tr
+# ==============================================================================
+
+language.name = Türkçe
+language.code = tr
+
+# ------------------------------------------------------------------------------
+# Uygulama & Genel
+# ------------------------------------------------------------------------------
+app.name = Pulsar
+app.tagline = macOS İçin Işık Hızında Arşiv ve Sıkıştırma Gücü
+
+# ------------------------------------------------------------------------------
+# Ana Pencere & Boş Durum
+# ------------------------------------------------------------------------------
+main.empty_title = Pulsar
+main.empty_subtitle = Açmak için bir arşiv dosyasını buraya sürükleyin
+main.open_archive = Arşiv Aç (⌘O)
+main.new_archive = Yeni Arşiv (⌘N)
+main.compare_archives = Karşılaştır (⌘⇧D)
+main.recent_archives = SON KULLANILANLAR
+main.clear_history = Geçmişi Temizle
+main.drop_to_open = Açmak İçin Arşivi Buraya Bırakın
+main.search_prompt = Arşiv içinde ara...
+main.no_items = Bu klasörde görüntülenecek öğe yok
+main.no_search_results = Arama ile eşleşen dosya bulunamadı
+
+# ------------------------------------------------------------------------------
+# Kenar Çubuğu Gezinimi
+# ------------------------------------------------------------------------------
+sidebar.quick_start = Hızlı Başlangıç
+sidebar.content = İçerik
+sidebar.smart_filters = Akıllı Filtreler
+sidebar.recent = Son Açılan Arşivler
+sidebar.no_recents = Son arşiv bulunmuyor
+sidebar.clear = Temizle
+sidebar.modules = Sistem & Modüller
+sidebar.all_items = Tüm İçerik
+sidebar.files_only = Sadece Dosyalar
+sidebar.folders_only = Sadece Klasörler
+sidebar.images = Görseller
+sidebar.documents = Belgeler
+sidebar.code = Kaynak Kodu
+sidebar.media = Medya
+sidebar.benchmark = Warp Benchmark
+sidebar.folder_watcher = Kara Delik İzleyici
+sidebar.repair = Kurtarma İstasyonu
+sidebar.converter = Format Dönüştürücü
+sidebar.checksum = Sağlama Toplamı (Checksum)
+sidebar.settings = Ayarlar & Tercihler...
+
+# ------------------------------------------------------------------------------
+# Araç Çubuğu (Toolbar)
+# ------------------------------------------------------------------------------
+toolbar.extract_all = Tümünü Çıkar
+toolbar.new_archive = Yeni Arşiv
+toolbar.safe_lock_locked = Salt Okunur
+toolbar.safe_lock_unlocked = Düzenleme Açık
+toolbar.delete = Sil
+toolbar.close = Kapat
+toolbar.compare = Arşiv Karşılaştır
+toolbar.tools = Araçlar
+toolbar.hud = Yüzen HUD
+toolbar.settings = Ayarlar
+toolbar.parent_folder = Üst Dizin (⌘↑)
+
+# ------------------------------------------------------------------------------
+# Breadcrumb Yol Çubuğu
+# ------------------------------------------------------------------------------
+breadcrumb.up = Üst Dizin
+breadcrumb.copy_path = Klasör Yolunu Kopyala
+breadcrumb.editing_active = Düzenleme Açık
+
+# ------------------------------------------------------------------------------
+# Tablo & Izgara Görünümü
+# ------------------------------------------------------------------------------
+column.name = Ad
+column.size = Boyut
+column.compressed = Sıkıştırılmış
+column.ratio = Oran
+column.date = Değiştirilme Tarihi
+table.folder = Klasör
+table.encrypted = ŞİFRELİ (AES)
+
+# ------------------------------------------------------------------------------
+# Müfettiş (Inspector) Paneli
+# ------------------------------------------------------------------------------
+inspector.content_preview = İÇERİK ÖNİZLEMESİ
+inspector.open_folder = Klasörü Aç
+inspector.quick_look = Hızlı Bakış (⎵)
+inspector.extract = Çıkar
+inspector.details = BİLGİLER
+inspector.original_size = Orijinal Boyut
+inspector.compressed_size = Sıkıştırılmış
+inspector.ratio = Sıkıştırma Oranı
+inspector.modified = Değiştirilme
+inspector.crc32 = CRC32
+inspector.attributes = Öznitelikler
+inspector.path = Yol
+inspector.no_selection = Detayları ve önizlemeyi görmek için bir dosya seçin
+inspector.total_files = Toplam Dosya
+inspector.format = Format
+
+# ------------------------------------------------------------------------------
+# Bağlam Menüleri
+# ------------------------------------------------------------------------------
+menu.quick_look = Hızlı Bakış (QuickLook) ⎵
+menu.open_with = Şununla Aç...
+menu.checksum = Sağlama Toplamı (Checksum)...
+menu.copy_path = Yolu Kopyala
+menu.extract_selected = Seçileni Çıkar...
+menu.extract_all = Tüm Arşivi Çıkar...
+menu.delete_item = Arşivden Sil
+menu.show_in_finder = Finder'da Göster
+menu.remove_from_list = Listeden Kaldır
+
+# ------------------------------------------------------------------------------
+# Modallar & Pencereler
+# ------------------------------------------------------------------------------
+modal.cancel = Vazgeç
+modal.save = Kaydet
+modal.start = Başlat
+modal.close = Kapat
+compress.title = Yeni Arşiv Oluştur
+compress.presets = Akıllı Önayarlar
+compress.wizard = Adım Adım Sihirbaz
+compress.expert = Uzman Kontrol Paneli
+compress.source = Kaynak:
+compress.output = Çıktı Konumu:
+compress.start_btn = Sıkıştırmayı Başlat
+
+# ------------------------------------------------------------------------------
+# Ayarlar & Tercihler
+# ------------------------------------------------------------------------------
+settings.title = Pulsar Tercihler ve Ayarlar
+settings.general = Genel
+settings.engines = Motorlar & Teşhis
+settings.security = Güvenlik & Kasa
+settings.hud = Yüzen HUD
+settings.about = Hakkında & Güncellemeler
+settings.language = Arayüz Dili
+settings.language_auto = Sistem Varsayılanı (Otomatik)
+settings.theme = Görünüm Teması
+settings.accent = Kozmik Vurgu Rengi
+settings.density = Bilgi Yoğunluğu
+settings.open_custom_lang_dir = Harici Dil Klasörünü Aç...
+
+# ------------------------------------------------------------------------------
+# Alt Durum Çubuğu
+# ------------------------------------------------------------------------------
+footer.items = öğe
+footer.selected = seçildi
+footer.disk_free = Disk: %@ boş

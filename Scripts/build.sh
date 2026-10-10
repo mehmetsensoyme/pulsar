@@ -78,6 +78,12 @@ elif [ -f "$APP_DIR/Sources/Pulsar/Resources/logo.png" ]; then
     cp "$APP_DIR/Sources/Pulsar/Resources/logo.png" "$BUNDLE_DIR/Contents/Resources/logo.png"
 fi
 
+# Dil Dosyalarını (.lang) Ekle
+mkdir -p "$BUNDLE_DIR/Contents/Resources/Languages"
+if [ -d "$APP_DIR/Sources/Pulsar/Resources/Languages" ]; then
+    cp -R "$APP_DIR/Sources/Pulsar/Resources/Languages/"* "$BUNDLE_DIR/Contents/Resources/Languages/"
+fi
+
 chmod +x "$BUNDLE_DIR/Contents/MacOS/Pulsar"
 for rbin in "$BUNDLE_DIR/Contents/Resources/bin"/*; do
     [ -f "$rbin" ] && chmod +x "$rbin" 2>/dev/null || true

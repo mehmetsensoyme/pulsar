@@ -181,13 +181,23 @@ cd pulsar
 ./Scripts/package_dmg.sh
 ```
 
-The compiled release will be available at `dist/Pulsar-1.2.2-arm64.dmg`.
+The compiled release will be available at `dist/Pulsar-1.4.0-arm64.dmg`.
 
 ### Running Automated Stability Tests:
 ```bash
 ./Scripts/run_tests.sh
 ```
-Executes all built-in unit tests verifying format detection, encryption, disk safety guards, and cache purging.
+Executes all 66 built-in unit tests verifying format detection, encryption, disk safety guards, localization engine, and cache purging.
+
+---
+
+## 🌐 Community Translations & Localization
+
+Pulsar features a zero-dependency, modular localization engine using plain `.lang` files (`key = value` format). Anyone can translate Pulsar into their native language without needing to compile code!
+
+* **Available Languages:** English (`en.lang`), Turkish (`tr.lang`).
+* **Custom Languages:** Drop any `.lang` file into `~/Library/Application Support/Pulsar/Languages/` to test translations live.
+* **Want to contribute a new language?** Check out our 3-minute guide: [**LOCALIZATION.md**](LOCALIZATION.md).
 
 ---
 
@@ -196,7 +206,7 @@ Executes all built-in unit tests verifying format detection, encryption, disk sa
 1. **Pushing Changes:**
    ```bash
    git push -u origin main
-   git push origin v1.2.2
+   git push origin v1.4.0
    ```
 
 2. **Automated CI/CD:**
