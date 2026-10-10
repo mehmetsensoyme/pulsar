@@ -73,32 +73,8 @@ public struct PulsarToolbarContent: ToolbarContent {
             }
         }
 
-        // Sağ Bölüm: Sci-Fi Modülleri & Arama
+        // Sağ Bölüm: Modüller, Karşılaştırma, HUD ve Ayarlar
         ToolbarItemGroup(placement: .primaryAction) {
-            // Pulsar Warp Core Benchmark
-            Button(action: {
-                manager.showBenchmarkSheet = true
-            }) {
-                Label("Warp Hız Testi", systemImage: "bolt.fill")
-            }
-            .help("Pulsar Warp Core Donanım Benchmarkı")
-
-            // Kara Delik Klasör İzleyici
-            Button(action: {
-                manager.showFolderWatcherSheet = true
-            }) {
-                Label("Kara Delik", systemImage: "circle.circle")
-            }
-            .help("Kara Delik Otomatik Klasör İzleyici")
-
-            // Arşiv Kurtarma
-            Button(action: {
-                manager.showRepairSheet = true
-            }) {
-                Label("Kurtarma", systemImage: "wrench.and.screwdriver")
-            }
-            .help("Bozuk Arşiv Kurtarma İstasyonu")
-
             // Arşiv Karşılaştırma & Diff (⌘⇧D)
             Button(action: {
                 manager.showDiffSheet = true
@@ -107,11 +83,51 @@ public struct PulsarToolbarContent: ToolbarContent {
             }
             .help("İki arşiv arasındaki farkları karşılaştır (⌘⇧D)")
 
+            // Araçlar & Modüller Açılır Menüsü
+            Menu {
+                Section("Performans & Otomasyon") {
+                    Button(action: {
+                        manager.showBenchmarkSheet = true
+                    }) {
+                        Label("Warp Hız Testi", systemImage: "bolt.fill")
+                    }
+
+                    Button(action: {
+                        manager.showFolderWatcherSheet = true
+                    }) {
+                        Label("Kara Delik Klasör İzleyici", systemImage: "circle.circle")
+                    }
+                }
+
+                Section("Kurtarma & Doğrulama") {
+                    Button(action: {
+                        manager.showRepairSheet = true
+                    }) {
+                        Label("Bozuk Arşiv Kurtarma", systemImage: "wrench.and.screwdriver")
+                    }
+
+                    Button(action: {
+                        manager.showConverterSheet = true
+                    }) {
+                        Label("Format Dönüştürücü", systemImage: "arrow.triangle.2.circlepath")
+                    }
+
+                    Button(action: {
+                        manager.openChecksumModal()
+                    }) {
+                        Label("Sağlama Toplamı (Checksum)", systemImage: "checkmark.shield")
+                    }
+                }
+            } label: {
+                Label("Araçlar", systemImage: "sparkles.rectangle.stack")
+            }
+            .help("Pulsar Güç Modülleri ve Araçları")
+
             // Yüzen HUD Aç/Kapat
             Button(action: {
                 manager.isHUDVisible.toggle()
             }) {
-                Label("Yüzen HUD", systemImage: "macwindow.on.rectangle")
+                Label("Yüzen HUD", systemImage: manager.isHUDVisible ? "macwindow.on.rectangle" : "macwindow")
             }
             .help("Yüzen Mini Paneli (HUD) Göster/Gizle (⌘⇧H)")
 
@@ -119,7 +135,7 @@ public struct PulsarToolbarContent: ToolbarContent {
             Button(action: {
                 manager.showSettingsSheet = true
             }) {
-                Label("Ayarlar", systemImage: "gearshape.fill")
+                Label("Ayarlar", systemImage: "gearshape")
             }
             .help("Pulsar Ayarları ve Tercihler (⌘,)")
         }

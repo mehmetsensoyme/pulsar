@@ -12,7 +12,7 @@
 
 [![macOS](https://img.shields.io/badge/macOS-14.0%2B%20%7C%2015.0%2B-blue?logo=apple&style=for-the-badge)](https://apple.com)
 [![Architecture](https://img.shields.io/badge/Architecture-Apple%20Silicon%20(Universal%2FARM64)-cyan?style=for-the-badge)](https://apple.com)
-[![Version](https://img.shields.io/badge/Version-v1.3.0%20(Quasar)-8B5CF6?style=for-the-badge)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-v1.4.0%20(Magnetar)-8B5CF6?style=for-the-badge)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 </div>

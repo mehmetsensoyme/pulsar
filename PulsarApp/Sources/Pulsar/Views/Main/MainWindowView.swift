@@ -72,23 +72,33 @@ public struct MainWindowView: View {
         }
         .searchable(text: $manager.searchQuery, prompt: "Arşiv içinde ara...")
         .onDrop(of: [.fileURL], isTargeted: $vm.isWindowDropTargeted) { providers in
+            let group = DispatchGroup()
+            var droppedPaths: [String] = []
+            let lock = NSLock()
+
             for provider in providers {
+                group.enter()
                 provider.loadItem(forTypeIdentifier: "public.file-url", options: nil) { item, _ in
+                    defer { group.leave() }
                     guard let data = item as? Data,
                           let url = URL(dataRepresentation: data, relativeTo: nil) else { return }
+                    lock.lock()
+                    droppedPaths.append(url.path)
+                    lock.unlock()
+                }
+            }
 
-                    DispatchQueue.main.async {
-                        let path = url.path
-                        if ArchiveFormat.detect(from: path) != nil {
-                            self.manager.openArchive(at: path)
-                        } else {
-                            // Arşiv dışı bir dosya bırakıldı ve düzenleme açıksa ekle
-                            if self.manager.isEditingUnlocked && self.manager.currentArchivePath != nil {
-                                self.manager.addFilesToCurrentArchive(filePaths: [path])
-                            } else {
-                                self.manager.showCompressSheet = true
-                            }
-                        }
+            group.notify(queue: .main) {
+                guard !droppedPaths.isEmpty else { return }
+
+                if droppedPaths.count == 1, let first = droppedPaths.first, ArchiveFormat.detect(from: first) != nil {
+                    self.manager.openArchive(at: first)
+                } else {
+                    if self.manager.isEditingUnlocked && self.manager.currentArchivePath != nil {
+                        self.manager.addFilesToCurrentArchive(filePaths: droppedPaths, targetSubfolder: self.manager.currentFolderPath)
+                    } else {
+                        self.manager.pendingCompressPaths = droppedPaths
+                        self.manager.showCompressSheet = true
                     }
                 }
             }

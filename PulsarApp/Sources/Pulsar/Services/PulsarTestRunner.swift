@@ -88,11 +88,11 @@ public final class PulsarTestRunner {
 
         // 7. Sürüm Kontrolü ve SemVer Karşılaştırma
         let updater = UpdateService.shared
-        assertTest(updater.currentVersion == "1.3.0", "UpdateService: v1.3.0 Güncel Versiyon")
-        assertTest(updater.currentCodeName == "Quasar", "UpdateService: v1.3.0 'Quasar' Kod Adı")
-        assertTest(updater.isVersion("1.3.1", greaterThan: "1.3.0"), "SemVer: 1.3.1 > 1.3.0 Doğrulaması")
-        assertTest(!updater.isVersion("1.2.3", greaterThan: "1.3.0"), "SemVer: 1.2.3 < 1.3.0 Doğrulaması")
-        assertTest(!updater.isVersion("1.3.0", greaterThan: "1.3.0"), "SemVer: 1.3.0 == 1.3.0 Eşitlik Doğrulaması")
+        assertTest(updater.currentVersion == "1.4.0", "UpdateService: v1.4.0 Güncel Versiyon")
+        assertTest(updater.currentCodeName == "Magnetar", "UpdateService: v1.4.0 'Magnetar' Kod Adı")
+        assertTest(updater.isVersion("1.4.1", greaterThan: "1.4.0"), "SemVer: 1.4.1 > 1.4.0 Doğrulaması")
+        assertTest(!updater.isVersion("1.3.0", greaterThan: "1.4.0"), "SemVer: 1.3.0 < 1.4.0 Doğrulaması")
+        assertTest(!updater.isVersion("1.4.0", greaterThan: "1.4.0"), "SemVer: 1.4.0 == 1.4.0 Eşitlik Doğrulaması")
 
         // 8. İçerik Filtreleme Modu (ContentFilterMode)
         let sampleItems = [
@@ -192,6 +192,13 @@ public final class PulsarTestRunner {
         // 17. Finder Hızlı Eylemleri (FinderIntegrationService)
         let finder = FinderIntegrationService.shared
         assertTest(!finder.servicesDir.path.isEmpty, "FinderIntegration: ~/Library/Services Dizin Tespiti")
+
+        // 18. Sürükle-Bırak Akıllı Ön-Doldurma
+        let manager = ArchiveManager.shared
+        assertTest(manager.pendingCompressPaths.isEmpty, "ArchiveManager: Boş Başlangıç Ön-Doldurma")
+        manager.pendingCompressPaths = ["/tmp/sample.png"]
+        assertTest(manager.pendingCompressPaths.count == 1, "ArchiveManager: Sürükle-Bırak Ön-Doldurma Ataması")
+        manager.pendingCompressPaths = []
 
         print("--------------------------------------------------")
         print("📊 [TEST SONUCU] Toplam: \(passed + failed) | Başarılı: \(passed) | Hatalı: \(failed)")

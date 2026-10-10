@@ -187,6 +187,17 @@ public struct CompressSheetView: View {
             .background(Color(NSColor.controlBackgroundColor))
         }
         .frame(width: 600)
+        .onAppear {
+            if !manager.pendingCompressPaths.isEmpty {
+                vm.sourcePaths = manager.pendingCompressPaths
+                if let first = manager.pendingCompressPaths.first {
+                    let base = (first as NSString).lastPathComponent
+                    let nameWithoutExt = (base as NSString).deletingPathExtension
+                    vm.outputName = manager.pendingCompressPaths.count == 1 ? nameWithoutExt : "Arşiv"
+                }
+                manager.pendingCompressPaths = []
+            }
+        }
     }
 
     private var finalExtension: String {

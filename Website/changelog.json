@@ -1,22 +1,35 @@
 {
   "project": "Pulsar",
   "tagline": "macOS İçin Işık Hızında Arşiv ve Sıkıştırma Gücü",
-  "currentVersion": "1.3.0",
-  "currentCodeName": "Quasar",
-  "build": "2617",
+  "currentVersion": "1.4.0",
+  "currentCodeName": "Magnetar",
+  "build": "2618",
   "releaseDate": "Ekim 2026",
   "download": {
-    "dmgUrl": "https://github.com/mehmetsensoyme/pulsar/releases/download/v1.3.0/Pulsar-1.3.0-arm64.dmg",
+    "dmgUrl": "https://github.com/mehmetsensoyme/pulsar/releases/download/v1.4.0/Pulsar-1.4.0-arm64.dmg",
     "dmgSize": "3.1 MB",
-    "sha256": "7a25f339c92759676db9dcaba2c536f0cb6917054781bba0da6876015d8c7b8e",
+    "sha256": "2b2d9e6feaf32752850649bf1458bb94475f2acc4ae5a51e19c37768ed6be3e3",
     "architecture": "Apple Silicon (Universal / ARM64)"
   },
   "releases": [
     {
+      "version": "1.4.0",
+      "codeName": "Magnetar",
+      "date": "2026-10-10",
+      "isLatest": true,
+      "highlights": [
+        "Kurumsal Tasarım Sadeleştirmesi: Apple HIG standartlarında derli toplu 'Araçlar & Modüller' açılır menüsü",
+        "Akıllı Sürükle-Bırak Ön-Doldurma: Pencereye bırakılan dosyaların Yeni Arşiv sihirbazına otomatik aktarılması",
+        "Hedef Alt Klasöre Dosya Ekleme: Açık arşivde gezinilen alt klasöre sürüklenen dosyaların doğrudan o dizine yerleştirilmesi",
+        "Dinamik Kenar Çubuğu: Arşiv açık değilken Hızlı Başlangıç panelini gösteren, arşiv açıldığında canlı sayaçlara geçen zeki yapı",
+        "Etkileşimli Breadcrumb Yol Çubuğu: Geri dönüş butonu, klasör yolu kopyalama ve gelişmiş Mac HIG kontrast düzeni"
+      ]
+    },
+    {
       "version": "1.3.0",
       "codeName": "Quasar",
       "date": "2026-10-10",
-      "isLatest": true,
+      "isLatest": false,
       "highlights": [
         "Dahili macOS QuickLook Önizleme: Arşivdeki dosyalara Space (Boşluk) tuşuna basarak anında sistem QuickLook penceresinde görüntüleme",
         "Görsel Arşiv Karşılaştırma & Diff (⌘⇧D): İki arşiv arasındaki eklenen, silinen ve boyutu değişen dosyaları yan yana analiz etme ve Markdown raporlama",

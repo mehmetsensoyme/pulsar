@@ -30,28 +30,28 @@ public struct PulsarReleaseInfo: Codable, Identifiable {
 public final class UpdateService: ObservableObject {
     public static let shared = UpdateService()
 
-    public let currentVersion = "1.3.0"
-    public let currentCodeName = "Quasar"
-    public let currentBuild = "2617"
+    public let currentVersion = "1.4.0"
+    public let currentCodeName = "Magnetar"
+    public let currentBuild = "2618"
 
     @Published public var isChecking: Bool = false
     @Published public var hasUpdateAvailable: Bool = false
     @Published public var latestRelease: PulsarReleaseInfo?
     @Published public var lastCheckDate: Date? = nil
-    @Published public var checkStatusMessage: String = "Pulsar güncel (v1.3.0 Quasar)"
+    @Published public var checkStatusMessage: String = "Pulsar güncel (v1.4.0 Magnetar)"
 
     private init() {
         latestRelease = PulsarReleaseInfo(
-            version: "1.3.0",
-            codeName: "Quasar",
+            version: "1.4.0",
+            codeName: "Magnetar",
             releaseDate: "Ekim 2026",
             downloadUrl: "https://github.com/mehmetsensoyme/pulsar/releases/latest",
             releaseNotes: [
-                "Dahili macOS QuickLook Önizleme: Arşivdeki dosyalara Space (Boşluk) tuşuna basarak anında sistem QuickLook önizlemesi",
-                "Görsel Arşiv Karşılaştırma & Diff (⌘⇧D): İki arşiv arasındaki eklenen, silinen ve değişen dosyaları filtreleme ve Markdown raporlama",
-                "Apple Anahtar Zinciri (Keychain) Parola Kasası: Şifreli arşivler için otomatik kilit açma ve Ayarlar'da parola kasası yönetimi",
-                "Finder Sağ Tık Hızlı Eylemleri (Quick Actions): 'Pulsar ile Sıkıştır' ve 'Pulsar ile Çıkar' servisleri",
-                "macOS Finder & Dock İkon Entegrasyonu ve Otomatik GitHub CI/CD Dağıtımı"
+                "Kurumsal Tasarım Sadeleştirmesi: Apple HIG standartlarında derli toplu 'Araçlar & Modüller' açılır menüsü",
+                "Akıllı Sürükle-Bırak Ön-Doldurma: Pencereye bırakılan dosyaların Yeni Arşiv sihirbazına otomatik aktarılması",
+                "Hedef Alt Klasöre Dosya Ekleme: Açık arşivde gezinilen alt klasöre sürüklenen dosyaların doğrudan o dizine yerleştirilmesi",
+                "Dinamik Kenar Çubuğu: Arşiv açık değilken Hızlı Başlangıç panelini gösteren, arşiv açıldığında canlı sayaçlara geçen zeki yapı",
+                "Etkileşimli Breadcrumb Yol Çubuğu: Geri dönüş butonu, klasör yolu kopyalama ve gelişmiş Mac HIG kontrast düzeni"
             ],
             isCritical: false
         )

@@ -32,15 +32,46 @@ public struct ModernThreePaneView: View {
     private var sidebarView: some View {
         // Sol Kenar Çubuğu: Gezinme, Son Arşivler ve Sistem
         List {
-            Section("İçerik") {
-                ForEach([ContentFilterMode.all, .filesOnly, .foldersOnly]) { mode in
-                    filterRow(for: mode)
-                }
-            }
+            if manager.currentArchivePath == nil {
+                Section("Hızlı Başlangıç") {
+                    Button(action: {
+                        let panel = NSOpenPanel()
+                        panel.allowsMultipleSelection = false
+                        panel.canChooseDirectories = false
+                        panel.prompt = "Arşiv Aç"
+                        if panel.runModal() == .OK, let url = panel.url {
+                            manager.openArchive(at: url.path)
+                        }
+                    }) {
+                        Label("Arşiv Aç (⌘O)", systemImage: "folder")
+                    }
+                    .buttonStyle(.plain)
 
-            Section("Akıllı Filtreler") {
-                ForEach([ContentFilterMode.images, .documents, .code, .media]) { mode in
-                    filterRow(for: mode)
+                    Button(action: {
+                        manager.showCompressSheet = true
+                    }) {
+                        Label("Yeni Arşiv (⌘N)", systemImage: "plus.rectangle")
+                    }
+                    .buttonStyle(.plain)
+
+                    Button(action: {
+                        manager.showDiffSheet = true
+                    }) {
+                        Label("Arşiv Karşılaştır (⌘⇧D)", systemImage: "square.split.2x1")
+                    }
+                    .buttonStyle(.plain)
+                }
+            } else {
+                Section("İçerik") {
+                    ForEach([ContentFilterMode.all, .filesOnly, .foldersOnly]) { mode in
+                        filterRow(for: mode)
+                    }
+                }
+
+                Section("Akıllı Filtreler") {
+                    ForEach([ContentFilterMode.images, .documents, .code, .media]) { mode in
+                        filterRow(for: mode)
+                    }
                 }
             }
 
@@ -232,6 +263,17 @@ public struct EmptyArchiveHeroView: View {
                         HStack(spacing: 6) {
                             Image(systemName: "plus")
                             Text("Yeni Arşiv (⌘N)")
+                        }
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.regular)
+
+                    Button(action: {
+                        manager.showDiffSheet = true
+                    }) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "square.split.2x1")
+                            Text("Karşılaştır (⌘⇧D)")
                         }
                     }
                     .buttonStyle(.bordered)

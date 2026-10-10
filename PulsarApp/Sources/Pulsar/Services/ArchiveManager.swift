@@ -75,6 +75,7 @@ public final class ArchiveManager: ObservableObject {
     @Published public var showConverterSheet: Bool = false
     @Published public var showOnboardingSheet: Bool = false
     @Published public var showDiffSheet: Bool = false
+    @Published public var pendingCompressPaths: [String] = []
 
     // MARK: - Hata ve Bilgi
     @Published public var errorMessage: String? = nil
@@ -536,12 +537,13 @@ public final class ArchiveManager: ObservableObject {
         }
     }
 
-    public func addFilesToCurrentArchive(filePaths: [String]) {
+    public func addFilesToCurrentArchive(filePaths: [String], targetSubfolder: String? = nil) {
         guard isEditingUnlocked, let archive = currentArchivePath else { return }
+        let subfolder = targetSubfolder ?? (currentFolderPath.isEmpty ? nil : currentFolderPath)
 
         Task {
             do {
-                try await sevenZip.addItems(to: archive, itemsToAdd: filePaths)
+                try await sevenZip.addItems(to: archive, itemsToAdd: filePaths, targetSubfolder: subfolder)
                 await MainActor.run {
                     self.openArchive(at: archive)
                 }

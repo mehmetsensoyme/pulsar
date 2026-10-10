@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-10-10 (Magnetar - Architecture, Tools Menu & HIG Overhaul)
+
+### Added & Refined
+- **Streamlined Apple HIG Toolbar Architecture**: Grouped power modules (Benchmark, Folder Watcher, Repair Station, Converter, Checksum) into a unified "Araçlar & Modüller" menu, eliminating toolbar overcrowding.
+- **Smart Drag-and-Drop Form Pre-fill**: Dropping non-archive files onto the window automatically opens the `CompressSheet` modal with dropped files pre-selected and a clean suggested archive title.
+- **Subfolder-Aware Archive Addition**: Dragging files into an open archive while viewing a subdirectory now stages and commits them directly into the active subfolder path.
+- **Dynamic Adaptive Sidebar Navigation**: When no archive is open, the sidebar dynamically presents an actionable "Hızlı Başlangıç" (Quick Start) panel; when an archive opens, it transitions smoothly into live categorized item counters.
+- **Interactive Breadcrumb Navigation Bar**: Added parent folder back-navigation (`⌘↑`), folder path clipboard copy context menu, and macOS Sonoma/Sequoia HIG contrast borders.
+- **Celestial Minor Codename Rule**: Bumped minor release to codename **Magnetar** (Build 2618) with 58/58 test pass rate.
+
+## [1.3.0] - 2026-10-10 (Quasar - QuickLook, Archive Diff & Keychain Vault)
+
+### Added & Refined
+- **Native macOS Spacebar QuickLook (`QuickLookService`)**: Instant preview for archive contents using system QuickLook panel (`QLPreviewPanel`).
+- **Visual Archive Comparison & Diff (`ArchiveDiffService`, ⌘⇧D)**: Compare two archives with detailed addition, deletion, and modification filters and Markdown report generation.
+- **Apple Keychain Password Vault (`KeychainService`)**: Securely stores passwords in macOS Keychain with auto-unlock and settings vault management.
+- **Finder Quick Actions (`FinderIntegrationService`)**: 'Compress with Pulsar' and 'Extract with Pulsar' macOS Finder context actions.
+- **Finder & Dock Dynamic AppIcon Binding**: Synchronized LaunchServices registration and dynamic AppKit icon binding.
+
 ## [1.2.2] - 2026-10-10 (Icon, Onboarding & Event-Driven HUD)
 
 ### Added & Refined

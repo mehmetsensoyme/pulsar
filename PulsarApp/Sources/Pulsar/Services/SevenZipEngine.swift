@@ -170,7 +170,12 @@ public final class SevenZipEngine: @unchecked Sendable {
     }
 
     /// Arşive dosya ekler (Düzenleme modu)
-    public func addItems(to archivePath: String, itemsToAdd: [String], cleanMacMetadata: Bool = true) async throws {
+    public func addItems(
+        to archivePath: String,
+        itemsToAdd: [String],
+        targetSubfolder: String? = nil,
+        cleanMacMetadata: Bool = true
+    ) async throws {
         let binary = locator.pathForSevenZip()
         var args = ["a", archivePath]
         if cleanMacMetadata {
@@ -178,8 +183,30 @@ public final class SevenZipEngine: @unchecked Sendable {
             args.append("-xr!__MACOSX")
             args.append("-xr!._*")
         }
-        args.append(contentsOf: itemsToAdd)
-        _ = try await runProcess(binary: binary, arguments: args)
+
+        let trimmedSubfolder = targetSubfolder?.trimmingCharacters(in: CharacterSet(charactersIn: "/")) ?? ""
+        if !trimmedSubfolder.isEmpty {
+            // Hedef alt dizine ekleme: Staging klasörü ve rölatif yollar
+            let stagingDir = NSTemporaryDirectory().appending("PulsarStage_\(UUID().uuidString)")
+            let destSubDir = (stagingDir as NSString).appendingPathComponent(trimmedSubfolder)
+            try? FileManager.default.createDirectory(atPath: destSubDir, withIntermediateDirectories: true)
+            TempCacheManager.shared.registerTempDirectory(stagingDir)
+
+            var relativeItems: [String] = []
+            for item in itemsToAdd {
+                let filename = (item as NSString).lastPathComponent
+                let stagedPath = (destSubDir as NSString).appendingPathComponent(filename)
+                if (try? FileManager.default.linkItem(atPath: item, toPath: stagedPath)) == nil {
+                    try? FileManager.default.copyItem(atPath: item, toPath: stagedPath)
+                }
+                relativeItems.append("\(trimmedSubfolder)/\(filename)")
+            }
+            args.append(contentsOf: relativeItems)
+            _ = try await runProcess(binary: binary, arguments: args, workingDirectory: stagingDir)
+        } else {
+            args.append(contentsOf: itemsToAdd)
+            _ = try await runProcess(binary: binary, arguments: args)
+        }
     }
 
     /// Arşiv bütünlüğünü test eder
@@ -200,6 +227,7 @@ public final class SevenZipEngine: @unchecked Sendable {
         taskId: UUID? = nil,
         binary: String,
         arguments: [String],
+        workingDirectory: String? = nil,
         onOutputLine: ((String) -> Void)? = nil
     ) async throws -> String {
         return try await withCheckedThrowingContinuation { continuation in
@@ -207,6 +235,9 @@ public final class SevenZipEngine: @unchecked Sendable {
                 let process = Process()
                 process.executableURL = URL(fileURLWithPath: binary)
                 process.arguments = arguments
+                if let wd = workingDirectory {
+                    process.currentDirectoryURL = URL(fileURLWithPath: wd)
+                }
                 // Donma koruması: stdin'i kapat
                 process.standardInput = FileHandle.nullDevice
 
